@@ -3397,6 +3397,7 @@ function sendQuickPrompt(text) {
   const url = "https://bn-marin-gemini.cafercelik0319.workers.dev/";
   let reply = "";
   const maxAttempts = 1;
+  let attempts = 0;
 
   while (attempts < maxAttempts && !reply) {
     attempts++;
