@@ -3462,6 +3462,7 @@ function sendQuickPrompt(text) {
     if (typeof resetAllFilters === "function") resetAllFilters();
     reply = reply.replace("[ACTION:RESET]", "");
   }
+  reply = reply.replace(/\[ACTION:[A-Z_]+\]/g, "").trim();
 
    window.marineAiHistory = window.marineAiHistory || [];
   window.marineAiHistory.push(
