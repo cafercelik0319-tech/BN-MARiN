@@ -3376,26 +3376,18 @@ function sendQuickPrompt(text) {
 // Sunucu, Gemini'nin generateContent yanıt biçimiyle uyumlu JSON döndürmelidir.
 
 async function generateMarineAiReply(userText) {
-  window.marineAiHistory = window.marineAiHistory || [];
-  const promptSystem = 
-  Sen BN MARİN'in profesyonel denizcilik danışmanısın.
-
-- Düzgün, ciddi, doğal ve anlaşılır Türkçe kullan.
-- Yazım ve noktalama hatalarını kontrol et.
-- Gereksiz selamlaşma, şaka ve abartılı denizci ifadeleri kullanma.
-- Önceki konuşmayı dikkate al; takip sorularını bağlamından koparma.
-- Tekne ve motorların teknik özelliklerini uydurma.
-- Doğrulanmış veriler yoksa bunu açıkça söyle; tahmini sayıları gerçekmiş gibi sunma.
-- Kullanıcı detay isterse önceki sorusunu dikkate alarak ayrıntı ver.
-- Kullanıcı tekne veya motor listelemek isterse uygun eylem etiketini yanıtın sonuna ekle:
-  Volvo motorlar: [ACTION:FILTER_VOLVO]
-  MAN motorlar: [ACTION:FILTER_MAN]
-  Scania motorlar: [ACTION:FILTER_SCANIA]
-  CAT motorlar: [ACTION:FILTER_CAT]
-  İtalyan tekneleri: [ACTION:FILTER_ITALY]
-  Türk tekneleri: [ACTION:FILTER_TURKEY]
-  Sıfırlama: [ACTION:RESET]
-`;
+  const promptSystem = `
+Sen "BN Marin" platformunun uzman marin danışmanı ve yapay zekâ kaptanısın.
+Kullanıcıyla bir deniz kurdu gibi samimi, zeki, esprili, doğal ve akıcı Türkçe konuş.
+Kullanıcı selam verirse sıcak bir denizci selamı ver.
+Kullanıcı motor, marka veya tekne listelemek isterse hem teknelerden bahset hem de yanıtın sonuna ilgili eylem etiketini ekle:
+- Volvo motorlar için: [ACTION:FILTER_VOLVO]
+- MAN motorlar için: [ACTION:FILTER_MAN]
+- Scania motorlar için: [ACTION:FILTER_SCANIA]
+- CAT motorlar için: [ACTION:FILTER_CAT]
+- İtalyan tekneleri için: [ACTION:FILTER_ITALY]
+- Türk tekneleri için: [ACTION:FILTER_TURKEY]
+- Sıfırlamak için: [ACTION:RESET]
 `;
 
   const url = "https://bn-marin-gemini.cafercelik0319.workers.dev/";
@@ -3410,8 +3402,7 @@ async function generateMarineAiReply(userText) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: `${promptSystem}\n\nKullanıcı: ${userText}`,
-           history: window.marineAiHistory || []
+          message: `${promptSystem}\n\nKullanıcı: ${userText}`
         })
       });
 
@@ -3463,16 +3454,6 @@ async function generateMarineAiReply(userText) {
   } else if (reply.includes("[ACTION:RESET]") || lowerUser.includes("sıfırla") || lowerUser.includes("temizle")) {
     if (typeof resetAllFilters === "function") resetAllFilters();
     reply = reply.replace("[ACTION:RESET]", "");
-  }
-
-   window.marineAiHistory = window.marineAiHistory || [];
-  window.marineAiHistory.push(
-    { role: "user", text: userText },
-    { role: "model", text: reply }
-  );
-
-  if (window.marineAiHistory.length > 20) {
-    window.marineAiHistory = window.marineAiHistory.slice(-20);
   }
 
   return reply;
