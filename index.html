@@ -3439,9 +3439,11 @@ function sendQuickPrompt(text) {
   if (reply.includes("[ACTION:FILTER_VOLVO]") || lowerUser.includes("volvo")) {
     if (typeof selectEngineOption === "function") selectEngineOption('volvo', 'Volvo (Tümü)', 'logolar/volvo.png');
     reply = reply.replace("[ACTION:FILTER_VOLVO]", "");
-  } else if (reply.includes("[ACTION:FILTER_MAN]") || lowerUser.includes("man")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('man', 'MAN (Tümü)', 'logolar/man.png');
-    reply = reply.replace("[ACTION:FILTER_MAN]", "");
+  } else if (reply.includes("[ACTION:FILTER_MAN]")) {
+    if (typeof selectEngineOption === "function") {
+        selectEngineOption('man', 'MAN (Tümü)', 'logolar/man.png');
+    }
+    reply = reply.replace("[ACTION:FILTER_MAN]", "").trim();
   } else if (reply.includes("[ACTION:FILTER_SCANIA]") || lowerUser.includes("scania")) {
     if (typeof selectEngineOption === "function") selectEngineOption('scania', 'Scania (Tümü)', 'logolar/scania.png');
     reply = reply.replace("[ACTION:FILTER_SCANIA]", "");
