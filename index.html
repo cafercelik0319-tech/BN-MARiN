@@ -4536,7 +4536,7 @@ const filtered = brands.filter(b => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-           message: userText,
+            message: `${promptSystem}\n\nKullanıcı: ${userText}`,
             history: window.marineAiHistory
           })
         });
