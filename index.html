@@ -3524,7 +3524,7 @@ async function handleAiSend() {
   const botBubble = document.createElement("div");
   botBubble.style.cssText = "background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; border-top-left-radius: 2px; color: #e2e8f0; font-size: 13px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;";
   const cleanReply = reply.replace(/\[ACTION:[A-Z_]+\]/g, "").trim();
-  botBubble.textContent = cleanReply;
+  botBubble.textContent = cleanReply || "İstediğin filtre uygulandı. 🚤";
   botDiv.appendChild(botAvatar);
   botDiv.appendChild(botBubble);
   msgContainer.appendChild(botDiv);
