@@ -2888,79 +2888,1511 @@ const filtered = brands.filter(b => {
     };
 
     const fuelConfigs = {
-      outboard_small:   { rate: 30,  fuelType: "Benzin" },
-      outboard_twin:    { rate: 90,  fuelType: "Benzin" },
-      diesel_cruiser:   { rate: 110, fuelType: "Marin Dizel" },
-      diesel_flybridge: { rate: 240, fuelType: "Marin Dizel" },
-      diesel_trawler:   { rate: 40,  fuelType: "Marin Dizel" },
-      megayacht:        { rate: 550, fuelType: "Marin Dizel" }
-    };
-
-    async function fetchLiveFuelRates() {
-      const statusEl = document.getElementById("fuelLiveStatus");
-      const dotEl = document.getElementById("fuelLiveDot");
-      const benzinEl = document.getElementById("lblBenzinPrice");
-      const motorinEl = document.getElementById("lblMotorinPrice");
-
-      if (benzinEl && typeof livePrices !== 'undefined' && livePrices?.benzin != null) 
-    {
-      benzinEl.innerText = Number(livePrices.benzin).toFixed(2);
-    }
-      if (motorinEl && typeof livePrices !== 'undefined' && livePrices?.motorin != null) 
-    {
-      motorinEl.innerText = Number(livePrices.motorin).toFixed(2);
-    }
-      try {
-        const res = await fetch("https://open.er-api.com/v6/latest/EUR");
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.rates && data.rates.TRY) {
-            livePrices.eurTry = parseFloat(data.rates.TRY.toFixed(2));
-          }
-        }
-        if (statusEl) statusEl.innerText = `Canlı Piyasa & TCMB Kuru Aktif (1 € = ${livePrices.eurTry} ₺)`;
-        if (dotEl) {
-          dotEl.style.background = "#10b981";
-          dotEl.style.boxShadow = "0 0 8px #10b981";
-        }
-      } catch (err) {
-        if (statusEl) statusEl.innerText = "Yerel Akaryakıt Fiyatları Aktif";
-        if (dotEl) {
-          dotEl.style.background = "#f59e0b";
-          dotEl.style.boxShadow = "0 0 8px #f59e0b";
-        }
-      }
-
-      calculateTripCost();
+     <!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BN MARİN | Kapsamlı Tekne & Güç Veri Portalı</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%2300D2FF'/><stop offset='100%25' stop-color='%23A855F7'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='%23060E1F'/><path d='M25 72 L38 25 L65 42 Z M34 72 L58 48 L70 48 Z' stroke='url(%23g)' stroke-width='4' fill='none'/><polygon points='34,72 58,48 70,48' fill='url(%23g)' opacity='0.25'/><path d='M23 72 C 40 70, 50 78, 80 72' stroke='url(%23g)' stroke-width='4.5' fill='none'/><path d='M68 41 L71 34 L78 31 L71 28 L68 21 L65 28 L58 31 L65 34 Z' fill='%23ffffff'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #060e1f;
+      --bg-surface: rgba(13, 27, 56, 0.72);
+      --bg-surface-hover: rgba(18, 38, 77, 0.85);
+      --card-border: rgba(56, 189, 248, 0.22);
+      --card-border-hover: rgba(0, 210, 255, 0.75);
+      --neon-blue: #00d2ff;
+      --neon-cyan: #38bdf8;
+      --accent-glow: 0 0 25px rgba(0, 210, 255, 0.35);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #00d2ff 100%);
     }
 
-    window.openFuelCalculatorModal = function() {
-      const modal = document.getElementById("fuelCalculatorModal");
-      if (modal) {
-        modal.style.display = "flex";
-        fetchLiveFuelRates();
-      }
-    };
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Plus Jakarta Sans', sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    window.onRouteSelectChange = function() {
-      const select = document.getElementById("calcRouteSelect");
-      const distInput = document.getElementById("calcDistanceInput");
-      if (select && distInput && select.value !== "custom") {
-        distInput.value = select.value;
-      }
-      calculateTripCost();
-    };
+    html, body {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: var(--bg-base);
+      color: var(--text);
+    }
 
-    fetchLiveFuelRates();
+    body {
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.35) 0%, transparent 60%),
+        radial-gradient(circle at 85% 20%, rgba(56, 189, 248, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(30, 64, 175, 0.35) 0%, transparent 55%),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 42px 42px, 42px 42px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-fixed-wrapper {
+      flex-shrink: 0;
+      width: 100%;
+      background: rgba(6, 14, 31, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+      z-index: 100;
+    }
+
+    .top-security-bar {
+      position: relative;
+      display: flex;
+      overflow: hidden;
+      user-select: none;
+      background: linear-gradient(90deg, rgba(3, 10, 26, 0.95) 0%, rgba(10, 25, 55, 0.85) 50%, rgba(3, 10, 26, 0.95) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.28);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 -1px 0 rgba(0, 210, 255, 0.15);
+      padding: 6px 0;
+      mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+    }
+
+    .marquee-track {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 60px;
+      min-width: 100%;
+      padding-right: 60px;
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      animation: continuousScroll 26s linear infinite;
+      transition: filter 0.3s ease;
+    }
+
+    .top-security-bar:hover .marquee-track {
+      animation-play-state: paused;
+      filter: brightness(1.1);
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .marquee-item svg { width: 12px; height: 12px; fill: #38bdf8; }
+
+    .live-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulseRadar 1.5s infinite;
+      margin-right: 4px;
+    }
+
+    @keyframes pulseRadar {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 12px #34d399; }
+      100% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    .marquee-item span.highlight {
+      color: #00d2ff;
+      font-weight: 800;
+      text-shadow: 0 0 12px rgba(0, 210, 255, 0.65);
+      letter-spacing: 0.8px;
+    }
+
+    @keyframes continuousScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    header {
+      padding: 12px 18px 8px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .header-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .brand-title-group { text-align: left; }
+    header h1 {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      background: linear-gradient(135deg, #ffffff 10%, #e0f2fe 55%, #00d2ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .portal-subtitle {
+      font-size: 10.5px;
+      color: var(--neon-cyan);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      opacity: 0.9;
+    }
+
+    .action-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      height: 36px !important;
+      padding: 0 14px !important;
+      border-radius: 9999px !important;
+      font-size: 11.5px !important;
+      font-weight: 700 !important;
+      white-space: nowrap !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .search-wrapper { position: relative; flex: 1; }
+    .search-input {
+      width: 100%;
+      background: rgba(15, 28, 54, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 9px 16px 9px 38px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 12.5px;
+      outline: none;
+      transition: all 0.25s;
+    }
+    .search-input:focus {
+      border-color: var(--neon-blue);
+      box-shadow: 0 0 18px rgba(0, 210, 255, 0.4);
+      background: rgba(18, 38, 77, 0.9);
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: 100%;
+      padding: 16px 20px 28px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    main::-webkit-scrollbar { width: 5px; }
+    main::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.35); border-radius: 99px; }
+
+    .stats-info {
+      text-align: center;
+      font-size: 11.5px;
+      color: var(--neon-cyan);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 14px;
+    }
+
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(315px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .brand-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .brand-card:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 10px 32px rgba(2, 6, 23, 0.7), 0 0 22px rgba(0, 210, 255, 0.28);
+      transform: translateY(-2px);
+    }
+
+    .brand-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .brand-logo-frame {
+      width: 62px;
+      height: 42px;
+      background: #ffffff;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      text-decoration: none;
+    }
+    .brand-logo-frame svg { width: 100%; height: 100%; display: block; }
+
+    .brand-meta { flex: 1; min-width: 0; }
+    .brand-link { text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .brand-link h2 { font-size: 14.5px; font-weight: 700; color: #fff; }
+    .brand-country-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .brand-body {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      flex-grow: 1;
+    }
+    .series-block { border-left: 2px solid rgba(56, 189, 248, 0.35); padding-left: 10px; }
+    .series-title { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; }
+    .models-list { display: flex; flex-wrap: wrap; gap: 4px; }
+
+    .model-btn {
+      background: rgba(15, 28, 54, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      color: #cbd5e1;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .model-btn:hover {
+      background: var(--neon-blue);
+      color: #020617;
+      border-color: #ffffff;
+      box-shadow: 0 0 12px var(--neon-blue);
+      transform: translateY(-1px);
+    }
+    .model-btn.highlighted {
+      border-color: #ffffff;
+      box-shadow: 0 0 14px rgba(0, 210, 255, 0.95);
+      background: var(--accent-gradient);
+      color: #020617;
+      font-weight: 800;
+    }
+    .model-btn.dimmed { opacity: 0.22; }
+
+    #alphabetPaginationContainer { width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 6px; }
+    .alphabet-pagination {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(13, 27, 56, 0.7);
+      padding: 3px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+    }
+    .alpha-page-btn {
+      background: rgba(15, 28, 54, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--text-muted);
+      min-width: 28px;
+      height: 26px;
+      padding: 0 5px;
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .alpha-page-btn.active {
+      background: var(--neon-blue) !important;
+      color: #020617 !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+    .alpha-dots { color: var(--text-dim); font-size: 11px; padding: 0 3px; user-select: none; }
+
+    footer {
+      flex-shrink: 0;
+      width: 100%;
+      background: rgba(6, 14, 31, 0.94);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(56, 189, 248, 0.22);
+      padding: 9px 18px;
+      z-index: 100;
+    }
+    .footer-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    footer p { color: var(--text-dim); font-size: 11px; }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 17, 0.88);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1200;
+    }
+    .modal-box {
+      background: #0c1833;
+      border: 1px solid var(--neon-blue);
+      box-shadow: 0 0 45px rgba(0, 210, 255, 0.35);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 22px;
+    }
+    .modal-box.large { max-width: 720px; max-height: 85vh; overflow-y: auto; }
+    .modal-head { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 14px; 
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+      padding-bottom: 10px; 
+    }
+    .modal-head h3 { font-size: 17px; color: #fff; font-weight: 700; }
+    .modal-head button { background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; }
+    .specs-table { width: 100%; border-collapse: collapse; }
+    .specs-table td { padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); font-size: 12.5px; }
+    .specs-table td:first-child { color: var(--text-muted); width: 44%; }
+    .specs-table td:last-child { text-align: right; font-weight: 700; color: #fff; }
+
+    .boats-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 8px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding: 6px 2px;
+    }
+    .matrix-boat-pill {
+      background: rgba(15, 28, 54, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all 0.2s;
+    }
+    .matrix-boat-pill:hover {
+      background: var(--neon-blue);
+      border-color: #fff;
+      transform: translateY(-2px);
+    }
+    .matrix-boat-pill:hover span { color: #020617 !important; }
+    .matrix-brand { font-size: 10px; color: var(--neon-cyan); font-weight: 700; text-transform: uppercase; }
+    .matrix-model { font-size: 12px; color: #fff; font-weight: 700; }
+
+    .telemetry-compatible-box {
+      display: none;
+      margin-top: 12px;
+      padding: 10px;
+      background: rgba(8, 20, 44, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .header-top-row { flex-direction: column !important; }
+      .controls-row { flex-wrap: wrap !important; gap: 8px !important; }
+      .controls-row > div:first-child { flex: 1 1 100% !important; min-width: 100% !important; }
+      .controls-row > div:nth-child(2), .controls-row > div:nth-child(3) { flex: 1 1 calc(50% - 6px) !important; min-width: 140px !important; }
+      #resetFiltersBtn { flex: 1 1 100% !important; justify-content: center !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-fixed-wrapper">
+    <div class="top-security-bar">
+      <div class="marquee-track">
+        <div class="marquee-item">
+          <span class="live-indicator"></span>
+          <span><span class="highlight">BN MARİN</span> Açık Deniz Kütüphanesi &bull; 160+ Küresel Tersane ve Güç Veritabanı</span>
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          <span>Sintine alarmı, akü telemetrisi, NMEA 2000 &amp; GPS haritalama</span>
+        </div>
+      </div>
+      <div class="marquee-track" aria-hidden="true" tabindex="-1">
+        <div class="marquee-item">
+          <span class="live-indicator"></span>
+          <span><span class="highlight">BN MARİN</span> Açık Deniz Kütüphanesi &bull; 160+ Küresel Tersane ve Güç Veritabanı</span>
+        </div>
+        <div class="marquee-item">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          <span>Sintine alarmı, akü telemetrisi, NMEA 2000 &amp; GPS haritalama</span>
+        </div>
+      </div>
+    </div>
+
+    <header>
+      <div class="header-top-row">
+        <div class="brand-title-group" onclick="window.location.reload()" style="display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none;">
+          <svg width="46" height="46" viewBox="0 0 100 100" style="flex-shrink: 0;">
+            <defs>
+              <linearGradient id="bnLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00D2FF" />
+                <stop offset="100%" stop-color="#A855F7" />
+              </linearGradient>
+            </defs>
+            <path d="M15 75 C 35 73, 50 82, 85 75" stroke="url(#bnLogoGrad)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <path d="M22 73 L37 24 L68 43 Z" stroke="url(#bnLogoGrad)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+            <path d="M32 73 L60 47 L73 47 Z" stroke="url(#bnLogoGrad)" stroke-width="3" fill="none" stroke-linejoin="round"/>
+            <polygon points="32,73 60,47 73,47" fill="url(#bnLogoGrad)" opacity="0.25" />
+            <path d="M70 41 L73 35 L80 32 L73 29 L70 23 L67 29 L60 32 L67 35 Z" fill="#ffffff" />
+          </svg>
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 22px; font-weight: 900; letter-spacing: 1.5px; color: #ffffff;">BN</span>
+              <span style="font-size: 22px; font-weight: 300; letter-spacing: 1px; color: #00D2FF;">MARİN</span>
+            </div>
+            <div class="portal-subtitle">Rotanızdaki her tersane, aradığınız her tekne.</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="action-btn" onclick="window.showMyCustomModal('customTelemetryModal')" style="background: rgba(6, 78, 59, 0.85); border: 1px solid #10b981; color: #34d399;">
+            📡 <span>IoT Kokpit</span>
+          </button>
+          <button type="button" class="action-btn" onclick="window.openFuelCalculatorModal()" style="background: rgba(3, 105, 161, 0.85); border: 1px solid #0284c7; color: #38bdf8;">
+            ⛽ <span>Yakıt Hesapla</span>
+          </button>
+          <button type="button" class="action-btn" onclick="window.showMyCustomModal('customWizardModal')" style="background: rgba(88, 28, 135, 0.85); border: 1px solid #a855f7; color: #c084fc;">
+            🧭 <span>Tekne Sihirbazı</span>
+          </button>
+          <button type="button" class="action-btn" onclick="openAiChatModal()" style="background: rgba(14, 116, 144, 0.85); border: 1px solid #06b6d4; color: #cffafe;">
+            ⚓ <span>BN Asistan</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="controls-row" style="max-width: 1200px; margin: 0 auto 16px auto; padding: 0 16px;">
+        <div class="search-wrapper">
+          <input type="text" id="searchInput" oninput="render(this.value)" placeholder="Tersane, model, ülke veya güç ünitesi ara..." class="search-input" />
+          <span style="position: absolute; left: 14px; top: 12px; color: #64748b; font-size: 14px;">🔍</span>
+        </div>
+
+        <div style="min-width: 140px;">
+          <select id="countryFilter" onchange="render()" style="width: 100%; height: 42px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; color: #fff; padding: 0 10px; font-size: 13px; cursor: pointer; outline: none;">
+            <option value="">🌍 Ülke: Tümü</option>
+            <option value="TÜRKİYE">Türkiye</option>
+            <option value="İTALYA">İtalya</option>
+            <option value="FRANSA">Fransa</option>
+            <option value="ALMANYA">Almanya</option>
+            <option value="ABD">ABD</option>
+            <option value="İNGİLTERE">İngiltere</option>
+            <option value="HOLLANDA">Hollanda</option>
+            <option value="İSVEÇ">İsveç</option>
+            <option value="İSPANYA">İspanya</option>
+            <option value="FİNLANDİYA">Finlandiya</option>
+          </select>
+        </div>
+
+        <div style="position: relative; min-width: 180px;">
+          <div id="engineDropdownTrigger" onclick="toggleEngineMenu()" style="height: 42px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 8px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fbbf24; font-size: 13px; user-select: none;">
+            <span id="selectedEngineText">⚡ Makine: Tümü</span>
+            <span style="font-size: 10px; color: #fbbf24;">▼</span>
+          </div>
+
+          <div id="engineDropdownList" style="display: none; position: absolute; top: 48px; right: 0; width: 310px; max-height: 440px; overflow-y: auto; background: #0b1324; border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.85);">
+            <div onclick="selectEngineOption('ALL', 'Makine: Tümü', '')" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.08); color: #fff;">
+              <span>⚡ Makine: Tümü</span>
+            </div>
+            <div style="padding: 8px 14px 4px; font-size: 11px; font-weight: bold; color: #00d2ff; text-transform: uppercase; background: rgba(0,0,0,0.25);">Volvo Penta</div>
+            <div onclick="selectEngineOption('volvo', 'Volvo (Tümü)', '')" style="padding: 6px 14px 6px 20px; cursor: pointer; color: #cbd5e1;">Tüm Volvo Motorlar</div>
+            <div onclick="selectEngineOption('d4', 'Volvo D4 Serisi', '')" style="padding: 5px 14px 5px 20px; cursor: pointer; color: #94a3b8;">Volvo D4 (150-320 HP)</div>
+            <div onclick="selectEngineOption('d6', 'Volvo D6 Serisi', '')" style="padding: 5px 14px 5px 20px; cursor: pointer; color: #94a3b8;">Volvo D6 (300-480 HP)</div>
+            <div onclick="selectEngineOption('ips', 'Volvo IPS Pod', '')" style="padding: 5px 14px 5px 20px; cursor: pointer; color: #94a3b8;">Volvo IPS (600/800/1050)</div>
+
+            <div style="padding: 8px 14px 4px; font-size: 11px; font-weight: bold; color: #00d2ff; text-transform: uppercase; background: rgba(0,0,0,0.25); margin-top: 4px;">MAN Marine</div>
+            <div onclick="selectEngineOption('man', 'MAN (Tümü)', '')" style="padding: 6px 14px 6px 20px; cursor: pointer; color: #cbd5e1;">Tüm MAN Motorlar</div>
+            <div onclick="selectEngineOption('v8', 'MAN V8 Serisi', '')" style="padding: 5px 14px 5px 20px; cursor: pointer; color: #94a3b8;">MAN V8 (1000-1300 HP)</div>
+            <div onclick="selectEngineOption('v12', 'MAN V12 Serisi', '')" style="padding: 5px 14px 5px 20px; cursor: pointer; color: #94a3b8;">MAN V12 (1400-2000 HP)</div>
+
+            <div style="padding: 8px 14px 4px; font-size: 11px; font-weight: bold; color: #00d2ff; text-transform: uppercase; background: rgba(0,0,0,0.25); margin-top: 4px;">Caterpillar & Scania</div>
+            <div onclick="selectEngineOption('cat', 'CAT (Tümü)', '')" style="padding: 6px 14px 6px 20px; cursor: pointer; color: #cbd5e1;">Tüm CAT Motorlar</div>
+            <div onclick="selectEngineOption('scania', 'Scania (Tümü)', '')" style="padding: 6px 14px 6px 20px; cursor: pointer; color: #cbd5e1;">Tüm Scania Motorlar</div>
+
+            <div style="padding: 8px 14px 4px; font-size: 11px; font-weight: bold; color: #00d2ff; text-transform: uppercase; background: rgba(0,0,0,0.25); margin-top: 4px;">Dıştan Takma</div>
+            <div onclick="selectEngineOption('mercury', 'Mercury (Tümü)', '')" style="padding: 6px 14px 6px 20px; cursor: pointer; color: #cbd5e1;">Tüm Mercury Motorlar</div>
+            <div onclick="selectEngineOption('yamaha', 'Yamaha (Tümü)', '')" style="padding: 6px 14px 6px 20px; cursor: pointer; color: #cbd5e1;">Tüm Yamaha Motorlar</div>
+          </div>
+        </div>
+
+        <button id="resetFiltersBtn" onclick="resetAllFilters()" style="height: 42px; padding: 0 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #f87171; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+          <span>✕</span> <span>Filtreleri Sıfırla</span>
+        </button>
+      </div>
+    </header>
+  </div>
+
+  <main id="mainScrollArea">
+    <div class="stats-info" id="statsCount">Yükleniyor...</div>
+    <div class="brands-grid" id="catalogGrid"></div>
+    <div id="alphabetPaginationContainer"></div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>
+        Bu veritabanı <strong>Sahibinden.com, YachtWorld, Powerboat Guide ve üretici kataloglarından</strong> derlenmiştir.<br>
+        <a href="javascript:void(0)" onclick="openReadme()" style="color:var(--neon-cyan); text-decoration:none;">Veri Kaynakçası ve README</a> | Akıllı IoT &amp; Telemetri Destekli Kütüphane
+      </p>
+      <div style="color: #cbd5e1; font-size: 11px; font-weight: 700;">
+        Crafted &amp; Engineered by <span style="color: #00d2ff;">CAFER ÇELİK</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- YÜZEN KARŞILAŞTIRMA ÇUBUĞU -->
+  <div id="vsFloatingBar" style="display: none; position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border: 1px solid #38bdf8; border-radius: 35px; padding: 10px 22px; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.6); align-items: center; gap: 16px;">
+    <span id="vsBarText" style="color: #f8fafc; font-size: 13px; font-weight: 700;">⚖️ Karşılaştırma: 1 tekne seçildi</span>
+    <button id="vsCompareBtn" onclick="window.openCompareModal()" style="background: linear-gradient(135deg, #0284c7, #38bdf8); color: #fff; border: none; padding: 7px 18px; border-radius: 20px; font-size: 12.5px; font-weight: 700; cursor: pointer;">Karşılaştır</button>
+    <button onclick="window.clearCompareList()" style="background: none; border: none; color: #ef4444; font-size: 12px; cursor: pointer; text-decoration: underline;">Vazgeç</button>
+  </div>
+
+  <!-- MODALLAR -->
+  <!-- 1. SPESİFİKASYON DETAYLARI -->
+  <div class="modal-overlay" id="specsModal" onclick="this.style.display='none'">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div>
+          <h3 id="mTitle">-</h3>
+          <p id="mSubtitle" style="font-size: 11px; color: var(--neon-blue); margin-top: 2px;">-</p>
+        </div>
+        <button onclick="document.getElementById('specsModal').style.display='none'">&times;</button>
+      </div>
+      <table class="specs-table">
+        <tr><td>Tam Boy (LOA)</td><td id="m_loa">-</td></tr>
+        <tr><td>Genişlik (Beam)</td><td id="m_beam">-</td></tr>
+        <tr><td>Su Çekimi (Draft)</td><td id="m_draft">-</td></tr>
+        <tr>
+          <td>Motor Seçeneği</td>
+          <td><span id="m_engine" style="color:var(--neon-blue); text-decoration:underline; cursor:pointer;" onclick="openEngineDetailModal()">-</span></td>
+        </tr>
+        <tr><td>Maksimum Hız</td><td id="m_speed">-</td></tr>
+        <tr><td>Kamara Kapasitesi</td><td id="m_cabins">-</td></tr>
+        <tr>
+          <td>Özellik:</td>
+          <td>
+            <span onclick="toggleTelemetrySpecs()" style="color:#38bdf8; font-weight:700; cursor:pointer;" title="Uyumlu IoT Donanımlarını Göster">
+              Premium Seçenekler ↗
+            </span>
+          </td>
+        </tr>
+      </table>
+      <div id="telemetrySpecsBox" class="telemetry-compatible-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(250,204,21,0.25); padding-bottom:4px; margin-bottom:6px;">
+          <span style="font-size:11px; font-weight:800; color:#fde047;">🛡️ Bu Modele Uyumlu Akıllı Telemetri &amp; Sensör Donanımları</span>
+        </div>
+        <div id="telemetryProductsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MOTOR FÖYÜ -->
+  <div class="modal-overlay" id="engineDetailModal" onclick="this.style.display='none'" style="z-index: 1300;">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div>
+          <h3 id="eTitle">Motor Teknik Özellikleri</h3>
+          <p id="eSubtitle" style="font-size: 11px; color: var(--neon-blue); margin-top: 2px;">Denizcilik Güç Ünitesi Föyü</p>
+        </div>
+        <button onclick="document.getElementById('engineDetailModal').style.display='none'">&times;</button>
+      </div>
+      <table class="specs-table">
+        <tr><td>Güç (Toplam HP)</td><td id="e_hp">-</td></tr>
+        <tr><td>Silindir Konfigürasyonu</td><td id="e_cylinders">-</td></tr>
+        <tr><td>Silindir Hacmi</td><td id="e_displacement">-</td></tr>
+        <tr><td>Yakıt Tipi</td><td id="e_fuel">-</td></tr>
+        <tr><td>Hava / Besleme</td><td id="e_aspiration">-</td></tr>
+        <tr><td>Tahrik / Şanzıman Tipi</td><td id="e_propulsion">-</td></tr>
+        <tr><td>Ağırlık (Kuru)</td><td id="e_weight">-</td></tr>
+        <tr>
+          <td>Kullanan Tekneler</td>
+          <td id="e_boats" style="max-height: 120px; overflow-y: auto; display: block; font-size: 11px; color: var(--neon-cyan);">-</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. TÜM TEKNELER MATRİSİ -->
+  <div class="modal-overlay" id="allEngineBoatsModal" onclick="this.style.display='none'" style="z-index: 1400;">
+    <div class="modal-box large" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div>
+          <h3 id="aebTitle">Motoru Kullanan Tüm Tekneler</h3>
+          <p id="aebSubtitle" style="font-size: 11px; color: var(--neon-blue); margin-top: 2px;">Kapsamlı Tersane &amp; Model Matrisi</p>
+        </div>
+        <button onclick="document.getElementById('allEngineBoatsModal').style.display='none'">&times;</button>
+      </div>
+      <div class="boats-matrix-grid" id="allEngineBoatsGrid"></div>
+    </div>
+  </div>
+
+  <!-- 4. README MODALI -->
+  <div class="modal-overlay" id="readmeModal" onclick="this.style.display='none'">
+    <div class="modal-box large" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <h3>📌 Proje &amp; Kapsamlı Veri Kaynakçası (README)</h3>
+        <button onclick="document.getElementById('readmeModal').style.display='none'">&times;</button>
+      </div>
+      <div style="color: #cbd5e1; font-size: 12px; line-height: 1.6;">
+        <p style="margin-bottom:12px;">Türkiye'de ve dünyada faaliyet gösteren 160'tan fazla tersanenin, model serilerinin ve güç ünitelerinin teknik parametrelerle derlendiği açık deniz kütüphanesidir.</p>
+        <h4 style="color:var(--neon-cyan); margin-bottom:4px;">Veri Kaynakçası:</h4>
+        <ul style="padding-left:18px;">
+          <li>Sahibinden.com, YachtWorld, Powerboat Guide envanterleri.</li>
+          <li>Volvo Penta, MAN, Scania, Cummins, CAT, Yamaha ve Mercury üretici katalogları.</li>
+          <li>Vanemar Smart Vessel IoT Altyapı Protokolleri.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. YAKIT & SEYİR HESAPLAYICI -->
+  <div class="modal-overlay" id="fuelCalculatorModal" onclick="this.style.display='none'" style="z-index: 1550;">
+    <div class="modal-box large" onclick="event.stopPropagation()" style="border-color: #38bdf8;">
+      <div class="modal-head" style="border-bottom-color: rgba(56, 189, 248, 0.3);">
+        <div>
+          <h3 style="color: #fff; display: flex; align-items: center; gap: 8px;">
+            <span>⛽</span> Yakıt &amp; Seyir Maliyeti Simülatörü
+          </h3>
+          <p style="font-size: 11px; color: var(--neon-cyan); margin-top: 2px;">
+            Rotanızı ve motor tipinizi seçin; tahmini yakıt sarfiyatını, süreyi ve maliyeti anında hesaplayın.
+          </p>
+        </div>
+        <button onclick="document.getElementById('fuelCalculatorModal').style.display='none'">&times;</button>
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-size:11px; color:#94a3b8; margin-bottom:4px; font-weight:600;">⛽ Akaryakıt Litre Fiyatı (₺)</label>
+        <div style="display: flex; gap: 8px;">
+          <select id="calcFuelPriceSelect" onchange="document.getElementById('calcCustomFuelPrice').value = this.value; window.calculateTripCost();" style="height: 36px; background: rgba(15, 23, 42, 0.9); border: 1px solid #334155; border-radius: 8px; color: #f8fafc; padding: 0 8px; font-size: 12px; outline: none;">
+            <option value="97.80">Motorin (Dizel) - 97.80 ₺</option>
+            <option value="80.60">Benzin - 80.60 ₺</option>
+          </select>
+          <input type="number" id="calcCustomFuelPrice" step="0.1" value="97.80" oninput="window.calculateTripCost()" placeholder="Litre fiyatı" style="flex: 1; height: 36px; background: rgba(15, 23, 42, 0.9); border: 1px solid #0284c7; border-radius: 8px; color: #38bdf8; font-weight: 700; padding: 0 10px; font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 15px 0;">
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8; display: block; margin-bottom: 5px;">📍 Hazır Rota veya Özel Mesafe:</label>
+          <select id="calcRouteSelect" onchange="onRouteSelectChange()" style="width: 100%; background: #0f1c38; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none;">
+            <option value="85">Bodrum ➔ Göcek (85 Deniz Mili)</option>
+            <option value="45">Marmaris ➔ Göcek (45 Deniz Mili)</option>
+            <option value="12">Çeşme ➔ Sakız Adası (12 Deniz Mili)</option>
+            <option value="140">İstanbul ➔ Bozcaada (140 Deniz Mili)</option>
+            <option value="25">Bodrum ➔ Datça (25 Deniz Mili)</option>
+            <option value="custom">Özel Mesafe Gireceğim...</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8; display: block; margin-bottom: 5px;">📏 Mesafe (Deniz Mili / NM):</label>
+          <input type="number" id="calcDistanceInput" value="85" min="1" oninput="window.calculateTripCost()" style="width: 100%; background: #0f1c38; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none;">
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8; display: block; margin-bottom: 5px;">⚡ Motor Tipi / Güç Grubu:</label>
+          <select id="calcEngineSelect" onchange="window.calculateTripCost()" style="width: 100%; background: #0f1c38; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none;">
+            <option value="outboard_small">Dıştan Takma Küçük (115-150 HP Benzin) ~ 30 L/saat</option>
+            <option value="outboard_twin">Çift Dıştan Takma Spor (2x 300 HP Benzin) ~ 90 L/saat</option>
+            <option value="diesel_cruiser" selected>Orta Boy Motoryat (Çift Volvo IPS 650) ~ 110 L/saat</option>
+            <option value="diesel_flybridge">Büyük Flybridge (Çift MAN V8 1200 HP) ~ 240 L/saat</option>
+            <option value="diesel_trawler">Ekonomik Deplasman Trawler (Scania/Cummins) ~ 40 L/saat</option>
+            <option value="megayacht">Mega Yat (Çift MTU / MAN V12 2000 HP) ~ 550 L/saat</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: #94a3b8; display: block; margin-bottom: 5px;">🚀 Ortalama Seyir Sürati (Knot):</label>
+          <input type="number" id="calcSpeedInput" value="22" min="5" max="50" oninput="window.calculateTripCost()" style="width: 100%; background: #0f1c38; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none;">
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08);">
+        <div style="background: rgba(15, 28, 54, 0.85); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 12px; text-align: center;">
+          <span style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700; display: block;">⏱️ Seyir Süresi</span>
+          <strong id="resTripTime" style="font-size: 17px; color: #38bdf8; font-weight: 800; margin-top: 4px; display: block;">-</strong>
+        </div>
+
+        <div style="background: rgba(15, 28, 54, 0.85); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 12px; text-align: center;">
+          <span style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700; display: block;">⛽ Toplam Yakıt</span>
+          <strong id="resTotalFuel" style="font-size: 17px; color: #fde047; font-weight: 800; margin-top: 4px; display: block;">-</strong>
+          <span id="resFuelTypeBadge" style="display: inline-block; font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-top: 4px; background: rgba(56, 189, 248, 0.2); color: #38bdf8;">🛢️ Marin Dizel</span>
+        </div>
+
+        <div style="background: rgba(15, 28, 54, 0.85); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 12px; text-align: center;">
+          <span style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700; display: block;">💰 Yaklaşık Tutar (₺)</span>
+          <strong id="resCostTL" style="font-size: 17px; color: #34d399; font-weight: 800; margin-top: 4px; display: block;">-</strong>
+          <span id="lblUnitRateInfo" style="font-size: 9px; color: #64748b;">(Canlı pompa kuru)</span>
+        </div>
+
+        <div style="background: rgba(15, 28, 54, 0.85); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; padding: 12px; text-align: center;">
+          <span style="font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 700; display: block;">💶 Yaklaşık Tutar (€)</span>
+          <strong id="resCostEUR" style="font-size: 17px; color: #a855f7; font-weight: 800; margin-top: 4px; display: block;">-</strong>
+        </div>
+
+        <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; background: rgba(8, 20, 44, 0.6); padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.2); font-size: 10.5px; margin-top: 6px;">
+          <span style="display: flex; align-items: center; gap: 5px; color: #94a3b8;">
+            <span id="fuelLiveDot" style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <span id="fuelLiveStatus">Canlı Akaryakıt &amp; Döviz Kuru Aktif</span>
+          </span>
+          <span style="color: #38bdf8; font-weight: 700;">
+            Benzin: <span id="lblBenzinPrice">80.60</span> ₺ | Motorin: <span id="lblMotorinPrice">97.80</span> ₺
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. VS KARŞILAŞTIRMA MODALI -->
+  <div class="modal-overlay" id="compareModal" onclick="this.style.display='none'">
+    <div class="modal-box large" onclick="event.stopPropagation()" style="border-color: #38bdf8; max-width: 900px; width: 95%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+        <h3 style="margin: 0; color: #f8fafc; font-size: 18px;">⚖️ İki Tekneyi Yan Yana Karşılaştır (VS)</h3>
+        <button onclick="document.getElementById('compareModal').style.display='none'" style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+      <div id="compareContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;"></div>
+    </div>
+  </div>
+
+  <!-- 7. CANLI TELEMETRİ MODALI -->
+  <div class="modal-overlay" id="customTelemetryModal" onclick="window.closeMyCustomModal('customTelemetryModal')">
+    <div onclick="event.stopPropagation()" style="background: #09121d; border: 1px solid #10b981; border-radius: 14px; max-width: 820px; width: 100%; padding: 24px; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+        <div>
+          <h3 style="margin: 0; color: #34d399; font-size: 17px; display: flex; align-items: center; gap: 8px;">
+            📡 Canlı Telemetri &amp; IoT Kokpit Simülasyonu
+          </h3>
+          <span style="font-size: 11px; color: #94a3b8; display: block; margin-top: 3px;">Vanemar Smart Vessel IoT Altyapısı ile Anlık Gemi Veri Akışı</span>
+        </div>
+        <button type="button" onclick="window.closeMyCustomModal('customTelemetryModal')" style="background: transparent; border: none; color: #94a3b8; font-size: 24px; cursor: pointer;">&times;</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;">
+        <div id="batteryCard" onclick="window.toggleBatteryState()" style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 14px 10px; text-align: center; cursor: pointer; user-select: none;">
+          <span id="batteryStatusText" style="font-size: 9px; font-weight: 800; color: #10b981;">AÇIK</span>
+          <strong id="liveCustomVolt" style="font-size: 20px; color: #34d399; font-weight: 800; display: block; margin: 6px 0;">12.73 V</strong>
+          <span id="batterySubText" style="font-size: 9.5px; color: #10b981;">● Dalgalanma Canlı</span>
+        </div>
+        <div style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 14px 10px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8;">💧 Sintine Seviyesi</span>
+          <strong style="font-size: 16px; color: #38bdf8; font-weight: 800; display: block; margin: 8px 0;">KURU / GÜVENLİ</strong>
+          <span style="font-size: 9.5px; color: #38bdf8;">Pompa: Otomatik (Hazır)</span>
+        </div>
+        <div style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 14px 10px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8;">⚡ Sahil Elektriği</span>
+          <strong id="liveCustomShore" style="font-size: 20px; color: #fbbf24; font-weight: 800; display: block; margin: 6px 0;">227 V AC</strong>
+          <span style="font-size: 9.5px; color: #fbbf24;">Marina Hattı Bağlı</span>
+        </div>
+        <div style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 14px 10px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8;">⚓ Çapa Alarmı</span>
+          <strong style="font-size: 14px; color: #34d399; font-weight: 800; display: block; margin: 4px 0 2px;">KİLİTLİ (GÜVENDE)</strong>
+          <span style="font-size: 9.5px; color: #94a3b8;">Sapma: 0.8m</span>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
+        <span>📍 GPS: 36°59'48.2"N 27°25'31.1"E (Yalıkavak Marina)</span>
+        <span style="color: #34d399; font-weight: 600;">🛰️ IoT Bulut Senkronizasyonu Aktif</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. TEKNE SİHİRBAZI MODALI -->
+  <div class="modal-overlay" id="customWizardModal" onclick="window.closeMyCustomModal('customWizardModal')">
+    <div onclick="event.stopPropagation()" style="background: #0f172a; border: 1px solid #a855f7; border-radius: 14px; max-width: 600px; width: 100%; padding: 22px; box-shadow: 0 0 40px rgba(168, 85, 247, 0.25);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 16px;">
+        <h3 style="margin: 0; color: #f8fafc; font-size: 17px; font-weight: 700;">🧭 Akıllı Tekne Seçim Sihirbazı (Matchmaker)</h3>
+        <button type="button" onclick="window.closeMyCustomModal('customWizardModal')" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer;">&times;</button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 13px;">
+        <div>
+          <label style="font-size: 11.5px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 5px;">1. Kullanım Amacınız Nedir?</label>
+          <select style="width: 100%; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; color: #fff; font-size: 12px; outline: none;">
+            <option>Ailece Konaklamalı Mavi Tur &amp; Rahat Seyir</option>
+            <option>Hızlı Spor Gezi &amp; Günübirlik Koy Turları</option>
+            <option>Açık Deniz &amp; Düşük Yakıtlı Uzun Seyir (Trawler)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size: 11.5px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 5px;">2. Hedef Boy Aralığı:</label>
+          <select id="customWizLength" style="width: 100%; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; color: #fff; font-size: 12px; outline: none;">
+            <option value="small">10 Metre Altı (Kompakt / Dıştan Takma)</option>
+            <option value="mid" selected>10 – 16 Metre (Orta Boy Motoryat)</option>
+            <option value="large">16 Metre ve Üzeri (Lüks Flybridge &amp; Trawler)</option>
+          </select>
+        </div>
+        <button type="button" onclick="window.runSimpleWizard()" style="background: linear-gradient(135deg, #9333ea, #a855f7); color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer;">
+          🎯 Bana En Uygun Modelleri Eşleştir
+        </button>
+        <div id="simpleResult" style="display: none; margin-top: 8px; background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; padding: 12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. AI ASİSTAN MODALI (CLOUDFLARE WORKER DESTEKLİ) -->
+  <div class="modal-overlay" id="aiChatModal" onclick="closeAiChatModal()">
+    <div onclick="event.stopPropagation()" style="width: 100%; max-width: 580px; height: 640px; max-height: 90vh; background: #0b1324; border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);">
+      <div style="padding: 14px 18px; background: rgba(15, 23, 42, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); display: flex; align-items: center; justify-content: center; font-size: 16px;">🤖</div>
+          <div>
+            <div style="color: #fff; font-weight: 600; font-size: 14px;">BN Marin AI Kaptan</div>
+            <div style="color: #10b981; font-size: 11px; display: flex; align-items: center; gap: 4px;">
+              <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%;"></span> Çevrimiçi • Marin Veritabanı Aktif
+            </div>
+          </div>
+        </div>
+        <button onclick="closeAiChatModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;">✕</button>
+      </div>
+
+      <div style="padding: 10px 14px; background: rgba(15, 23, 42, 0.5); border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; gap: 8px; overflow-x: auto; white-space: nowrap;">
+        <button onclick="sendQuickPrompt('Trawler tekne için hangi motoru önerirsin?')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: #38bdf8; font-size: 11px; padding: 5px 10px; border-radius: 20px; cursor: pointer;">⚓ Trawler motor seçimi</button>
+        <button onclick="sendQuickPrompt('Volvo IPS mi yoksa Şaft mı mantıklı?')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: #38bdf8; font-size: 11px; padding: 5px 10px; border-radius: 20px; cursor: pointer;">⚡ Volvo IPS vs Şaft</button>
+        <button onclick="sendQuickPrompt('Türk tersanelerinden lüks motoryat önerir misin?')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: #38bdf8; font-size: 11px; padding: 5px 10px; border-radius: 20px; cursor: pointer;">🇹🇷 Türk Tersaneleri</button>
+      </div>
+
+      <div id="aiChatMessages" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; gap: 10px; align-items: flex-start; max-width: 85%;">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">🤖</div>
+          <div style="background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; color: #e2e8f0; font-size: 13px; line-height: 1.5;">
+            Selam kaptan! 🌊 Ben BN Marin yapay zekâ asistanıyım. Tersaneler, motoryat modelleri veya güç üniteleri hakkında aklına takılan her şeyi sorabilirsin.
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 12px 16px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; gap: 8px;">
+        <input type="text" id="aiChatInput" placeholder="Tekne, motor veya rota hakkında bir şey sor..." onkeydown="if(event.key === 'Enter') handleAiSend()" style="flex: 1; height: 42px; background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; color: #fff; padding: 0 14px; font-size: 13px; outline: none;" />
+        <button onclick="handleAiSend()" style="height: 42px; padding: 0 16px; background: linear-gradient(135deg, #00d2ff, #0077ff); border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;">Gönder</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
     // ==========================================
-    // YAKIT & SEYİR HESAPLAYICI (GARANTİ ÇALIŞAN MOTOR)
+    // MOTOR VE GÜÇ VERİ TABANI
     // ==========================================
-    window.livePrices = {
-      benzin: 80.60,
-      motorin: 97.80,
-      eurTry: 55.62
+    const engineDatabase = {
+      "Volvo Penta D1-30": { title: "Volvo Penta D1-30", hp: "28 HP", cylinders: "Sıralı 3 Silindir", displacement: "1.130 cc", fuel: "Marin Dizel", aspiration: "Doğal Emişli", propulsion: "Şaft / Saildrive 130S", weight: "145 kg" },
+      "Volvo Penta D2-75": { title: "Volvo Penta D2-75", hp: "75 HP", cylinders: "Sıralı 4 Silindir", displacement: "2.200 cc", fuel: "Marin Dizel", aspiration: "Turboşarjlı", propulsion: "Şaft / Saildrive 150S", weight: "264 kg" },
+      "Volvo Penta D3-220": { title: "Volvo Penta D3-220", hp: "220 HP", cylinders: "Sıralı 5 Silindir", displacement: "2.400 cc", fuel: "Marin Dizel (Common Rail)", aspiration: "Değişken Geometrili Turbo (VNT)", propulsion: "Aquamatic Kuyruk / Şaft", weight: "301 kg" },
+      "Volvo Penta D4-300 / 320": { title: "Volvo Penta D4-320", hp: "320 HP", cylinders: "Sıralı 4 Silindir", displacement: "3.700 cc (3.7L)", fuel: "Marin Dizel", aspiration: "Kompresör + Turboşarj", propulsion: "DPI Kuyruk / Şaft", weight: "500 kg" },
+      "Volvo Penta D6-440": { title: "Volvo Penta D6-440", hp: "440 HP", cylinders: "Sıralı 6 Silindir", displacement: "5.500 cc (5.5L)", fuel: "Marin Dizel", aspiration: "Kompresör + Turboşarj", propulsion: "DPI Kuyruk / Şaft", weight: "790 kg" },
+      "Volvo Penta IPS 650 (D6)": { title: "Volvo Penta IPS 650", hp: "480 HP Krank (650 HP Efektif)", cylinders: "Sıralı 6 Silindir", displacement: "5.500 cc (5.5L)", fuel: "Marin Dizel", aspiration: "Kompresör + Turboşarj", propulsion: "IPS Pod Drive (Çift Pervane)", weight: "920 kg" },
+      "Volvo Penta IPS 800 (D8)": { title: "Volvo Penta IPS 800", hp: "600 HP Krank (800 HP Efektif)", cylinders: "Sıralı 6 Silindir", displacement: "7.700 cc (7.7L)", fuel: "Marin Dizel", aspiration: "Twin-Entry Turboşarj", propulsion: "IPS15 Pod Drive", weight: "1.410 kg" },
+      "Volvo Penta IPS 1050 (D11)": { title: "Volvo Penta IPS 1050", hp: "750 HP", cylinders: "Sıralı 6 Silindir", displacement: "10.800 cc (10.8L)", fuel: "Marin Dizel", aspiration: "Turboşarj & Intercooler", propulsion: "IPS20 Pod Drive", weight: "1.980 kg" },
+      "Volvo Penta IPS 1350 (D13)": { title: "Volvo Penta IPS 1350", hp: "1.000 HP (1.350 HP Efektif)", cylinders: "Sıralı 6 Silindir", displacement: "12.800 cc (12.8L)", fuel: "Marin Dizel", aspiration: "Çift Kademeli Turbo", propulsion: "IPS30 Pod Drive", weight: "2.300 kg" },
+      "Volvo Penta D16-850": { title: "Volvo Penta D16 MH", hp: "850 HP Ağır Hizmet", cylinders: "Sıralı 6 Silindir", displacement: "16.100 cc (16.1L)", fuel: "Marin Dizel", aspiration: "Turboşarjlı", propulsion: "Ağır Ticari Düz Şaft", weight: "1.750 kg" },
+      "MAN i6-730 / 800": { title: "MAN i6-800", hp: "800 HP", cylinders: "Sıralı 6 Silindir", displacement: "12.400 cc (12.4L)", fuel: "Marin Dizel", aspiration: "Wastegate Turbo & Intercooler", propulsion: "V-Drive / Düz Şaft", weight: "1.215 kg" },
+      "MAN V8-1000": { title: "MAN V8-1000", hp: "1.000 HP", cylinders: "V8 Silindir 90°", displacement: "16.200 cc (16.2L)", fuel: "Marin Dizel (Common Rail)", aspiration: "Çift Turboşarjlı", propulsion: "Şaft Tahrikli", weight: "1.780 kg" },
+      "MAN V8-1200": { title: "MAN V8-1200", hp: "1.200 HP", cylinders: "V8 Silindir 90°", displacement: "16.200 cc (16.2L)", fuel: "Marin Dizel", aspiration: "Çift Su Soğutmalı Turbo", propulsion: "Şaft Tahrikli", weight: "1.875 kg" },
+      "MAN V12-1400": { title: "MAN V12-1400", hp: "1.400 HP", cylinders: "V12 Silindir 90°", displacement: "24.200 cc (24.2L)", fuel: "Marin Dizel", aspiration: "Biturbo & Intercooler", propulsion: "Direkt Şaft", weight: "2.270 kg" },
+      "MAN V12-1900": { title: "MAN V12-1900", hp: "1.900 HP", cylinders: "V12 Silindir 90°", displacement: "24.200 cc (24.2L)", fuel: "Marin Dizel", aspiration: "İki Kademeli Biturbo", propulsion: "Şaft / Yüzey Tahrik (Arneson)", weight: "2.365 kg" },
+      "MAN V12-2000": { title: "MAN V12-2000 (Sektör Lideri)", hp: "2.000 HP", cylinders: "V12 Silindir 90°", displacement: "24.200 cc (24.2L)", fuel: "Marin Dizel", aspiration: "Biturbo Common Rail 2200 bar", propulsion: "Yüksek Hızlı Şaft", weight: "2.380 kg" },
+      "CAT C7.1": { title: "Caterpillar C7.1", hp: "500 HP", cylinders: "Sıralı 6 Silindir", displacement: "7.010 cc (7.0L)", fuel: "Marin Dizel", aspiration: "Turboşarjlı & Aftercooler", propulsion: "Düz Şaft", weight: "760 kg" },
+      "CAT C8.7": { title: "Caterpillar C8.7", hp: "650 HP", cylinders: "Sıralı 6 Silindir", displacement: "8.700 cc (8.7L)", fuel: "Marin Dizel", aspiration: "Süperşarj + Turbo", propulsion: "Şaft & Pod Drive", weight: "1.040 kg" },
+      "CAT C12.9": { title: "Caterpillar C12.9", hp: "1.000 HP", cylinders: "Sıralı 6 Silindir", displacement: "12.900 cc (12.9L)", fuel: "Marin Dizel", aspiration: "Çift Turboşarjlı", propulsion: "Ağır Hizmet Şaft", weight: "1.670 kg" },
+      "CAT C18 ACERT": { title: "Caterpillar C18 ACERT", hp: "1.150 HP", cylinders: "Sıralı 6 Silindir", displacement: "18.100 cc (18.1L)", fuel: "Marin Dizel", aspiration: "Turboşarjlı & Su Soğutmalı", propulsion: "Ağır Hizmet Düz Şaft", weight: "1.950 kg" },
+      "CAT C32 ACERT": { title: "Caterpillar C32 ACERT V12", hp: "1.925 HP", cylinders: "V12 Silindir", displacement: "32.100 cc (32.1L)", fuel: "Marin Dizel", aspiration: "Biturbo Su Soğutmalı", propulsion: "Mega Yat Şaft Sistemi", weight: "3.220 kg" },
+      "Scania DI09": { title: "Scania DI09 5-Silindir", hp: "400 HP", cylinders: "Sıralı 5 Silindir", displacement: "9.300 cc (9.3L)", fuel: "Marin Dizel", aspiration: "Turboşarj & Intercooler", propulsion: "Deplasman Şaftı", weight: "1.125 kg" },
+      "Scania DI13 092M": { title: "Scania DI13 550 Heavy Duty", hp: "550 HP", cylinders: "Sıralı 6 Silindir Trawler", displacement: "12.700 cc (12.7L)", fuel: "Marin Dizel", aspiration: "Turboşarj & Intercooler", propulsion: "Ağır Deplasman Şaft Sistemi", weight: "1.285 kg" },
+      "Scania DI13 093M": { title: "Scania DI13 900 Racing", hp: "900 HP", cylinders: "Sıralı 6 Silindir", displacement: "12.700 cc (12.7L)", fuel: "Marin Dizel (XPI)", aspiration: "Wastegate Turbo", propulsion: "Hızlı Şaft / Jet", weight: "1.285 kg" },
+      "Scania DI16 090M V8": { title: "Scania DI16 1150 V8", hp: "1.150 HP", cylinders: "V8 Silindir 90°", displacement: "16.400 cc (16.4L)", fuel: "Marin Dizel", aspiration: "Çift Turboşarjlı", propulsion: "Şaft Tahrikli", weight: "1.660 kg" },
+      "Cummins QSB 6.7": { title: "Cummins QSB 6.7", hp: "550 HP", cylinders: "Sıralı 6 Silindir", displacement: "6.700 cc (6.7L)", fuel: "Marin Dizel (Common Rail)", aspiration: "Turboşarj & Aftercooler", propulsion: "V-Drive / Şaft / Zeus Pod", weight: "658 kg" },
+      "Cummins QSC 8.3": { title: "Cummins QSC 8.3", hp: "600 HP", cylinders: "Sıralı 6 Silindir", displacement: "8.300 cc (8.3L)", fuel: "Marin Dizel", aspiration: "Turboşarj & Aftercooler", propulsion: "Şaft Tahrikli", weight: "896 kg" },
+      "Cummins QSM 11": { title: "Cummins QSM 11", hp: "715 HP", cylinders: "Sıralı 6 Silindir", displacement: "10.800 cc (10.8L)", fuel: "Marin Dizel", aspiration: "Turboşarj & Su Soğutmalı", propulsion: "Ağır Hizmet Şaft", weight: "1.188 kg" },
+      "Cummins QSK 19": { title: "Cummins QSK 19 Commercial", hp: "800 HP", cylinders: "Sıralı 6 Silindir Endüstriyel", displacement: "19.000 cc (19L)", fuel: "Marin Dizel", aspiration: "Ağır Ticari Turbo", propulsion: "Sürekli Görev Şaftı", weight: "2.180 kg" },
+      "Mercury 150 FourStroke": { title: "Mercury 150 FourStroke", hp: "150 HP", cylinders: "Sıralı 4 Silindir", displacement: "3.000 cc (3.0L)", fuel: "Benzin", aspiration: "Doğal Emişli EFI", propulsion: "Dıştan Takma", weight: "206 kg" },
+      "Mercury 200 / 225 V6": { title: "Mercury FourStroke V6", hp: "225 HP", cylinders: "V6 Silindir", displacement: "3.400 cc (3.4L)", fuel: "Benzin", aspiration: "Doğal Emişli", propulsion: "Dıştan Takma", weight: "216 kg" },
+      "Mercury Verado 250 / 300 V8": { title: "Mercury Verado 300 V8", hp: "300 HP", cylinders: "V8 Silindir 32V", displacement: "4.600 cc (4.6L)", fuel: "Benzin", aspiration: "Transient Spark EFI", propulsion: "Dıştan Takma AMS", weight: "272 kg" },
+      "Mercury Verado 350 / 400 V10": { title: "Mercury Verado 400 V10", hp: "400 HP", cylinders: "V10 Silindir", displacement: "5.700 cc (5.7L)", fuel: "Benzin", aspiration: "Doğal Emişli DOHC", propulsion: "Dıştan Takma Entegre Direksiyon", weight: "316 kg" },
+      "Mercury Verado 600 V12": { title: "Mercury Verado 600 V12 (Amiral)", hp: "600 HP", cylinders: "V12 Silindir", displacement: "7.600 cc (7.6L)", fuel: "Benzin", aspiration: "Dört Kamlı / DOHC 48V", propulsion: "2 Vitesli Dönen Kuyruk Sistemi", weight: "572 kg" },
+      "Mercury Racing 450R / 500R": { title: "Mercury Racing 500R", hp: "500 HP Yarış Motoru", cylinders: "V8 Silindir", displacement: "4.600 cc", fuel: "Yüksek Oktan Benzin", aspiration: "Süperşarjlı (Kompresör)", propulsion: "Yarış Kuyruğu Sport Master", weight: "326 kg" },
+      "Yamaha F115 / F150": { title: "Yamaha F150", hp: "150 HP", cylinders: "Sıralı 4 Silindir", displacement: "2.670 cc (2.7L)", fuel: "Benzin", aspiration: "DOHC 16-Sübap EFI", propulsion: "Dıştan Takma", weight: "222 kg" },
+      "Yamaha F200 / F225": { title: "Yamaha F200", hp: "200 HP", cylinders: "Sıralı 4 Silindir", displacement: "2.785 cc (2.8L)", fuel: "Benzin", aspiration: "Değişken Eksantrik (VCT)", propulsion: "Dıştan Takma", weight: "226 kg" },
+      "Yamaha F250 / F300 V6 Offshore": { title: "Yamaha F300 V6 Offshore", hp: "300 HP", cylinders: "V6 Silindir 60° 24V", displacement: "4.200 cc (4.2L)", fuel: "Benzin", aspiration: "Çok Noktalı Enjeksiyon (EFI)", propulsion: "Dıştan Takma Helm Master", weight: "260 kg" },
+      "Yamaha XTO 425 V8": { title: "Yamaha XTO 425 Offshore", hp: "425 HP", cylinders: "V8 Silindir 32V", displacement: "5.600 cc (5.6L)", fuel: "Benzin", aspiration: "Direkt Püskürtme DOHC", propulsion: "Entegre Elektrikli Dümen", weight: "442 kg" },
+      "Yamaha XTO 450 V8 Offshore": { title: "Yamaha XTO 450 V8 (Amiral)", hp: "450 HP", cylinders: "V8 Silindir", displacement: "5.600 cc (5.6L)", fuel: "Benzin", aspiration: "Yüksek Basınç Direkt Enjeksiyon", propulsion: "Dıştan Takma Ağır Hizmet İtki", weight: "450 kg" }
     };
 
+    let activeSelectedEngine = "";
+
+    // ==========================================
+    // KAPSAMLI TERSANELER VE MODELLER ENVENTERİ
+    // ==========================================
+    const rawBrands = [
+      { name: "Absolute Yachts", url: "https://www.absoluteyachts.com", country: "İtalya", series: [{ name: "Navetta & Fly", models: ["45 Navetta", "52 Navetta", "58 Navetta", "47 Fly", "52 Fly", "60 Fly"] }] },
+      { name: "Ada Yatçılık", url: "https://adayacht.com", country: "Türkiye", series: [{ name: "Ahşap & Sac Trawler", models: ["Ada 18M", "Ada 24M", "Ada 30M"] }] },
+      { name: "Alen Yacht", url: "https://alenyacht.com", country: "Türkiye", series: [{ name: "Alen Serisi", models: ["Alen 45", "Alen 55", "Alen 68"] }] },
+      { name: "Alfastreet Marine", url: "https://alfastreet-marine.com", country: "Slovenya", series: [{ name: "Hydraulic Hardtop", models: ["18 Open", "21 Open", "25 Cabin", "28 Cabin"] }] },
+      { name: "Amer Yachts", url: "https://www.ameryachts.it", country: "İtalya", series: [{ name: "Superyachts", models: ["Amer 94", "Amer 100", "Amer 120"] }] },
+      { name: "Angel Yachts", url: "https://www.angelyachts.com", country: "Türkiye", series: [{ name: "Lobster & Baby", models: ["Angel Baby", "Angel Lobster 15", "Angel Giant"] }] },
+      { name: "Anka Tekne", url: "https://ankatekne.com", country: "Türkiye", series: [{ name: "Fiber Cruiser", models: ["Anka 5.50", "Anka 6.80", "Anka 8.50"] }] },
+      { name: "Antares (Bénéteau)", url: "https://www.beneteau.com", country: "Fransa", series: [{ name: "Weekender", models: ["Antares 7", "Antares 8", "Antares 9", "Antares 11", "Antares 12"] }] },
+      { name: "Apreamare", url: "https://www.apreamare.it", country: "İtalya", series: [{ name: "Gozzo & Maestro", models: ["Gozzo 35", "Gozzo 45", "Maestro 56", "Maestro 65"] }] },
+      { name: "Aquila Power Catamarans", url: "https://www.aquilaboats.com", country: "Çin / ABD", series: [{ name: "Power Cat", models: ["Aquila 28", "Aquila 32", "Aquila 36", "Aquila 44", "Aquila 54"] }] },
+      { name: "Arcadia Yachts", url: "https://www.arcadiayachts.it", country: "İtalya", series: [{ name: "Sherpa & A-Line", models: ["Sherpa 60", "Sherpa 80", "A85", "A105"] }] },
+      { name: "Astondoa", url: "https://astondoa.com", country: "İspanya", series: [{ name: "Flybridge & AS", models: ["377 Coupe", "AS5", "AS8", "66 Flybridge"] }] },
+      { name: "Axopar", url: "https://www.axopar.com", country: "Finlandiya", series: [{ name: "Cross Cabin & Sun-Top", models: ["Axopar 28 (T-Top/Cabin)", "Axopar 37 (Sun-Top/XC)", "Axopar 45"] }] },
+      { name: "Azimut Yachts", url: "https://www.azimutyachts.com", country: "İtalya", series: [
+        { name: "Atlantis (Sport)", models: ["34", "43", "45", "47", "51", "55"] },
+        { name: "Flybridge", models: ["39 Fly", "43 Fly", "46", "50", "53", "55", "58", "62", "64", "66", "72", "80"] },
+        { name: "S Serisi (Coupe)", models: ["55S", "68S", "77S", "S6", "S7", "S8"] },
+        { name: "Magellano (Trawler)", models: ["43", "53", "60", "66"] }
+      ]},
+      { name: "Baglietto", url: "https://www.baglietto.com", country: "İtalya", series: [{ name: "DOM & T-Line", models: ["DOM 133", "T52", "FAST 43"] }] },
+      { name: "Bavaria Yachts", url: "https://www.bavariayachts.com", country: "Almanya", series: [{ name: "Sport & SR Serisi", models: ["29 Sport", "32 Sport", "35 Sport", "37 Sport", "SR36", "SR41", "Virtess 420"] }] },
+      { name: "Bayliner", url: "https://www.bayliner.com", country: "ABD", series: [{ name: "Ciera / Discovery", models: ["245", "265", "2855", "3055", "3255"] }] },
+      { name: "Benetti", url: "https://www.benettiyachts.it", country: "İtalya", series: [{ name: "Class & B.Now", models: ["Delfino 95", "Mediterraneo 116", "Oasis 40M", "B.Now 50M"] }] },
+      { name: "Bénéteau", url: "https://www.beneteau.com", country: "Fransa", series: [
+        { name: "Gran Turismo (GT)", models: ["GT 32", "GT 36", "GT 40", "GT 41", "GT 46", "GT 50"] },
+        { name: "Swift Trawler", models: ["30", "34", "35", "41", "44", "47", "50"] }
+      ]},
+      { name: "Bertram", url: "https://www.bertram.com", country: "ABD", series: [{ name: "Moppie & Flybridge", models: ["Bertram 28", "Bertram 31", "Bertram 35", "Bertram 50", "Bertram 61"] }] },
+      { name: "Bilgin Yachts", url: "https://bilginyacht.com", country: "Türkiye", series: [{ name: "Bilgin Custom", models: ["Tatiana 80M", "Bilgin 163", "Bilgin 263", "Leona 80M"] }] },
+      { name: "Bluegame", url: "https://bluegame.it", country: "İtalya", series: [{ name: "BG & BGX", models: ["BG42", "BG54", "BG72", "BGX60", "BGX70"] }] },
+      { name: "Boston Whaler", url: "https://www.bostonwhaler.com", country: "ABD", series: [{ name: "Conquest & Outrage", models: ["285 Conquest", "325 Conquest", "345 Conquest", "420 Outrage"] }] },
+      { name: "Brabus Marine", url: "https://www.brabusmarine.com", country: "Almanya", series: [{ name: "Shadow Serisi", models: ["Shadow 500", "Shadow 900", "Shadow 1000"] }] },
+      { name: "Brig Boats", url: "https://brigboats.com", country: "Ukrayna", series: [{ name: "Eagle Serisi", models: ["Eagle 6.7", "Eagle 8", "Eagle 10"] }] },
+      { name: "Canados", url: "https://www.canados.com", country: "İtalya", series: [{ name: "Gladiator & Oceanic", models: ["Gladiator 411", "Gladiator 631", "Oceanic 76", "Canados 88"] }] },
+      { name: "Cantieri di Pisa", url: "https://www.cantieridipisa.com", country: "İtalya", series: [{ name: "Akhir Serisi", models: ["Akhir 85", "Akhir 108", "Akhir 118"] }] },
+      { name: "Capelli", url: "https://www.cantiericapelli.com", country: "İtalya", series: [{ name: "Tempest RIB", models: ["Tempest 38", "Tempest 40", "Tempest 44", "Tempest 50"] }] },
+      { name: "Carnevali", url: "https://www.carnevaliyachts.com", country: "İtalya", series: [{ name: "Flybridge", models: ["Carnevali 130", "Carnevali 145", "Carnevali 160"] }] },
+      { name: "Carniti", url: "https://www.carnitimotors.com", country: "İtalya", series: [{ name: "Klasik Cruiser", models: ["Carniti 24", "Carniti 30"] }] },
+      { name: "Carver Yachts", url: "https://www.carveryachts.com", country: "ABD", series: [{ name: "Voyager & C Serisi", models: ["C34", "C37", "C40", "C52 Coupe", "444 Aft Cabin"] }] },
+      { name: "CCN (Cerri)", url: "https://www.cerricantierinavali.it", country: "İtalya", series: [{ name: "FlyingSport", models: ["Cerri 86", "Cerri 102 FlyingSport"] }] },
+      { name: "Chaparral", url: "https://www.chaparralboats.com", country: "ABD", series: [{ name: "Signature", models: ["250", "270", "280", "290", "310", "330", "350"] }] },
+      { name: "Chris-Craft", url: "https://www.chriscraft.com", country: "ABD", series: [{ name: "Corsair & Launch", models: ["Corsair 28", "Launch 32", "Launch 36", "Catalina 30"] }] },
+      { name: "Cobalt Boats", url: "https://cobaltboats.com", country: "ABD", series: [{ name: "R & A Serisi", models: ["R30", "R35", "A36", "A40"] }] },
+      { name: "Cobra Yacht", url: "https://www.cobrayacht.com", country: "Türkiye", series: [{ name: "Custom Trawler & Yat", models: ["Cobra King 38M", "Infinity 46M", "Maestro 24M"] }] },
+      { name: "Cranchi", url: "https://www.cranchi.com", country: "İtalya", series: [{ name: "Cruiser & Hardtop", models: ["E26", "CSL 27", "Z35", "Endurance 30", "M44 HT", "50 Mediterranee", "Settantotto 78"] }] },
+      { name: "Crownline", url: "https://crownline.com", country: "ABD", series: [{ name: "CR Cruiser", models: ["250 CR", "270 CR", "315 CR", "335 SS"] }] },
+      { name: "Cruisers Yachts", url: "https://www.cruisersyachts.com", country: "ABD", series: [{ name: "Cantius & Express", models: ["338 Bowrider", "390 Express", "42 Cantius", "50 Cantius", "60 Cantius"] }] },
+      { name: "Custom Line", url: "https://www.customline-yacht.com", country: "İtalya", series: [{ name: "Navetta & Planante", models: ["Navetta 30", "Navetta 33", "Navetta 37", "Custom Line 106", "Custom Line 140"] }] },
+      { name: "Delta Powerboats", url: "https://deltapowerboats.se", country: "İsveç", series: [{ name: "Carbon Serisi", models: ["26 Open", "33 Coupé", "54 Carbon", "60 Open", "88 Carbon"] }] },
+      { name: "Derya Tekne", url: "https://www.deryatekne.com", country: "Türkiye", series: [{ name: "Balıkçı & Gezi", models: ["Derya 4.80", "Derya 5.80", "Derya 7.50"] }] },
+      { name: "Dominator Yachts", url: "https://www.dominatoryachts.com", country: "İtalya / Avusturya", series: [{ name: "Ilumen", models: ["680", "720", "780", "Ilumen 28M"] }] },
+      { name: "Doral", url: "https://www.doralboats.com", country: "Kanada", series: [{ name: "Cruiser", models: ["Monticello", "Intrigue", "Boca Grande", "Alegria"] }] },
+      { name: "Dromeas Yachts", url: "https://dromeasyachts.com", country: "Türkiye", series: [{ name: "Center Console & SUV", models: ["D28 WA", "D28 CC", "D33 SUV"] }] },
+      { name: "Eligor Tekne", url: "https://eligortekne.com", country: "Türkiye", series: [{ name: "Kabinli Motoryat", models: ["Eligor 28", "Eligor 32"] }] },
+      { name: "Enma Marine", url: "https://www.enmamarine.com", country: "Türkiye", series: [{ name: "Sport Cruiser", models: ["Barracuda 590", "Enma 700", "Enma 850 Sundeck"] }] },
+      { name: "Evo Yachts", url: "https://www.evoyachts.com", country: "İtalya", series: [{ name: "R & V Serisi", models: ["Evo R4", "Evo R6", "Evo V8"] }] },
+      { name: "Fairline", url: "https://www.fairline.com", country: "İngiltere", series: [
+        { name: "Targa", models: ["27", "33", "38", "40", "43", "44", "45 OPEN/GT", "48", "50", "62", "65 GT"] },
+        { name: "Squadron", models: ["42", "50", "53", "55", "58", "65", "68", "74"] },
+        { name: "Phantom", models: ["38", "40", "46", "65"] }
+      ]},
+      { name: "Falcon Yachts", url: "https://www.falconyachts.it", country: "İtalya", series: [{ name: "Flybridge", models: ["Falcon 76", "Falcon 86", "Falcon 90", "Falcon 100"] }] },
+      { name: "Feadship", url: "https://www.feadship.nl", country: "Hollanda", series: [{ name: "Custom Superyachts", models: ["Vanish 66M", "Savannah 83M", "Zen 88M", "Lonian 87M"] }] },
+      { name: "Ferretti Yachts", url: "https://www.ferretti-yachts.com", country: "İtalya", series: [{ name: "Flybridge", models: ["430", "450", "500", "530", "550", "592", "620", "670", "720", "780", "850"] }] },
+      { name: "Fiart", url: "https://fiart.com", country: "İtalya", series: [{ name: "Seawalker Serisi", models: ["35 Seawalker", "39 Seawalker", "43 Seawalker"] }] },
+      { name: "Fjord Yachts", url: "https://www.hanseyachtsag.com/fjord", country: "Almanya", series: [{ name: "Open Serisi", models: ["38 Open", "41 XL", "44 Open", "53 XL"] }] },
+      { name: "Formula Boats", url: "https://www.formulaboats.com", country: "ABD", series: [{ name: "FAS3TECH & SSC", models: ["330 CBR", "380 SSC", "430 SSC", "500 SSC"] }] },
+      { name: "Four Winns", url: "https://www.fourwinns.com", country: "ABD", series: [{ name: "Vista Serisi", models: ["V255", "V275", "V288", "V318", "V358", "V375"] }] },
+      { name: "Franchini", url: "https://www.franchiniyachts.com", country: "İtalya", series: [{ name: "Mia & Custom", models: ["Mia 63", "Custom 55"] }] },
+      { name: "Galeon", url: "https://galeon.pl", country: "Polonya", series: [{ name: "Fly & HTS Serisi", models: ["325 GTO", "380 FLY", "400 FLY", "420 FLY", "425 HTS", "460 FLY", "500 FLY", "640 FLY"] }] },
+      { name: "Gianetti", url: "https://www.gianettiyacht.com", country: "İtalya", series: [{ name: "Navetta & Star", models: ["Gianetti 48", "Gianetti 68", "Navetta 24"] }] },
+      { name: "Gobbi", url: "https://www.azimutyachts.com", country: "İtalya", series: [{ name: "Atlantis Öncesi", models: ["Gobbi 315 SC", "Gobbi 345 SC", "Gobbi 375 SC", "Gobbi 425 SC"] }] },
+      { name: "Grady-White", url: "https://www.gradywhite.com", country: "ABD", series: [{ name: "Canyon & Express", models: ["Canyon 336", "Canyon 456", "Express 330", "Express 370"] }] },
+      { name: "Grand Banks", url: "https://www.grandbanks.com", country: "ABD / Singapur", series: [{ name: "Heritage & Eastbay", models: ["GB 42", "GB 54", "Eastbay 44", "Eastbay 60"] }] },
+      { name: "Greenline Yachts", url: "https://greenlinehybrid.com", country: "Slovenya", series: [{ name: "Solar Hybrid", models: ["Greenline 39", "Greenline 40", "Greenline 45", "Greenline 48"] }] },
+      { name: "Hardanger Trawler", url: "https://www.hardanger-yachting.com", country: "Türkiye / Norveç", series: [{ name: "Sac Trawler", models: ["Hardanger 15M", "Hardanger 18M"] }] },
+      { name: "Hatteras", url: "https://www.hatterasyachts.com", country: "ABD", series: [{ name: "Convertible & Motor Yacht", models: ["GT45X", "GT54", "GT70", "M75 Panacera"] }] },
+      { name: "Heesen Yachts", url: "https://www.heesenyachts.com", country: "Hollanda", series: [{ name: "Fast & Steel", models: ["47M Steel", "50M Aluminium", "55M Steel", "60M Fast"] }] },
+      { name: "Highfield Boats", url: "https://www.highfieldboats.com", country: "Avustralya / Çin", series: [{ name: "Patrol & Sport", models: ["Sport 650", "Sport 760", "Sport 800", "Patrol 860"] }] },
+      { name: "Horizon Yachts", url: "https://www.horizonyacht.com", country: "Tayvan", series: [{ name: "FD & E Serisi", models: ["FD75", "FD80", "FD90", "E88"] }] },
+      { name: "Invictus Yacht", url: "https://www.invictusyacht.com", country: "İtalya", series: [{ name: "TT & GT", models: ["TT280", "TT460", "GT320", "GT370"] }] },
+      { name: "Isatek Tekne", url: "https://www.isatektekne.com", country: "Türkiye", series: [{ name: "Gezi & Balıkçı", models: ["Isatek 4.90", "Isatek 6.00", "Smyrna 7.50"] }] },
+      { name: "Itama", url: "https://www.itama-yacht.com", country: "İtalya", series: [{ name: "Open Safkan", models: ["Itama 45S", "Itama 62RS", "Itama 75"] }] },
+      { name: "Jeanneau", url: "https://www.jeanneau.com", country: "Fransa", series: [
+        { name: "Leader", models: ["Leader 8", "30", "33", "36", "40", "46"] },
+        { name: "Merry Fisher", models: ["795", "895", "1095", "1295 Fly"] },
+        { name: "Cap Camarat & NC", models: ["NC 9", "NC 11", "NC 14", "Cap Camarat 10.5 WA"] }
+      ]},
+      { name: "Joker Boat", url: "https://www.jokerboat.it", country: "İtalya", series: [{ name: "Clubman", models: ["Clubman 28", "Clubman 30", "Clubman 35"] }] },
+      { name: "Kargı Trawler", url: "https://kargiyatcilik.com", country: "Türkiye", series: [{ name: "Geleneksel Sac/Ahşap", models: ["Kargı 16M", "Kargı 20M", "Kargı 24M"] }] },
+      { name: "Karnic Powerboats", url: "https://karnicboats.com", country: "Kıbrıs", series: [{ name: "Cruiser & Open", models: ["SL601", "SL651", "SL800"] }] },
+      { name: "Larson Boats", url: "https://www.larsonboats.com", country: "ABD", series: [{ name: "Cabrio Cruiser", models: ["Cabrio 240", "Cabrio 274", "Cabrio 310", "Cabrio 330"] }] },
+      { name: "Lekker Boats", url: "https://lekkerboats.com", country: "Hollanda / Avustralya", series: [{ name: "Damsko Serisi", models: ["Damsko 750", "Damsko 1000"] }] },
+      { name: "Liman Tekne", url: "https://www.limantekne.com", country: "Türkiye", series: [{ name: "Ahşap & Fiber", models: ["Liman 6.50", "Liman 8.20"] }] },
+      { name: "Linssen Yachts", url: "https://www.linssenyachts.com", country: "Hollanda", series: [{ name: "Grand Sturdy", models: ["35.0 AC", "40.0 AC", "45.0 AC", "500 AC"] }] },
+      { name: "Lürssen", url: "https://www.luerssen.com", country: "Almanya", series: [{ name: "Mega Yachts", models: ["Azzam 180M", "Dilbar 156M", "Nord 142M", "Scheherazade 140M"] }] },
+      { name: "Magazzu", url: "https://www.magazzu.com", country: "İtalya", series: [{ name: "MX Serisi", models: ["MX-11", "MX-13", "MX-14 Classic"] }] },
+      { name: "Maiora", url: "https://maiora.it", country: "İtalya", series: [{ name: "Exuma & Classic", models: ["Maiora 24S", "Maiora 30 Walkaround", "Exuma 35"] }] },
+      { name: "Mano Marine", url: "https://www.manomarine.com", country: "İtalya", series: [{ name: "Cruiser", models: ["Mano 22.50", "Mano 24.50", "Mano 28.50", "Mano 32.50"] }] },
+      { name: "Mangusta", url: "https://www.mangustayachts.com", country: "İtalya", series: [{ name: "Maxi Open & Oceano", models: ["Mangusta 72", "Mangusta 92", "Mangusta 108", "Oceano 44", "GranSport 54"] }] },
+      { name: "Maral Marin", url: "https://www.maralmarin.com", country: "Türkiye", series: [{ name: "Fisherman", models: ["Maral 5.80", "Maral 7.20"] }] },
+      { name: "Mar-Co Marine", url: "https://www.mar-co.com", country: "İtalya", series: [{ name: "Emotion RIB", models: ["Emotion 32", "Emotion 36"] }] },
+      { name: "Maxum", url: "https://www.maxumboats.com", country: "ABD", series: [{ name: "SCR Serisi", models: ["2400 SCR", "2700 SCR", "3000 SCR", "3300 SCR"] }] },
+      { name: "Mazu Yachts", url: "https://mazuyachts.com", country: "Türkiye", series: [{ name: "Hardtop & Alpha", models: ["38 ST", "42 Alpha", "52", "82", "92 DS"] }] },
+      { name: "Mengi Yay", url: "https://mengiyay.com", country: "Türkiye", series: [{ name: "Virtus Serisi", models: ["Virtus 44M", "Virtus 47M", "Seaspan 40M", "Aquarius 45M"] }] },
+      { name: "Moonday Yachts", url: "https://www.moonday.com.tr", country: "Türkiye", series: [{ name: "Retro & Sloop", models: ["Moonday 21", "Moonday 27", "Moonday 31 Bosphorus"] }] },
+      { name: "Monterey", url: "https://www.montereyboats.com", country: "ABD", series: [{ name: "Sport Yacht", models: ["270 CR", "290 CR", "320 CR", "335 SY", "355 SY"] }] },
+      { name: "Moonen Yachts", url: "https://www.moonen.com", country: "Hollanda", series: [{ name: "Explorer", models: ["Moonen 110", "Moonen 122 Martinique"] }] },
+      { name: "Mursan", url: "https://www.mursan.com.tr", country: "Türkiye", series: [{ name: "Fiber Cruiser", models: ["Mursan 24", "Mursan 28", "Mursan 32"] }] },
+      { name: "Nimbus", url: "https://nimbus.se", country: "İsveç", series: [{ name: "Weekender & Coupé", models: ["Weekender W9", "Tender T11", "Commuter C9", "365 Coupé", "405 Coupé"] }] },
+      { name: "Nobiskrug", url: "https://www.nobiskrug.com", country: "Almanya", series: [{ name: "Mega Yat", models: ["Sailing Yacht A", "Artefact 80M"] }] },
+      { name: "Nordhavn", url: "https://nordhavn.com", country: "ABD", series: [{ name: "Okyanus Trawler", models: ["N41", "N51", "N60", "N80"] }] },
+      { name: "Northstar Boats", url: "https://www.northstarboats.com", country: "Türkiye", series: [{ name: "Orion & Axis", models: ["Orion 6", "Orion 8", "Ion 10.5", "Axis 3.8"] }] },
+      { name: "Numarine", url: "https://numarine.com", country: "Türkiye", series: [{ name: "Flybridge & Explorer (XP)", models: ["52 Fly", "55 HT", "62 Fly", "68 Fly", "78 HT/Fly", "22XP", "26XP", "32XP", "37XP", "40XP"] }] },
+      { name: "Oceanco", url: "https://www.oceancoyacht.com", country: "Hollanda", series: [{ name: "Giga Yat", models: ["Black Pearl 106M", "Koru 125M", "Bravo Eugenia 109M"] }] },
+      { name: "Ocean Alexander", url: "https://oceanalexander.com", country: "Tayvan / ABD", series: [{ name: "Revolution & Legend", models: ["28R", "32L", "35R"] }] },
+      { name: "Otam", url: "https://www.otam.it", country: "İtalya", series: [{ name: "Millennium", models: ["Otam 58 GTS", "Otam 65 HT", "Otam 80", "Otam 85 GTS"] }] },
+      { name: "Özel Yapım Sac/Ahşap", url: "https://www.sahibinden.com/motoryat", country: "Türkiye", series: [{ name: "Bodrum/Tuzla İmalat", models: ["Bodrum Guleti", "Karadeniz Takası", "Tuzla Sac Trawler", "Marmaris Tirhandil"] }] },
+      { name: "Pardo Yachts", url: "https://www.pardoyachts.com", country: "İtalya", series: [{ name: "Walkaround & GT", models: ["Pardo 38", "Pardo 43", "Pardo 50", "GT52", "Endurance 60"] }] },
+      { name: "Pearl Yachts", url: "https://www.pearlyachts.com", country: "İngiltere", series: [{ name: "Flybridge", models: ["Pearl 62", "Pearl 72", "Pearl 82", "Pearl 95"] }] },
+      { name: "Pershing", url: "https://www.pershing-yacht.com", country: "İtalya", series: [{ name: "Sportif Performans", models: ["43", "46", "50", "52", "54", "5X", "6X", "72", "8X", "9X"] }] },
+      { name: "Poseidon Boats", url: "https://www.poseidonboats.com.gr", country: "Yunanistan", series: [{ name: "Ranieri & Gezi", models: ["Blu Water 170", "King Fisher 570"] }] },
+      { name: "Prestige Yachts", url: "https://www.prestige-yachts.com", country: "Fransa", series: [{ name: "Flybridge & M Serisi", models: ["32 Fly", "36 Fly", "420", "460", "500", "520", "590", "630", "M48"] }] },
+      { name: "Princess Yachts", url: "https://www.princessyachts.com", country: "İngiltere", series: [
+        { name: "V Serisi (Spor)", models: ["V39", "V40", "V42", "V45", "V48", "V50", "V52", "V55", "V58", "V65"] },
+        { name: "Flybridge (F / P)", models: ["42", "45", "50", "54", "56", "60", "62", "64", "F45", "F50", "F55", "F65"] },
+        { name: "Y & S Serisi", models: ["S62", "S66", "Y72", "Y85"] }
+      ]},
+      { name: "Quicksilver Boats", url: "https://www.quicksilver-boats.com", country: "ABD / Polonya", series: [{ name: "Activ Serisi", models: ["Activ 605", "Activ 755 Weekend", "Activ 805 Cruiser", "Activ 905"] }] },
+      { name: "Ranieri International", url: "https://www.ranieri-international.com", country: "İtalya", series: [{ name: "Next & Voyager", models: ["Next 240", "Next 285", "Next 330 LX", "Cayman 38"] }] },
+      { name: "Regal", url: "https://www.regalboats.com", country: "ABD", series: [{ name: "Commodore & Express", models: ["2660", "2860", "3260", "35 Sport Coupe", "42 Fly"] }] },
+      { name: "Rinker", url: "https://www.rinkerboats.com", country: "ABD", series: [{ name: "Fiesta Vee", models: ["270 FV", "290 FV", "320 FV", "342 FV", "370 Express"] }] },
+      { name: "Riva", url: "https://www.riva-yacht.com", country: "İtalya", series: [{ name: "Klasik & Modern", models: ["Aquariva Super", "Rivamare", "Dolceriva", "56' Rivale", "66' Ribelle", "76' Perseo"] }] },
+      { name: "Rodman", url: "https://www.rodman.es", country: "İspanya", series: [{ name: "Muse & Spirit", models: ["Spirit 31", "Rodman 41", "Rodman 44", "Muse 54"] }] },
+      { name: "Rota Prenses", url: "https://www.rotaprenses.com", country: "Türkiye", series: [{ name: "Klasik Balıkçı & Gezi", models: ["Rota 5.75", "Rota 6.60", "Rota Prenses 7.20", "Rota Fisher"] }] },
+      { name: "Safter Marina", url: "https://www.safter.com.tr", country: "Türkiye", series: [{ name: "Kabinli & Gezi", models: ["Safter 4.50", "Safter 5.00", "Safter 6.30", "Safter 6.80 Kabinli", "Safter 8.50"] }] },
+      { name: "Sanlorenzo", url: "https://www.sanlorenzoyacht.com", country: "İtalya", series: [{ name: "SL / SD / SX", models: ["SL78", "SL86", "SL96", "SD96", "SD118", "SX76", "SX88"] }] },
+      { name: "Saxdor Yachts", url: "https://www.saxdoryachts.com", country: "Finlandiya", series: [{ name: "Sport & GTO", models: ["200 Sport", "270 GTO", "320 GTO", "400 GTO"] }] },
+      { name: "Sciallino", url: "https://www.sciallino.net", country: "İtalya", series: [{ name: "Gozzo Ligure", models: ["Sciallino 25", "Sciallino 34", "Sciallino 40"] }] },
+      { name: "Sea Ray", url: "https://www.searay.com", country: "ABD", series: [
+        { name: "Sundancer (Cruiser)", models: ["240", "260", "280", "310", "320", "350", "370", "400", "450", "510"] },
+        { name: "SLX & SDX", models: ["SLX 260", "SLX 310", "SLX 400"] }
+      ]},
+      { name: "Sealine", url: "https://www.hanseyachtsag.com/sealine", country: "İngiltere", series: [{ name: "F, S ve C Serisi", models: ["S330", "C330", "C390", "S430", "F430", "F530"] }] },
+      { name: "Sessa Marine", url: "https://www.sessamarine.com", country: "İtalya", series: [{ name: "Cruiser & Key Largo", models: ["C35", "C38", "C42", "C48", "Key Largo 27", "Oyster 35"] }] },
+      { name: "Sirena Yachts", url: "https://www.sirenayachts.com", country: "Türkiye", series: [{ name: "Motor Yacht Serisi", models: ["Sirena 48", "Sirena 58", "Sirena 68", "Sirena 78", "Sirena 88"] }] },
+      { name: "Solaris Power", url: "https://www.solarispower.com", country: "İtalya", series: [{ name: "Lobster & Open", models: ["40 Open", "44 Open", "48 Lobster", "52 Open"] }] },
+      { name: "Sunseeker", url: "https://www.sunseeker.com", country: "İngiltere", series: [
+        { name: "Predator", models: ["50", "55", "60", "62", "68", "72", "74", "82"] },
+        { name: "Manhattan", models: ["48", "50", "52", "55", "60", "63", "66", "68", "73"] },
+        { name: "Camargue & Portofino", models: ["Camargue 44", "Camargue 50", "Portofino 35", "Portofino 47"] }
+      ]},
+      { name: "Targa (Botnia)", url: "https://www.targa.fi", country: "Finlandiya", series: [{ name: "4x4 Offshore", models: ["Targa 27.2", "Targa 32", "Targa 37", "Targa 44", "Targa 46"] }] },
+      { name: "Tecnomar", url: "https://tecnomar.com", country: "İtalya", series: [{ name: "Lamborghini 63 & EVO", models: ["Tecnomar for Lamborghini 63", "EVO 120"] }] },
+      { name: "Tiara Yachts", url: "https://www.tiarayachts.com", country: "ABD", series: [{ name: "Open & Coupe", models: ["3100 Open", "3600 Open", "39 Coupe", "44 Coupe"] }] },
+      { name: "Turquoise Yachts", url: "https://www.turquoiseyachts.com", country: "Türkiye", series: [{ name: "Custom Explorer", models: ["Blue II 56M", "GO 77M", "Roe 74M", "Infinite Jest 75M"] }] },
+      { name: "Uniesse Marine", url: "https://www.uniesse.com", country: "İtalya / ABD", series: [{ name: "Open & Fly", models: ["Uniesse 42", "Uniesse 48", "Uniesse 55", "Uniesse 72"] }] },
+      { name: "Vicem Yachts", url: "https://vicemyachts.com", country: "Türkiye", series: [{ name: "Classic & Cruiser", models: ["50 Classic", "58 Classic", "65 Bahama Bay", "77 Classic", "82 Cruiser", "97 Cruiser"] }] },
+      { name: "Viking Yachts", url: "https://www.vikingyachts.com", country: "ABD", series: [{ name: "Sportfish Convertible", models: ["38 Billfish", "48 Convertible", "54 Convertible", "68 Convertible", "80 Convertible"] }] },
+      { name: "Wally", url: "https://www.wally.com", country: "İtalya / Monako", series: [{ name: "Wallytender & WHY", models: ["43wallytender", "48wallytender", "58wallytender", "WHY150", "WHY200"] }] },
+      { name: "Wellcraft", url: "https://www.wellcraft.com", country: "ABD", series: [{ name: "Commuter & Fisherman", models: ["355 Commuter", "435", "262 Fisherman"] }] },
+      { name: "Williams Jet Tenders", url: "https://www.williamsjettenders.com", country: "İngiltere", series: [{ name: "Turbojet & Sportjet", models: ["Turbojet 285", "Sportjet 345", "Sportjet 435"] }] },
+      { name: "Windy Boats", url: "https://www.windyboats.com", country: "Norveç", series: [{ name: "Sport Cruiser", models: ["29 Coho", "37 Shamal", "39 Camira", "SR44 Blackhawk"] }] },
+      { name: "XO Boats", url: "https://www.xoboats.com", country: "Finlandiya", series: [{ name: "Aluminium Explorer", models: ["DFNDR 9", "EXPLR 9", "EXPLR 10+", "EXPLR 44"] }] },
+      { name: "Yerliyurt Marina", url: "https://www.yerliyurtmarina.com", country: "Türkiye", series: [{ name: "Fiber Gezi & Balıkçı", models: ["Marin 4.50", "Marin 4.80", "Yerliyurt 6.60 Kabinli"] }] },
+      { name: "Zodiac Nautic", url: "https://www.zodiac-nautic.com", country: "Fransa", series: [{ name: "Medline & Pro", models: ["Medline 6.8", "Medline 7.5", "Pro 850"] }] }
+    ];
+
+    function getCountryFlag(country) {
+      if (country.includes("Türkiye")) return "🇹🇷";
+      if (country.includes("İtalya")) return "🇮🇹";
+      if (country.includes("İngiltere")) return "🇬🇧";
+      if (country.includes("ABD")) return "🇺🇸";
+      if (country.includes("Fransa")) return "🇫🇷";
+      if (country.includes("Almanya")) return "🇩🇪";
+      if (country.includes("Finlandiya")) return "🇫🇮";
+      if (country.includes("İsveç")) return "🇸🇪";
+      if (country.includes("Hollanda")) return "🇳🇱";
+      if (country.includes("İspanya")) return "🇪🇸";
+      if (country.includes("Norveç")) return "🇳🇴";
+      if (country.includes("Polonya")) return "🇵🇱";
+      if (country.includes("Yunanistan")) return "🇬🇷";
+      return "📍";
+    }
+
+    function getBrandVectorLogo(brandName) {
+      const initials = brandName.substring(0, 3).toUpperCase();
+      return `<svg viewBox="0 0 100 60"><rect width="100" height="60" fill="#0c1833"/><rect x="6" y="6" width="88" height="48" rx="6" fill="none" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="3,2"/><text x="50" y="32" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="${brandName.length > 9 ? '8.5' : '10.5'}" fill="#ffffff" text-anchor="middle" letter-spacing="1">${brandName.substring(0, 11).toUpperCase()}</text><text x="50" y="44" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="6.5" fill="#38bdf8" text-anchor="middle" letter-spacing="0.5">${initials} YACHT</text></svg>`;
+    }
+
+    rawBrands.forEach(b => {
+      b.logo = getBrandVectorLogo(b.name);
+      b.flag = getCountryFlag(b.country);
+    });
+
+    const brands = rawBrands.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+    const grid = document.getElementById("catalogGrid");
+    const searchInput = document.getElementById("searchInput");
+    const statsCount = document.getElementById("statsCount");
+
+    let currentLetter = 'ALL';
+    let currentEngineFilter = 'ALL';
+    let currentCountryFilter = 'ALL';
+
+    const alphabet = ['ALL', ...new Set(brands.map(b => b.name.charAt(0).toUpperCase()))].sort((a,b) => a === 'ALL' ? -1 : a.localeCompare(b, 'tr'));
+
+    function renderAlphabetPagination() {
+      const container = document.getElementById("alphabetPaginationContainer");
+      if (!container) return;
+      const currentIndex = alphabet.indexOf(currentLetter);
+      let html = `<div class="alphabet-pagination">`;
+
+      if (currentIndex > 0) {
+        const prevLetter = alphabet[currentIndex - 1];
+        html += `<button type="button" class="alpha-page-btn" onclick="selectAlphabetLetter('${prevLetter}')">&lt;</button>`;
+      }
+
+      alphabet.forEach((letter, index) => {
+        const isFirstOrLast = (index === 0 || index === alphabet.length - 1);
+        const isNearCurrent = Math.abs(index - currentIndex) <= 1;
+
+        if (isFirstOrLast || isNearCurrent) {
+          const activeClass = (letter === currentLetter) ? "active" : "";
+          html += `<button type="button" class="alpha-page-btn ${activeClass}" onclick="selectAlphabetLetter('${letter}')">${letter}</button>`;
+        } else if (index === currentIndex - 2 || index === currentIndex + 2) {
+          html += `<span class="alpha-dots">...</span>`;
+        }
+      });
+
+      if (currentIndex < alphabet.length - 1) {
+        const nextLetter = alphabet[currentIndex + 1];
+        html += `<button type="button" class="alpha-page-btn" onclick="selectAlphabetLetter('${nextLetter}')">&gt;</button>`;
+      }
+
+      html += `</div>`;
+      container.innerHTML = html;
+    }
+
+    function selectAlphabetLetter(letter) {
+      currentLetter = letter;
+      renderAlphabetPagination();
+      render();
+    }
+
+    function normalizeTr(str) {
+      if (!str) return "";
+      return str.replace(/İ/g, "i").replace(/I/g, "ı").toLocaleLowerCase("tr-TR").trim();
+    }
+
+    function getModelEngine(brandName, modelName) {
+      const b = (brandName || "").toLowerCase();
+      const m = (modelName || "").toLowerCase();
+      let num = parseInt(m.replace(/\D/g, "")) || 38;
+      if (num > 1000) num = Math.floor(num / 100);
+
+      const isBeneteau = b.includes("beneteau") || b.includes("bénéteau");
+      if ((isBeneteau && (m.includes("swift") || m.includes("trawler"))) || b.includes("nordhavn")) {
+        if (num >= 47) return "Cummins QSM 11";
+        if (num >= 40) return "Cummins QSC 8.3";
+        return "Cummins QSB 6.7";
+      }
+
+      if (b.includes("ada yat") || b.includes("kargı") || b.includes("hardanger") || b.includes("linssen") || (b.includes("trawler") && !isBeneteau)) {
+        if (num >= 24) return "Scania DI16 090M V8";
+        if (num >= 18) return "Scania DI13 092M";
+        if (num >= 14) return "Scania DI09";
+        return "Cummins QSK 19";
+      }
+
+      if (b.includes("boston") || b.includes("axopar") || b.includes("quicksilver") || b.includes("brabus") || b.includes("saxdor") || b.includes("dromeas") || b.includes("formula")) {
+        if (b.includes("brabus") || m.includes("racing") || num >= 45) return "Mercury Racing 450R / 500R";
+        if (num >= 37) return "Mercury Verado 600 V12";
+        if (num >= 30) return "Mercury Verado 350 / 400 V10";
+        if (num >= 24) return "Mercury Verado 250 / 300 V8";
+        if (num >= 19) return "Mercury 200 / 225 V6";
+        return "Mercury 150 FourStroke";
+      }
+
+      if (b.includes("jeanneau") || b.includes("safter") || b.includes("yerliyurt") || b.includes("capelli") || b.includes("zodiac") || b.includes("rota") || b.includes("anka")) {
+        if (num >= 38) return "Yamaha XTO 450 V8 Offshore";
+        if (num >= 32) return "Yamaha XTO 425 V8";
+        if (num >= 26) return "Yamaha F250 / F300 V6 Offshore";
+        if (num >= 20) return "Yamaha F200 / F225";
+        return "Yamaha F115 / F150";
+      }
+
+      if (num >= 90 || b.includes("bilgin") || b.includes("sanlorenzo") || b.includes("mangusta") || b.includes("benetti") || b.includes("custom line") || b.includes("heesen")) {
+        if (num >= 100) return "CAT C32 ACERT";
+        if (num >= 80) return "MAN V12-2000";
+        return "MAN V12-1900";
+      }
+      if (num >= 68 && num < 80) {
+        if (num >= 74) return "MAN V12-1400";
+        return "MAN V8-1200";
+      }
+      if (num >= 60 && num < 68) {
+        if (b.includes("viking") || b.includes("hatteras") || b.includes("bertram")) return "CAT C18 ACERT";
+        if (num >= 64) return "MAN V8-1000";
+        return "MAN i6-730 / 800";
+      }
+
+      if (num >= 62) return "Volvo Penta IPS 1350 (D13)";
+      if (num >= 56) return "Volvo Penta IPS 1050 (D11)";
+      if (num >= 50 && num < 56) return "Volvo Penta IPS 800 (D8)";
+      if (num >= 42 && num < 50) return "Volvo Penta IPS 650 (D6)";
+      if (num >= 36 && num < 42) return "Volvo Penta D6-440";
+      if (num >= 30 && num < 36) return "Volvo Penta D4-300 / 320";
+      if (num >= 24 && num < 30) return "Volvo Penta D3-220";
+      if (num >= 18 && num < 24) return "Volvo Penta D2-75";
+      if (num < 18) return "Volvo Penta D1-30";
+
+      return "Volvo Penta IPS 650 (D6)";
+    }
+
+    function isEngineMatch(brandName, modelItem, filter) {
+      if (!filter || filter === 'ALL') return true;
+      const mName = typeof modelItem === 'object' && modelItem !== null ? (modelItem.name || modelItem.model || '') : String(modelItem || '');
+      const eng = (getModelEngine(brandName, mName) || "").toLowerCase();
+      const rawModel = mName.toLowerCase();
+      const f = String(filter).toLowerCase().trim();
+
+      if (f === 'v8') return eng.includes('man') && eng.includes('v8');
+      if (f === 'v12') return eng.includes('man') && (eng.includes('v12') || eng.includes('1400') || eng.includes('1900') || eng.includes('2000'));
+      if (f === 'i6') return eng.includes('man') && (eng.includes('i6') || eng.includes('730') || eng.includes('800') || eng.includes('850'));
+      if (f === 'man') return eng.includes('man') || rawModel.includes('man');
+
+      if (f === 'd4') return eng.includes('d4') || rawModel.includes('d4');
+      if (f === 'd6') return eng.includes('d6') || rawModel.includes('d6');
+      if (f === 'ips') return eng.includes('ips') || rawModel.includes('ips');
+      if (f === 'd13') return eng.includes('d11') || eng.includes('d13') || rawModel.includes('d13');
+      if (f === 'volvo') return eng.includes('volvo');
+
+      if (f === 'cat') return eng.includes('cat') || eng.includes('caterpillar');
+      if (f === 'scania') return eng.includes('scania') || rawModel.includes('scania');
+      if (f === 'cummins') return eng.includes('cummins') || rawModel.includes('cummins');
+      if (f === 'yamaha') return eng.includes('yamaha') || rawModel.includes('yamaha');
+      if (f === 'mercury') return eng.includes('mercury') || rawModel.includes('mercury');
+
+      return eng.includes(f) || rawModel.includes(f);
+    }
+
+    function render(customQuery) {
+      if (!grid) return;
+      grid.innerHTML = "";
+      const rawQ = (typeof customQuery === "string" ? customQuery : (searchInput ? searchInput.value : ""));
+      const q = normalizeTr(rawQ);
+
+      const countrySelect = document.getElementById("countryFilter");
+      const selectedCountry = countrySelect ? countrySelect.value.trim() : currentCountryFilter;
+
+      const filtered = brands.filter(b => {
+        if (currentLetter !== 'ALL' && !normalizeTr(b.name || '').startsWith(normalizeTr(currentLetter))) return false;
+        if (selectedCountry && selectedCountry !== 'ALL' && selectedCountry !== '') {
+          if (!normalizeTr(b.country || '').includes(normalizeTr(selectedCountry))) return false;
+        }
+        if (currentEngineFilter !== 'ALL') {
+          const hasEngine = b.series && b.series.some(s => s.models && s.models.some(m => isEngineMatch(b.name, m, currentEngineFilter)));
+          if (!hasEngine) return false;
+        }
+        if (!q) return true;
+        return normalizeTr(b.name).includes(q) || (b.country && normalizeTr(b.country).includes(q)) || b.series.some(s => normalizeTr(s.name).includes(q) || s.models.some(m => normalizeTr(m).includes(q) || isEngineMatch(b.name, m, q)));
+      });
+
+      statsCount.innerText = `Toplam ${filtered.length} Tersane / Marka Listeleniyor`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 50px 10px; font-size: 13px;">Seçilen kriterlere uygun tekne veya tersane bulunamadı. <br><button onclick="resetAllFilters()" style="margin-top: 10px; background: var(--neon-blue); border: none; color: #020617; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer;">Filtreleri Sıfırla</button></div>`;
+        return;
+      }
+
+      filtered.forEach(b => {
+        let seriesHtml = "";
+        b.series.forEach(s => {
+          const modelsHtml = s.models.map(m => {
+            const matchesEngine = isEngineMatch(b.name, m, currentEngineFilter);
+            let stateClass = (currentEngineFilter !== 'ALL') ? (matchesEngine ? "highlighted" : "dimmed") : "";
+            return `<button class="model-btn ${stateClass}" onclick="openModal('${b.name}', '${s.name}', '${m}')">${m}</button>`;
+          }).join("");
+
+          seriesHtml += `
+            <div class="series-block">
+              <div class="series-title">${s.name}</div>
+              <div class="models-list">${modelsHtml}</div>
+            </div>
+          `;
+        });
+
+        const card = document.createElement("div");
+        card.className = "brand-card";
+        card.innerHTML = `
+          <div class="brand-head">
+            <a href="${b.url}" target="_blank" rel="noopener noreferrer" class="brand-logo-frame">
+              ${b.logo}
+            </a>
+            <div class="brand-meta">
+              <a href="${b.url}" target="_blank" rel="noopener noreferrer" class="brand-link">
+                <h2>${b.name}</h2>
+              </a>
+              <div class="brand-country-badge">
+                <span>${b.flag}</span><span>${b.country}</span>
+              </div>
+            </div>
+          </div>
+          <div class="brand-body">${seriesHtml}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleEngineMenu() {
+      const menu = document.getElementById("engineDropdownList");
+      if (menu) menu.style.display = (menu.style.display === "none" || !menu.style.display) ? "block" : "none";
+    }
+
+    function selectEngineOption(engineKey, displayText) {
+      currentEngineFilter = engineKey;
+      const selectedTextEl = document.getElementById("selectedEngineText");
+      if (selectedTextEl) selectedTextEl.innerText = `⚡ ${displayText}`;
+      const menuList = document.getElementById("engineDropdownList");
+      if (menuList) menuList.style.display = "none";
+      render();
+    }
+
+    function resetAllFilters() {
+      if (searchInput) searchInput.value = "";
+      const countryFilter = document.getElementById("countryFilter");
+      if (countryFilter) countryFilter.value = "";
+      currentCountryFilter = "ALL";
+      currentEngineFilter = "ALL";
+      currentLetter = "ALL";
+      const selectedEngineText = document.getElementById("selectedEngineText");
+      if (selectedEngineText) selectedEngineText.innerHTML = "⚡ Makine: Tümü";
+      const engineDropdownList = document.getElementById("engineDropdownList");
+      if (engineDropdownList) engineDropdownList.style.display = "none";
+      renderAlphabetPagination();
+      render();
+    }
+
+    function openModal(brand, series, model) {
+      document.getElementById("mTitle").innerText = `${brand} ${model}`;
+      document.getElementById("mSubtitle").innerText = `${series}`;
+      let num = parseInt(model.replace(/\D/g, "")) || 35;
+      if (num > 1000) num = Math.floor(num / 100);
+
+      document.getElementById("m_loa").innerText = `${(num * 0.31).toFixed(2)} m (${Math.round(num * 1.02)} ft)`;
+      document.getElementById("m_beam").innerText = `${(num * 0.09).toFixed(2)} m`;
+      document.getElementById("m_draft").innerText = `${(1.0 + (num * 0.01)).toFixed(2)} m`;
+
+      const selectedEngine = getModelEngine(brand, model);
+      activeSelectedEngine = selectedEngine;
+
+      const engineEl = document.getElementById("m_engine");
+      engineEl.innerHTML = `⚙️ ${selectedEngine} (Teknik Föy)`;
+      document.getElementById("m_speed").innerText = `${28 + (num % 8)} Knots`;
+      document.getElementById("m_cabins").innerText = num > 25 ? `${Math.min(5, Math.max(1, Math.floor(num / 16)))} Kamara` : "Açık Havuzluk / Günübirlik";
+
+      const telemetryBox = document.getElementById("telemetrySpecsBox");
+      if (telemetryBox) telemetryBox.style.display = "none";
+      renderTelemetryRecommendations(Math.round(num * 1.02));
+      document.getElementById("specsModal").style.display = "flex";
+    }
+
+    function openEngineDetailModal() {
+      openSpecificEngineModal(activeSelectedEngine);
+    }
+
+    function openSpecificEngineModal(engineKey) {
+      const data = engineDatabase[engineKey] || engineDatabase["Volvo Penta IPS 650 (D6)"];
+      if (!data) return;
+      document.getElementById("eTitle").innerText = data.title;
+      document.getElementById("e_hp").innerText = data.hp;
+      document.getElementById("e_cylinders").innerText = data.cylinders;
+      document.getElementById("e_displacement").innerText = data.displacement;
+      document.getElementById("e_fuel").innerText = data.fuel;
+      document.getElementById("e_aspiration").innerText = data.aspiration || "Doğal Emiş";
+      document.getElementById("e_propulsion").innerText = data.propulsion;
+      document.getElementById("e_weight").innerText = data.weight;
+      document.getElementById("engineDetailModal").style.display = "flex";
+    }
+
+    function toggleTelemetrySpecs() {
+      const box = document.getElementById("telemetrySpecsBox");
+      if (box) box.style.display = (box.style.display === "block") ? "none" : "block";
+    }
+
+    function renderTelemetryRecommendations(loaFeet) {
+      const listEl = document.getElementById("telemetryProductsList");
+      if (!listEl) return;
+      let p = [
+        { title: "Marin Gateway (Merkez Ünite)", desc: "GPS & Bulut GSM Telemetri Modülü" },
+        loaFeet < 35 
+          ? { title: "Kablosuz Sintine Alarmı", desc: "Su algılama ve acil durum bildirimi" }
+          : { title: "NMEA 2000 Veri Hattı Entegrasyonu", desc: "Motor ve tank telemetri ağı" }
+      ];
+      listEl.innerHTML = p.map(x => `<div style="font-size:11px; color:#38bdf8; margin-top:4px;">⚡ <strong>${x.title}</strong> - ${x.desc}</div>`).join("");
+    }
+
+    function openReadme() {
+      document.getElementById("readmeModal").style.display = "flex";
+    }
+
+    // ==========================================
+    // YAKIT SİMÜLATÖRÜ MOTORU
+    // ==========================================
+    window.livePrices = { benzin: 80.60, motorin: 97.80, eurTry: 55.67 };
     window.fuelConfigs = {
       outboard_small:   { rate: 30,  fuelType: "Benzin" },
       outboard_twin:    { rate: 90,  fuelType: "Benzin" },
@@ -2971,946 +4403,197 @@ const filtered = brands.filter(b => {
     };
 
     window.openFuelCalculatorModal = function() {
-      const modal = document.getElementById("fuelCalculatorModal");
-      if (modal) {
-        modal.style.display = "flex";
-        window.calculateTripCost();
-      }
+      document.getElementById("fuelCalculatorModal").style.display = "flex";
+      window.calculateTripCost();
     };
 
     window.onRouteSelectChange = function() {
-      const select = document.getElementById("calcRouteSelect");
-      const distInput = document.getElementById("calcDistanceInput");
-      if (select && distInput && select.value !== "custom") {
-        distInput.value = select.value;
-      }
+      const sel = document.getElementById("calcRouteSelect");
+      const dist = document.getElementById("calcDistanceInput");
+      if (sel && dist && sel.value !== "custom") dist.value = sel.value;
       window.calculateTripCost();
     };
-    const userFuelPrice = parseFloat(document.getElementById("calcCustomFuelPrice")?.value) || 56.5;
+
     window.calculateTripCost = function() {
       const distInput = document.getElementById("calcDistanceInput");
       const speedInput = document.getElementById("calcSpeedInput");
       const engineSelect = document.getElementById("calcEngineSelect");
-      const userFuelPrice = parseFloat(document.getElementById("calcCustomFuelPrice")?.value) || 56.5;
-
       if (!distInput || !speedInput || !engineSelect) return;
 
       const distance = parseFloat(distInput.value) || 0;
       const speed = parseFloat(speedInput.value) || 1;
       const engineKey = engineSelect.value;
-      const config = window.fuelConfigs[engineKey] || { rate: 100, fuelType: "Marin Dizel" };
+      const config = window.fuelConfigs[engineKey] || { rate: 110, fuelType: "Marin Dizel" };
 
-      // 1. Süre Hesabı
-  const totalHours = speed > 0 ? (distance / speed) : 0;
-  const hours = Math.floor(totalHours);
-  const minutes = Math.round((totalHours - hours) * 60);
+      const totalHours = speed > 0 ? (distance / speed) : 0;
+      const hours = Math.floor(totalHours);
+      const minutes = Math.round((totalHours - hours) * 60);
 
-  // 2. Deniz Mühendisliği Gerçek Seyir Dinamiği
-  let hourlyLiters = 0;
-
-  if (engineKey === "diesel_trawler") {
-    // Trawler (Deplasman Gövde): 9 knot ekonomik gövde süratidir
-    const baseTrawlerSpeed = 9;
-    hourlyLiters = config.rate * Math.pow(speed / baseTrawlerSpeed, 1.8);
-  } else {
-    // Kayan / Planyacı Gövdeler (Dıştan Takma, Cruiser, Flybridge, Mega Yat)
-    if (speed <= 9) {
-      // Düşük Hız / Deplasman Seyri (Rölanti ve liman çıkışı)
-      hourlyLiters = (config.rate * 0.25) * (speed / 9);
-    } else if (speed <= 16) {
-      // Kambur Aşaması (Burun havada, direnç ve zorlanma yüksek)
-      hourlyLiters = (config.rate * 0.65) * Math.pow(speed / 14, 1.4);
-    } else {
-      // 17 knot ve üzeri (Planya Seyri, 22 knot nominal seyir baz alınır)
-      hourlyLiters = config.rate * Math.pow(speed / 22, 1.35);
-    }
-  }
-
-  // Toplam Tüketim (Litre)
-  const totalLitres = Math.max(5, Math.round(totalHours * hourlyLiters));
-
-      // 3. Fiyat Hesabı (80.60 ₺ veya 97.80 ₺)
-    const customPriceInput = document.getElementById("calcCustomFuelPrice");
-    const defaultPrice = (config.fuelType === "Benzin") ? window.livePrices.benzin : window.livePrices.motorin;
-    const unitPrice = customPriceInput && customPriceInput.value ? parseFloat(customPriceInput.value) : defaultPrice;
-
-    const costTL = Math.round(totalLitres * unitPrice);
-    const costEUR = Math.round(costTL / window.livePrices.eurTry);
-      // 4. Arayüzü Güncelle
-      const timeEl = document.getElementById("resTripTime");
-      const fuelEl = document.getElementById("resTotalFuel");
-      const fuelTypeBadge = document.getElementById("resFuelTypeBadge");
-      const costTlEl = document.getElementById("resCostTL");
-      const costEurEl = document.getElementById("resCostEUR");
-      const unitRateInfo = document.getElementById("lblUnitRateInfo");
-
-      if (timeEl) timeEl.innerText = `${hours}s ${minutes}dk`;
-      if (fuelEl) fuelEl.innerText = `${totalLitres.toLocaleString('tr-TR')} Litre`;
-      if (costTlEl) costTlEl.innerText = `~ ${costTL.toLocaleString('tr-TR')} ₺`;
-      if (costEurEl) costEurEl.innerText = `~ ${costEUR.toLocaleString('tr-TR')} €`;
-
-      if (unitRateInfo) {
-        unitRateInfo.innerText = `(${unitPrice.toFixed(2)} ₺/Litre)`;
-      }
-
-      if (fuelTypeBadge) {
-        if (config.fuelType === "Benzin") {
-          fuelTypeBadge.innerText = `⛽ Kurşunsuz Benzin (${unitPrice.toFixed(2)} ₺/L)`;
-          fuelTypeBadge.style.background = "rgba(249, 115, 22, 0.2)";
-          fuelTypeBadge.style.color = "#fb923c";
-          fuelTypeBadge.style.borderColor = "rgba(249, 115, 22, 0.4)";
-        } else {
-          fuelTypeBadge.innerText = `🛢️ Marin Dizel (${unitPrice.toFixed(2)} ₺/L)`;
-          fuelTypeBadge.style.background = "rgba(56, 189, 248, 0.2)";
-          fuelTypeBadge.style.color = "#38bdf8";
-          fuelTypeBadge.style.borderColor = "rgba(56, 189, 248, 0.4)";
-        }
-      }
-    };
-
-     // Motor Marka ve Seri Hiyerarşi Veritabanı (Arama anahtarı ile eşleştirilmiş)
-const engineHierarchyCatalog = {
-  "Volvo Penta": [
-    { label: "Tüm Volvo Modelleri", query: "" },
-    { label: "IPS Serisi (Genel)", query: "IPS" },
-    { label: "IPS 600 / 650", query: "650" },
-    { label: "IPS 800 / 950", query: "800" },
-    { label: "IPS 1200 / 1350", query: "1200" },
-    { label: "D4 Serisi", query: "D4" },
-    { label: "D6 Serisi", query: "D6" },
-    { label: "D11 / D13 Serisi", query: "D13" }
-  ],
-  "Mercury": [
-    { label: "Tüm Mercury Modelleri", query: "" },
-    { label: "Verado 300 V8", query: "300" },
-    { label: "Verado 400 / 450R", query: "400" },
-    { label: "V12 Verado 600", query: "600" },
-    { label: "Pro XS", query: "Pro XS" }
-  ],
-  "MAN": [
-    { label: "Tüm MAN Modelleri", query: "" },
-    { label: "i6 Serisi", query: "i6" },
-    { label: "V8 Serisi", query: "V8" },
-    { label: "V12 Serisi", query: "V12" }
-  ],
-  "Yanmar": [
-    { label: "Tüm Yanmar Modelleri", query: "" },
-    { label: "4LV Serisi", query: "4LV" },
-    { label: "6LY Serisi", query: "6LY" },
-    { label: "8LV Serisi", query: "8LV" }
-  ],
-  "Scania": [
-    { label: "Tüm Scania Modelleri", query: "" },
-    { label: "DI13 Serisi", query: "DI13" },
-    { label: "DI16 V8", query: "DI16" }
-  ],
-  "Cummins": [
-    { label: "Tüm Cummins Modelleri", query: "" },
-    { label: "QSB 6.7", query: "6.7" },
-    { label: "QSC 8.3", query: "8.3" },
-    { label: "QSM 11", query: "11" }
-  ],
-  "Caterpillar": [
-    { label: "Tüm CAT Modelleri", query: "" },
-    { label: "C8.7", query: "C8.7" },
-    { label: "C12.9", query: "C12.9" },
-    { label: "C32", query: "C32" }
-  ],
-  "MTU": [
-    { label: "Tüm MTU Modelleri", query: "" },
-    { label: "10V 2000", query: "10V" },
-    { label: "12V 2000", query: "12V" },
-    { label: "16V 2000", query: "16V" }
-  ]
-};
-
-// Marka değiştiğinde Seri kutusunu dolduran fonksiyon
-window.onEngineBrandChange = function() {
-  const brandSelect = document.getElementById("engineBrandFilter");
-  const seriesSelect = document.getElementById("engineSeriesFilter");
-  if (!brandSelect || !seriesSelect) return;
-
-  const brand = brandSelect.value;
-  seriesSelect.innerHTML = "";
-
-  if (!brand || !engineHierarchyCatalog[brand]) {
-    seriesSelect.innerHTML = '<option value="">Önce Marka Seçiniz</option>';
-    seriesSelect.disabled = true;
-    seriesSelect.style.cursor = "not-allowed";
-    seriesSelect.style.borderColor = "rgba(255, 255, 255, 0.15)";
-    seriesSelect.style.color = "#94a3b8";
-  } else {
-    seriesSelect.disabled = false;
-    seriesSelect.style.cursor = "pointer";
-    seriesSelect.style.borderColor = "rgba(56, 189, 248, 0.3)";
-    seriesSelect.style.color = "#fff";
-
-    engineHierarchyCatalog[brand].forEach((item) => {
-      const opt = document.createElement("option");
-      opt.value = item.query; // Değer olarak temiz aranacak kelimeyi veriyoruz
-      opt.textContent = item.label;
-      seriesSelect.appendChild(opt);
-    });
-  }
-
-  // Vitrini anında filtrele
-  if (typeof render === "function") {
-    render();
-  }
-};
-
-// Marka değiştiğinde Seri kutusunu dolduran tetikleyici
-window.onEngineBrandChange = function() {
-  const brandSelect = document.getElementById("engineBrandFilter");
-  const seriesSelect = document.getElementById("engineSeriesFilter");
-  if (!brandSelect || !seriesSelect) return;
-
-  const brand = brandSelect.value;
-  seriesSelect.innerHTML = "";
-
-  if (!brand || !engineHierarchyCatalog[brand]) {
-    seriesSelect.innerHTML = '<option value="">Önce Marka Seçiniz</option>';
-    seriesSelect.disabled = true;
-    seriesSelect.style.cursor = "not-allowed";
-    seriesSelect.style.borderColor = "rgba(255, 255, 255, 0.15)";
-    seriesSelect.style.color = "#94a3b8";
-  } else {
-    seriesSelect.disabled = false;
-    seriesSelect.style.cursor = "pointer";
-    seriesSelect.style.borderColor = "rgba(56, 189, 248, 0.3)";
-    seriesSelect.style.color = "#fff";
-
-    engineHierarchyCatalog[brand].forEach((item) => {
-      const opt = document.createElement("option");
-      // Eğer item bir obje ise query ve label'ı al, düz string ise doğrudan kendisini al
-      opt.value = typeof item === "object" ? (item.query || "") : item;
-      opt.textContent = typeof item === "object" ? item.label : item;
-      seriesSelect.appendChild(opt);
-    });
-  }
-
-  // Vitrini yeniden çiz
-  if (typeof render === "function") {
-    render();
-  }
-};
-
-    // ========================================================
-    // 2. MADDE: VS KARŞILAŞTIRMA SİSTEMİ MOTORU
-    // ========================================================
-    window.compareList = [];
-
-    window.toggleCompare = function(boatName, event) {
-      if (event) event.stopPropagation();
-
-      const index = window.compareList.indexOf(boatName);
-      if (index > -1) {
-        window.compareList.splice(index, 1);
+      let hourlyLiters = 0;
+      if (engineKey === "diesel_trawler") {
+        hourlyLiters = config.rate * Math.pow(speed / 9, 1.8);
       } else {
-        if (window.compareList.length >= 2) {
-          alert("En fazla 2 tekne karşılaştırabilirsiniz.");
-          return;
-        }
-        window.compareList.push(boatName);
+        if (speed <= 9) hourlyLiters = (config.rate * 0.25) * (speed / 9);
+        else if (speed <= 16) hourlyLiters = (config.rate * 0.65) * Math.pow(speed / 14, 1.4);
+        else hourlyLiters = config.rate * Math.pow(speed / 22, 1.35);
       }
-      window.updateCompareUI();
+
+      const totalLitres = Math.max(5, Math.round(totalHours * hourlyLiters));
+      const customPriceInput = document.getElementById("calcCustomFuelPrice");
+      const unitPrice = customPriceInput && customPriceInput.value ? parseFloat(customPriceInput.value) : 97.80;
+
+      const costTL = Math.round(totalLitres * unitPrice);
+      const costEUR = Math.round(costTL / window.livePrices.eurTry);
+
+      document.getElementById("resTripTime").innerText = `${hours}s ${minutes}dk`;
+      document.getElementById("resTotalFuel").innerText = `${totalLitres.toLocaleString('tr-TR')} Litre`;
+      document.getElementById("resCostTL").innerText = `~ ${costTL.toLocaleString('tr-TR')} ₺`;
+      document.getElementById("resCostEUR").innerText = `~ ${costEUR.toLocaleString('tr-TR')} €`;
+      document.getElementById("lblUnitRateInfo").innerText = `(${unitPrice.toFixed(2)} ₺/Litre)`;
     };
 
-    window.updateCompareUI = function() {
-      const bar = document.getElementById("vsFloatingBar");
-      const barText = document.getElementById("vsBarText");
-      const btn = document.getElementById("vsCompareBtn");
-      if (!bar) return;
+    // ==========================================
+    // MODAL YÖNETİMİ & IoT / SİHİRBAZ
+    // ==========================================
+    window.showMyCustomModal = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.setProperty('display', 'flex', 'important');
+    };
 
-      if (window.compareList.length === 0) {
-        bar.style.display = "none";
+    window.closeMyCustomModal = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.setProperty('display', 'none', 'important');
+    };
+
+    window.isBatteryActive = true;
+    window.toggleBatteryState = function() {
+      window.isBatteryActive = !window.isBatteryActive;
+      const volt = document.getElementById('liveCustomVolt');
+      const sub = document.getElementById('batterySubText');
+      const statusText = document.getElementById('batteryStatusText');
+      if (window.isBatteryActive) {
+        if (statusText) { statusText.innerText = 'AÇIK'; statusText.style.color = '#10b981'; }
+        if (volt) volt.innerText = '12.73 V';
+        if (sub) { sub.innerText = '● Dalgalanma Canlı'; sub.style.color = '#10b981'; }
       } else {
-        bar.style.display = "flex";
-        if (window.compareList.length === 1) {
-          barText.innerText = `⚖️ 1/2: ${window.compareList[0]} (1 model daha seçin)`;
-          btn.style.opacity = "0.5";
-          btn.style.pointerEvents = "none";
-        } else {
-          barText.innerText = `⚖️ 2 Model Seçildi: Karşılaştırmaya Hazır!`;
-          btn.style.opacity = "1";
-          btn.style.pointerEvents = "auto";
-        }
+        if (statusText) { statusText.innerText = 'KAPALI'; statusText.style.color = '#ef4444'; }
+        if (volt) volt.innerText = '0.00 V';
+        if (sub) { sub.innerText = '○ Kesici Devre Dışı'; sub.style.color = '#ef4444'; }
       }
     };
 
-    window.clearCompareList = function() {
-      window.compareList = [];
-      window.updateCompareUI();
+    setInterval(function() {
+      const vEl = document.getElementById('liveCustomVolt');
+      const sEl = document.getElementById('liveCustomShore');
+      if (vEl && window.isBatteryActive) vEl.innerText = (12.60 + Math.random() * 0.15).toFixed(2) + ' V';
+      if (sEl) sEl.innerText = Math.floor(227 + Math.random() * 4) + ' V AC';
+    }, 1500);
+
+    window.runSimpleWizard = function() {
+      const box = document.getElementById('simpleResult');
+      const lenSelect = document.getElementById('customWizLength');
+      if (!box || !lenSelect) return;
+      let pick = "Absolute 52 Navetta (15.80m - Çift IPS 650)";
+      if (lenSelect.value === 'small') pick = "Antares 8 Weekender (8.06m - 250 HP Mercury)";
+      if (lenSelect.value === 'large') pick = "Sirena 68 Flybridge (21.40m - Çift MAN V8)";
+
+      box.style.display = 'block';
+      box.innerHTML = `<span style="color:#c084fc; font-weight:700;">🎯 Birebir Eşleşme:</span> <strong style="color:#38bdf8;">${pick}</strong>`;
     };
 
-    window.openCompareModal = function() {
-      if (window.compareList.length < 2) return;
-      const modal = document.getElementById("compareModal");
-      const content = document.getElementById("compareContent");
-      if (!modal || !content) return;
-
-      const list = window.allYachts || window.yachtsData || [];
-      const b1 = list.find(y => (y.model || y.name) === window.compareList[0]) || { model: window.compareList[0] };
-      const b2 = list.find(y => (y.model || y.name) === window.compareList[1]) || { model: window.compareList[1] };
-
-      content.innerHTML = [b1, b2].map(b => `
-        <div style="background: rgba(15, 28, 54, 0.85); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 14px;">
-          <h4 style="margin: 0 0 10px; color: #38bdf8; font-size: 16px;">${b.model || b.name || "Model Adı"}</h4>
-          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
-            <div><span style="color:#94a3b8;">Tersane:</span> <strong style="color:#fff;">${b.shipyard || b.brand || "-"}</strong></div>
-            <div><span style="color:#94a3b8;">Tam Boy (LOA):</span> <strong style="color:#fff;">${b.length || b.loa || "-"}</strong></div>
-            <div><span style="color:#94a3b8;">Genişlik (Beam):</span> <strong style="color:#fff;">${b.beam || "-"}</strong></div>
-            <div><span style="color:#94a3b8;">Motor Gücü:</span> <strong style="color:#fff;">${b.engine || b.engines || "-"}</strong></div>
-            <div><span style="color:#94a3b8;">Maksimum Hız:</span> <strong style="color:#34d399;">${b.maxSpeed || b.speed || "-"} Knot</strong></div>
-            <div><span style="color:#94a3b8;">Kamara:</span> <strong style="color:#fde047;">${b.cabins || "-"}</strong></div>
-          </div>
-        </div>
-      `).join("");
-
-      modal.style.display = "flex";
-    };
-
-    // ========================================================
-    // 3. MADDE: CANLI TELEMETRİ & IoT KOKPİT SİMÜLASYONU MOTORU
-    // ========================================================
-    let telemetryTimer = null;
-
-    window.openTelemetryModal = function() {
-      const modal = document.getElementById("telemetryModal");
+    // ==========================================
+    // CLOUDFLARE WORKER DESTEKLİ GEMINI ASİSTAN
+    // ==========================================
+    function openAiChatModal() {
+      const modal = document.getElementById("aiChatModal");
       if (modal) {
         modal.style.display = "flex";
-        if (telemetryTimer) clearInterval(telemetryTimer);
-        telemetryTimer = setInterval(() => {
-          const voltEl = document.getElementById("telemetryVolt");
-          const shoreEl = document.getElementById("telemetryShore");
-          if (voltEl) {
-            const v = (12.60 + Math.random() * 0.15).toFixed(2);
-            voltEl.innerText = `${v} V`;
-          }
-          if (shoreEl) {
-            const ac = Math.floor(227 + Math.random() * 4);
-            shoreEl.innerText = `${ac} V AC`;
-          }
-        }, 1200);
+        setTimeout(() => document.getElementById("aiChatInput")?.focus(), 100);
       }
-    };
+    }
 
-    window.closeTelemetryModal = function() {
-      const modal = document.getElementById("telemetryModal");
+    function closeAiChatModal() {
+      const modal = document.getElementById("aiChatModal");
       if (modal) modal.style.display = "none";
-      if (telemetryTimer) clearInterval(telemetryTimer);
-    };
+    }
 
-    // ========================================================
-    // 4. MADDE: TEKNE SEÇİM SİHİRBAZI MOTORU
-    // ========================================================
-    window.openWizardModal = function() {
-      const modal = document.getElementById("wizardModal");
-      if (modal) modal.style.display = "flex";
-    };
-
-    window.runBoatWizard = function() {
-      const purpose = document.getElementById("wizPurpose").value;
-      const resArea = document.getElementById("wizResultArea");
-      const list = window.allYachts || window.yachtsData || [];
-
-      let matchName = list.length > 0 ? (list[0].model || list[0].name) : "Princess V40 / Azimut 45";
-      if (purpose === "sport" && list.length > 1) {
-        matchName = list[1].model || list[1].name;
-      }
-
-      resArea.style.display = "block";
-      resArea.innerHTML = `
-        <div style="font-size: 13px; color: #a855f7; font-weight: 700; margin-bottom: 6px;">
-          🎉 Size Özel Eşleşme Bulundu (%95 Uygunluk)
-        </div>
-        <div style="color: #f8fafc; font-size: 14px; font-weight: 800;">
-          Önerilen Model: <span style="color: #38bdf8;">${matchName}</span>
-        </div>
-        <p style="color: #94a3b8; font-size: 11px; margin: 4px 0 0;">
-          Seçtiğiniz profil ve gövde tipine göre en optimum seyir konforunu bu tekne sağlamaktadır.
-        </p>
-      `;
-    };
-    window.openTelemetryModal = function() {
-  const m = document.getElementById('telemetryModal');
-  if (m) m.style.display = 'flex';
-};
-
-window.openWizardModal = function() {
-  const m = document.getElementById('wizardModal');
-  if (m) m.style.display = 'flex';
-};
-// Navbardaki "Asistan (AI Finder)" butonuna tıklandığında açılması için
-function openAiChatModal() {
-  const modal = document.getElementById("aiChatModal");
-  if (modal) {
-    modal.style.display = "flex";
-    setTimeout(() => {
+    function sendQuickPrompt(text) {
       const input = document.getElementById("aiChatInput");
-      if (input) input.focus();
-    }, 100);
-  }
-}
+      if (input) {
+        input.value = text;
+        handleAiSend();
+      }
+    }
 
-function closeAiChatModal() {
-  const modal = document.getElementById("aiChatModal");
-  if (modal) modal.style.display = "none";
-}
+    async function generateMarineAiReply(userText) {
+      window.marineAiHistory = window.marineAiHistory || [];
+      const promptSystem = `Sen BN MARİN'in profesyonel denizcilik danışmanısın. Doğal, ciddi, akıcı Türkçe konuş.`;
+      const url = "https://bn-marin-gemini.cafercelik0319.workers.dev/";
+      let reply = "";
 
-// Dışarıya tıklayınca kapatma
-window.addEventListener("click", function(e) {
-  const modal = document.getElementById("aiChatModal");
-  if (e.target === modal) closeAiChatModal();
-});
-
-function sendQuickPrompt(text) {
-  const input = document.getElementById("aiChatInput");
-  if (input) {
-    input.value = text;
-    handleAiSend();
-  }
-}
-// Güvenlik: Gemini API anahtarı tarayıcıya konulmamalıdır.
-// /api/marine-ai uç noktasını sunucuda oluşturup Gemini isteğini oradan iletin.
-// Sunucu, Gemini'nin generateContent yanıt biçimiyle uyumlu JSON döndürmelidir.
-
-async function generateMarineAiReply(userText) {
-  const promptSystem = `
-Sen "BN Marin" platformunun uzman marin danışmanı ve yapay zekâ kaptanısın.
-Kullanıcıyla bir deniz kurdu gibi samimi, zeki, esprili, doğal ve akıcı Türkçe konuş.
-Kullanıcı selam verirse sıcak bir denizci selamı ver.
-Kullanıcı motor, marka veya tekne listelemek isterse hem teknelerden bahset hem de yanıtın sonuna ilgili eylem etiketini ekle:
-- Volvo motorlar için: [ACTION:FILTER_VOLVO]
-- MAN motorlar için: [ACTION:FILTER_MAN]
-- Scania motorlar için: [ACTION:FILTER_SCANIA]
-- CAT motorlar için: [ACTION:FILTER_CAT]
-- İtalyan tekneleri için: [ACTION:FILTER_ITALY]
-- Türk tekneleri için: [ACTION:FILTER_TURKEY]
-- Sıfırlamak için: [ACTION:RESET]
-`;
-
-  const url = "https://bn-marin-gemini.cafercelik0319.workers.dev/";
-  let reply = "";
-  let attempts = 0;
-  const maxAttempts = 1;
-
-  while (attempts < maxAttempts && !reply) {
-    attempts++;
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: `${promptSystem}\n\nKullanıcı: ${userText}`
-        })
-      });
-
-      const data = await response.json();
-
-      if (response.ok && typeof data.text === "string" && data.text.trim()) {
-        reply = data.text.trim();
-      } else if (data.error) {
-        console.warn(`Deneme ${attempts} başarısız:`, data.error);
-        if (attempts < maxAttempts) {
-          await new Promise((res) => setTimeout(res, 1200));
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: `${promptSystem}\n\nKullanıcı: ${userText}`,
+            history: window.marineAiHistory
+          })
+        });
+        const data = await response.json();
+        if (response.ok && typeof data.text === "string" && data.text.trim()) {
+          reply = data.text.trim();
         }
+      } catch (err) {
+        reply = "Açık denizde telsiz anlık parazit yaptı kaptan, tekrar dener misin?";
       }
-    } catch (err) {
-      console.warn(`Ağ hatası (${attempts}):`, err.message);
-      if (attempts < maxAttempts) {
-        await new Promise((res) => setTimeout(res, 1200));
-      }
+
+      window.marineAiHistory.push({ role: "user", text: userText }, { role: "model", text: reply });
+      if (window.marineAiHistory.length > 20) window.marineAiHistory = window.marineAiHistory.slice(-20);
+      return reply;
     }
-  }
 
-  if (!reply) {
-    reply = "Açık denizde telsiz anlık parazit yaptı kaptan, sunucu yoğun. Tekrar bir üfle bakalım!";
-  }
+    async function handleAiSend() {
+      const input = document.getElementById("aiChatInput");
+      const msgContainer = document.getElementById("aiChatMessages");
+      if (!input || !msgContainer) return;
+      const userText = input.value.trim();
+      if (!userText) return;
 
-  // Kullanıcı mesajı veya yanıt üzerinden filtreleri tetikleme
-  const lowerUser = (userText || "").toLowerCase();
+      msgContainer.innerHTML += `
+        <div style="display:flex; justify-content:flex-end; margin-bottom:6px;">
+          <div style="background:linear-gradient(135deg, #0284c7, #2563eb); color:#fff; padding:9px 14px; border-radius:12px; font-size:13px; max-width:80%; word-break:break-word;">
+            ${userText}
+          </div>
+        </div>
+      `;
+      input.value = "";
+      msgContainer.scrollTop = msgContainer.scrollHeight;
 
-  if (reply.includes("[ACTION:FILTER_VOLVO]") || lowerUser.includes("volvo")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('volvo', 'Volvo (Tümü)', 'logolar/volvo.png');
-    reply = reply.replace("[ACTION:FILTER_VOLVO]", "");
-  } else if (reply.includes("[ACTION:FILTER_MAN]") || lowerUser.includes("man")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('man', 'MAN (Tümü)', 'logolar/man.png');
-    reply = reply.replace("[ACTION:FILTER_MAN]", "");
-  } else if (reply.includes("[ACTION:FILTER_SCANIA]") || lowerUser.includes("scania")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('scania', 'Scania (Tümü)', 'logolar/scania.png');
-    reply = reply.replace("[ACTION:FILTER_SCANIA]", "");
-  } else if (reply.includes("[ACTION:FILTER_CAT]") || lowerUser.includes("cat") || lowerUser.includes("caterpillar")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('cat', 'CAT (Tümü)', 'logolar/cat.png');
-    reply = reply.replace("[ACTION:FILTER_CAT]", "");
-  } else if (reply.includes("[ACTION:FILTER_ITALY]") || lowerUser.includes("italya") || lowerUser.includes("italyan")) {
-    const cf = document.getElementById("countryFilter");
-    if (cf) { cf.value = "İTALYA"; if (typeof render === "function") render(); }
-    reply = reply.replace("[ACTION:FILTER_ITALY]", "");
-  } else if (reply.includes("[ACTION:FILTER_TURKEY]") || lowerUser.includes("türkiye") || lowerUser.includes("türk")) {
-    const cf = document.getElementById("countryFilter");
-    if (cf) { cf.value = "TÜRKİYE"; if (typeof render === "function") render(); }
-    reply = reply.replace("[ACTION:FILTER_TURKEY]", "");
-  } else if (reply.includes("[ACTION:RESET]") || lowerUser.includes("sıfırla") || lowerUser.includes("temizle")) {
-    if (typeof resetAllFilters === "function") resetAllFilters();
-    reply = reply.replace("[ACTION:RESET]", "");
-  }
+      const reply = await generateMarineAiReply(userText);
+      msgContainer.innerHTML += `
+        <div style="display:flex; gap:10px; align-items:flex-start; max-width:85%; margin-bottom:6px;">
+          <div style="width:28px; height:28px; border-radius:50%; background:#6366f1; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;">🤖</div>
+          <div style="background:rgba(30, 41, 59, 0.85); border:1px solid rgba(255,255,255,0.08); padding:10px 14px; border-radius:12px; color:#e2e8f0; font-size:13px; line-height:1.5;">
+            ${reply}
+          </div>
+        </div>
+      `;
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
 
-  return reply;
-}
+    document.addEventListener("click", (e) => {
+      const trigger = document.getElementById("engineDropdownTrigger");
+      const list = document.getElementById("engineDropdownList");
+      if (trigger && list && !trigger.contains(e.target) && !list.contains(e.target)) {
+        list.style.display = "none";
+      }
+    });
 
-async function handleAiSend() {
-  const input = document.getElementById("aiChatInput");
-  const msgContainer = document.getElementById("aiChatMessages");
-  if (!input || !msgContainer) return;
-
-  const userText = input.value.trim();
-  if (!userText) return;
-
-  // Kullanıcı mesajı
-  const userDiv = document.createElement("div");
-  userDiv.style.cssText = "display: flex; justify-content: flex-end; margin-bottom: 6px;";
-  const userBubble = document.createElement("div");
-  userBubble.style.cssText = "background: linear-gradient(135deg, #0284c7, #2563eb); color: #fff; padding: 9px 14px; border-radius: 12px; border-top-right-radius: 2px; max-width: 80%; font-size: 13px; line-height: 1.5; word-break: break-word; white-space: pre-wrap;";
-  userBubble.textContent = userText;
-  userDiv.appendChild(userBubble);
-  msgContainer.appendChild(userDiv);
-  input.value = "";
-  msgContainer.scrollTop = msgContainer.scrollHeight;
-
-  // Düşünüyor göstergesi
-  const typingDiv = document.createElement("div");
-  typingDiv.id = "aiTypingIndicator";
-  typingDiv.style.cssText = "display: flex; gap: 8px; align-items: center; margin-bottom: 6px;";
-  typingDiv.innerHTML = `
-    <div style="width: 26px; height: 26px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 13px;">🤖</div>
-    <div style="background: rgba(30, 41, 59, 0.6); padding: 8px 12px; border-radius: 12px; color: #94a3b8; font-size: 12px; font-style: italic;">
-      Kaptan düşünüyor...
-    </div>
-  `;
-  msgContainer.appendChild(typingDiv);
-  msgContainer.scrollTop = msgContainer.scrollHeight;
-
-  // Gemini'den yanıtı bekle
-  const reply = await generateMarineAiReply(userText);
-
-  const indicator = document.getElementById("aiTypingIndicator");
-  if (indicator) indicator.remove();
-
-  // Asistan yanıtı
-  const botDiv = document.createElement("div");
-  botDiv.style.cssText = "display: flex; gap: 10px; align-items: flex-start; max-width: 85%; margin-bottom: 6px;";
-  const botAvatar = document.createElement("div");
-  botAvatar.style.cssText = "width: 28px; height: 28px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;";
-  botAvatar.textContent = "🤖";
-  const botBubble = document.createElement("div");
-  botBubble.style.cssText = "background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; border-top-left-radius: 2px; color: #e2e8f0; font-size: 13px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;";
-  botBubble.textContent = reply;
-  botDiv.appendChild(botAvatar);
-  botDiv.appendChild(botBubble);
-  msgContainer.appendChild(botDiv);
-  msgContainer.scrollTop = msgContainer.scrollHeight;
-}
+    window.onload = function() {
+      renderAlphabetPagination();
+      render();
+    };
   </script>
-
-<script>
-  // 1. MODAL AÇMA/KAPAMA MOTORU
-  window.showMyCustomModal = function(id) {
-    var el = document.getElementById(id);
-    if (el) {
-      el.style.setProperty('display', 'flex', 'important');
-    }
-  };
-
-  window.closeMyCustomModal = function(id) {
-    var el = document.getElementById(id);
-    if (el) {
-      el.style.setProperty('display', 'none', 'important');
-    }
-  };
-
-  // 2. SERVİS AKÜSÜ AÇ/KAPA & CANLI VERİ
-  window.isBatteryActive = true;
-  window.toggleBatteryState = function() {
-    window.isBatteryActive = !window.isBatteryActive;
-    var card = document.getElementById('batteryCard');
-    var txt = document.getElementById('batteryStatusText');
-    var track = document.getElementById('batteryToggleTrack');
-    var thumb = document.getElementById('batteryToggleThumb');
-    var volt = document.getElementById('liveCustomVolt');
-    var sub = document.getElementById('batterySubText');
-    if (!card) return;
-
-    if (window.isBatteryActive) {
-      card.style.opacity = '1';
-      card.style.filter = 'none';
-      if (txt) { txt.innerText = 'ON'; txt.style.color = '#10b981'; }
-      if (track) track.style.background = '#10b981';
-      if (thumb) { thumb.style.right = '2px'; thumb.style.left = 'auto'; }
-      if (volt) { volt.innerText = '12.73 V'; volt.style.color = '#34d399'; }
-      if (sub) { sub.innerText = '● Dalgalanma Canlı'; sub.style.color = '#10b981'; }
-    } else {
-      card.style.opacity = '0.55';
-      card.style.filter = 'grayscale(0.6)';
-      if (txt) { txt.innerText = 'OFF'; txt.style.color = '#64748b'; }
-      if (track) track.style.background = '#334155';
-      if (thumb) { thumb.style.left = '2px'; thumb.style.right = 'auto'; }
-      if (volt) { volt.innerText = '0.00 V'; volt.style.color = '#64748b'; }
-      if (sub) { sub.innerText = '○ Kesici Kapalı (Devre Dışı)'; sub.style.color = '#ef4444'; }
-    }
-  };
-
-  setInterval(function() {
-    var vEl = document.getElementById('liveCustomVolt');
-    var sEl = document.getElementById('liveCustomShore');
-    if (vEl && window.isBatteryActive) vEl.innerText = (12.60 + Math.random() * 0.15).toFixed(2) + ' V';
-    if (sEl) sEl.innerText = Math.floor(227 + Math.random() * 4) + ' V AC';
-  }, 1200);
-
-  // 3. BOY ARALIĞINA KESİN UYAN SİHİRBAZ MOTORU
-  window.runSimpleWizard = function() {
-    var box = document.getElementById('simpleResult');
-    if (!box) return;
-
-    // Hedef Boy Aralığı seçim kutusunu yakala
-    var lenSelect = document.getElementById('customWizLength');
-    if (!lenSelect) {
-      // Eğer id atanmamışsa modal içindeki 2. select kutusunu bul
-      var allSelects = document.querySelectorAll('#customWizardModal select');
-      if (allSelects.length >= 2) lenSelect = allSelects[1];
-    }
-
-    var selectedText = lenSelect ? lenSelect.options[lenSelect.selectedIndex].text : '';
-    var selectedVal = lenSelect ? lenSelect.value : '';
-
-    // Boy kategorileri ve modelleri
-    var smallBoats = [
-      { name: "Anka 8.50 Cruiser", len: "8.50 Metre", spec: "Çift 200 HP Mercury • Seri Sürüş & Koy Gezisi" },
-      { name: "Alfastreet 28 Cabin", len: "8.60 Metre • Dıştan Takma Benzinli", spec: "Kompakt Spor Hatlar • Hızlı Seyir" },
-      { name: "Antares 8", len: "8.06 Metre", spec: "250 HP Dıştan Takma • Balık & Hafta Sonu Konforu" },
-      { name: "Antares 9 Weekender", len: "9.12 Metre", spec: "Çift Kamara • Aile Gezisi" }
-    ];
-
-    var midBoats = [
-      { name: "Absolute 52 Navetta", len: "15.80 Metre", spec: "Çift Volvo IPS 650 • 3 Lüks Kamara • Geniş Aile Alanı" },
-      { name: "Alen 45 Hardtop", len: "13.70 Metre", spec: "Çift Yanmar 440 HP • 38 Knot Sürat & Agresif Hatlar" },
-      { name: "Absolute 45 Navetta", len: "13.80 Metre", spec: "Volvo IPS 600 • 32 Knot • Dengeli Tüketim" },
-      { name: "Antares 11 Fly", len: "11.10 Metre", spec: "Çift 300 HP • Hafta Sonu Gezisi & Geniş Yaşam Alanı" }
-    ];
-
-    var largeBoats = [
-      { name: "Absolute 58 Navetta", len: "17.40 Metre", spec: "3 Kamara + Mürettebat • Lüks Mavi Yolculuk" },
-      { name: "Alen 68 Super Sport", len: "20.70 Metre", spec: "Çift MAN 1200 HP • 42 Knot Maksimum Sürat" },
-      { name: "Ada Yatçılık 24M Trawler", len: "24.00 Metre", spec: "Geniş Flybridge • Ağır Deniz Mukavemeti" },
-      { name: "Amer 94 Superyacht", len: "28.60 Metre", spec: "4x Volvo IPS • Özel Tasarım Lüks Seyir" },
-      { name: "Ada 30M Okyanus Trawlerı", len: "30.00 Metre", spec: "Çelik / Sac Gövde • Sınırsız Açık Deniz Menzili" }
-    ];
-
-    // Hangi aralık seçildiyse kesinlikle o havuzu al
-    var targetPool = midBoats; // Varsayılan orta boy
-
-    if (selectedVal === 'small' || selectedText.indexOf('10 Metre Altı') !== -1 || selectedText.indexOf('< 10') !== -1) {
-      targetPool = smallBoats;
-    } else if (selectedVal === 'large' || selectedText.indexOf('16 Metre ve Üzeri') !== -1 || selectedText.indexOf('16m+') !== -1) {
-      targetPool = largeBoats;
-    } else {
-      // 10 - 16 Metre seçildiyse sadece ve sadece midBoats
-      targetPool = midBoats;
-    }
-
-    var pick = targetPool[Math.floor(Math.random() * targetPool.length)];
-
-    box.style.display = 'block';
-    box.innerHTML = 
-      '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">' +
-        '<span style="font-size: 13px; color: #c084fc; font-weight: 700;">🎯 Birebir Kriter Eşleşmesi</span>' +
-        '<span style="background: rgba(168, 85, 247, 0.25); border: 1px solid #a855f7; color: #c084fc; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 12px;">%' + Math.floor(94 + Math.random() * 5) + ' Uygunluk</span>' +
-      '</div>' +
-      '<div style="color: #f8fafc; font-size: 16px; font-weight: 800;">' +
-        'Önerilen Model: <span style="color: #38bdf8;">' + pick.name + '</span>' +
-      '</div>' +
-      '<div style="color: #34d399; font-size: 12px; margin-top: 5px; font-weight: 600;">' +
-        '⚙️ Tam Boy: ' + pick.len + ' • ' + pick.spec +
-      '</div>';
-  };
-// Menüyü Aç/Kapat
-function toggleEngineMenu() {
-  const menu = document.getElementById("engineDropdownList");
-  if (menu) {
-    menu.style.display = (menu.style.display === "none" || !menu.style.display) ? "block" : "none";
-  }
-}
-
-function selectEngineOption(engineKey, displayText, logoUrl) {
-  // 1. Seçilen motor anahtarını değişkene yaz
-  currentEngineFilter = engineKey;
-
-  // 2. Buton üzerindeki metni ve logoyu güncelle
-  const selectedTextEl = document.getElementById("selectedEngineText");
-  if (selectedTextEl) {
-    if (logoUrl) {
-      selectedTextEl.innerHTML = `<img src="${logoUrl}" onerror="this.style.display='none'" style="width: 18px; height: 14px; object-fit: contain;" /> <span>⚡ ${displayText}</span>`;
-    } else {
-      selectedTextEl.innerHTML = `<span>⚡ ${displayText}</span>`;
-    }
-  }
-
-  // 3. Menüyü kapat
-  const menuList = document.getElementById("engineDropdownList");
-  if (menuList) menuList.style.display = "none";
-
-  // 4. Vitrini yeniden filtrele
-  if (typeof checkFilterResetState === "function") checkFilterResetState();
-  if (typeof render === "function") render();
-}
-function resetAllFilters() {
-  // 1. Arama çubuğunu temizle
-  const searchInput = document.getElementById("searchInput");
-  if (searchInput) searchInput.value = "";
-
-  // 2. Ülke kutusunu Tümü yap
-  const countryFilter = document.getElementById("countryFilter");
-  if (countryFilter) countryFilter.value = "";
-  if (typeof currentCountryFilter !== "undefined") currentCountryFilter = "ALL";
-
-  // 3. Varsa harf filtresini sıfırla
-  if (typeof currentLetter !== "undefined") currentLetter = "ALL";
-
-  // 4. Makine filtresini ve buton yazısını sıfırla
-  currentEngineFilter = "ALL";
-  const selectedEngineText = document.getElementById("selectedEngineText");
-  if (selectedEngineText) {
-    selectedEngineText.innerHTML = "⚡ Makine: Tümü";
-  }
-
-  // 5. Açık makine menüsü varsa kapat
-  const engineDropdownList = document.getElementById("engineDropdownList");
-  if (engineDropdownList) {
-    engineDropdownList.style.display = "none";
-  }
-
-  // 6. Vitrini baştan çiz (tüm tekneleri dök)
-  if (typeof render === "function") {
-    render();
-  }
-}
-
-// Menü dışına tıklandığında menüyü kapat
-document.addEventListener("click", (e) => {
-  const trigger = document.getElementById("engineDropdownTrigger");
-  const list = document.getElementById("engineDropdownList");
-  if (trigger && list && !trigger.contains(e.target) && !list.contains(e.target)) {
-    list.style.display = "none";
-  }
-});
-</script>
-
-<!-- ========================================== -->
-<!-- 2. PENCERELER (MODALLAR) -->
-<!-- ========================================== -->
-
-<!-- A) IoT Kokpit Modalı -->
-<div id="customTelemetryModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2147483647; justify-content: center; align-items: center; padding: 20px;">
-  <div onclick="event.stopPropagation()" style="background: #09121d; border: 1px solid #10b981; border-radius: 14px; max-width: 820px; width: 100%; padding: 24px; box-shadow: 0 0 30px rgba(16,185,129,0.25); position: relative;">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
-      <div>
-        <h3 style="margin: 0; color: #34d399; font-size: 17px; display: flex; align-items: center; gap: 8px;">
-          📡 Canlı Telemetri &amp; IoT Kokpit Simülasyonu
-        </h3>
-        <span style="font-size: 11px; color: #94a3b8; display: block; margin-top: 3px;">Vanemar Smart Vessel IoT Altyapısı ile Anlık Gemi Veri Akışı</span>
-      </div>
-      <button type="button" onclick="window.closeMyCustomModal('customTelemetryModal')" style="background: transparent; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;">
-      
-      <!-- 1. Servis Aküsü (Açılır / Kapanır) -->
-      <div id="batteryCard" onclick="window.toggleBatteryState()" style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 14px 10px; text-align: center; cursor: pointer; user-select: none; transition: all 0.3s ease; position: relative;">
-        <div style="position: absolute; top: 8px; right: 8px; display: flex; align-items: center; gap: 4px;">
-          <span id="batteryStatusText" style="font-size: 9px; font-weight: 800; color: #10b981;">ON</span>
-          <div id="batteryToggleTrack" style="width: 26px; height: 13px; background: #10b981; border-radius: 10px; position: relative; transition: background 0.3s ease;">
-            <div id="batteryToggleThumb" style="width: 9px; height: 9px; background: #fff; border-radius: 50%; position: absolute; top: 2px; right: 2px; transition: all 0.3s ease;"></div>
-          </div>
-        </div>
-        <span style="font-size: 11px; color: #94a3b8; display: block; margin-top: 2px;">🔋 Servis Aküsü</span>
-        <strong id="liveCustomVolt" style="font-size: 20px; color: #34d399; font-weight: 800; display: block; margin: 6px 0; transition: color 0.3s ease;">12.73 V</strong>
-        <span id="batterySubText" style="font-size: 9.5px; color: #10b981; transition: color 0.3s ease;">● Dalgalanma Canlı</span>
-      </div>
-
-      <!-- 2. Sintine Seviyesi -->
-      <div style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 14px 10px; text-align: center;">
-        <span style="font-size: 11px; color: #94a3b8; display: block;">💧 Sintine Seviyesi</span>
-        <strong style="font-size: 16px; color: #38bdf8; font-weight: 800; display: block; margin: 8px 0;">KURU / GÜVENLİ</strong>
-        <span style="font-size: 9.5px; color: #38bdf8;">Pompa: Otomatik (Hazır)</span>
-      </div>
-
-      <!-- 3. Sahil Elektriği -->
-      <div style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(251, 191, 36, 0.3); border-radius: 10px; padding: 14px 10px; text-align: center;">
-        <span style="font-size: 11px; color: #94a3b8; display: block;">⚡ Sahil Elektriği</span>
-        <strong id="liveCustomShore" style="font-size: 20px; color: #fbbf24; font-weight: 800; display: block; margin: 6px 0;">227 V AC</strong>
-        <span style="font-size: 9.5px; color: #fbbf24;">Marina Hattı Bağlı</span>
-      </div>
-
-      <!-- 4. Çapa Alarmı -->
-      <div style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.3); border-radius: 10px; padding: 14px 10px; text-align: center;">
-        <span style="font-size: 11px; color: #94a3b8; display: block;">⚓ Çapa Alarmı</span>
-        <strong style="font-size: 14px; color: #34d399; font-weight: 800; display: block; margin: 4px 0 2px;">KİLİTLİ<br>(GÜVENDE)</strong>
-        <span style="font-size: 9.5px; color: #94a3b8;">Sapma: 0.8m</span>
-      </div>
-
-    </div>
-
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
-      <span>📍 GPS: 36°59'48.2"N 27°25'31.1"E (Yalıkavak Marina)</span>
-      <span style="color: #34d399; font-weight: 600;">🛰️ IoT Bulut Senkronizasyonu Aktif</span>
-    </div>
-
-  </div>
-</div>
-
-<!-- 2. TEKNE SİHİRBAZI MODALI (KUSURSUZ VE KAPALI) -->
-<div id="customWizardModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2147483647; justify-content: center; align-items: center; padding: 20px;">
-  <div onclick="event.stopPropagation()" style="background: #0f172a; border: 1px solid #a855f7; border-radius: 14px; max-width: 600px; width: 100%; padding: 22px; box-shadow: 0 0 40px rgba(168, 85, 247, 0.25);">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 16px;">
-      <h3 style="margin: 0; color: #f8fafc; font-size: 17px; font-weight: 700;">🧭 Akıllı Tekne Seçim Sihirbazı (Matchmaker)</h3>
-      <button type="button" onclick="window.closeMyCustomModal('customWizardModal')" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
-    </div>
-
-    <div style="display: flex; flex-direction: column; gap: 13px;">
-      <div>
-        <label style="font-size: 11.5px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 5px;">1. Kullanım Amacınız Nedir?</label>
-        <select style="width: 100%; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; color: #fff; font-size: 12px; outline: none;">
-          <option>Ailece Konaklamalı Mavi Tur &amp; Rahat Seyir</option>
-          <option>Hızlı Spor Gezi &amp; Günübirlik Koy Turları</option>
-          <option>Açık Deniz &amp; Düşük Yakıtlı Uzun Seyir (Trawler)</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="font-size: 11.5px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 5px;">2. Hedef Boy Aralığı:</label>
-        <select id="customWizLength" style="width: 100%; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; color: #fff; font-size: 12px; outline: none;">
-          <option value="small">10 Metre Altı (Kompakt / Dıştan Takma)</option>
-          <option value="mid" selected>10 – 16 Metre (Orta Boy Motoryat)</option>
-          <option value="large">16 Metre ve Üzeri (Lüks Flybridge &amp; Trawler)</option>
-        </select>
-      </div>
-
-      <div>
-        <label style="font-size: 11.5px; color: #cbd5e1; font-weight: 700; display: block; margin-bottom: 5px;">3. Gövde &amp; Motor Tercihi:</label>
-        <select style="width: 100%; background: #1e293b; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px; color: #fff; font-size: 12px; outline: none;">
-          <option>Fiberglass Gövde + Şaftlı / IPS Dizel Makine</option>
-          <option>Fiberglass Gövde + Çift Dıştan Takma Benzinli</option>
-          <option>Deplasman Gövde (Ekonomik Trawler)</option>
-        </select>
-      </div>
-
-      <button type="button" onclick="window.runSimpleWizard()" style="background: linear-gradient(135deg, #9333ea, #a855f7); color: #fff; border: none; padding: 12px; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 4px;">
-        🎯 Bana En Uygun Modelleri Eşleştir
-      </button>
-
-      <div id="simpleResult" style="display: none; margin-top: 8px; background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; padding: 12px;"></div>
-    </div>
-
-  </div>
-</div>
-<!-- Başa Dön (Scroll to Top) Butonu -->
-<button 
-  type="button" 
-  id="scrollToTopBtn" 
-  onclick="scrollToTop()" 
-  title="Sayfa Başına Dön"
-  style="display: none; position: fixed; bottom: 70px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: #070d19; border: 1.5px solid rgba(56, 189, 248, 0.5); cursor: pointer; z-index: 99999; box-shadow: 0 8px 24px rgba(0,0,0,0.7), 0 0 15px rgba(56,189,248,0.2); backdrop-filter: blur(8px); transition: all 0.25s ease; align-items: center; justify-content: center; padding: 0; overflow: hidden;"
-  onmouseover="this.style.borderColor='#38bdf8'; this.style.boxShadow='0 8px 25px rgba(56,189,248,0.4)'; this.style.transform='translateY(-3px)'"
-  onmouseout="this.style.borderColor='rgba(56, 189, 248, 0.5)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.7), 0 0 15px rgba(56,189,248,0.2)'; this.style.transform='translateY(0)'">
-  
-  <!-- Arka Plan Karartılmış BN Marin Logosu -->
-  <svg viewBox="0 0 100 100" style="position: absolute; width: 36px; height: 36px; opacity: 0.18; pointer-events: none;">
-    <defs>
-      <linearGradient id="btnBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#00D2FF" />
-        <stop offset="100%" stop-color="#A855F7" />
-      </linearGradient>
-    </defs>
-    <path d="M15 75 C 35 73, 50 82, 85 75" stroke="url(#btnBgGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
-    <path d="M22 73 L37 24 L68 43 Z" stroke="url(#btnBgGrad)" stroke-width="5" fill="none" stroke-linejoin="round"/>
-    <path d="M32 73 L60 47 L73 47 Z" stroke="url(#btnBgGrad)" stroke-width="4" fill="none" stroke-linejoin="round"/>
-    <polygon points="32,73 60,47 73,47" fill="url(#btnBgGrad)" opacity="0.35" />
-    <path d="M70 41 L73 35 L80 32 L73 29 L70 23 L67 29 L60 32 L67 35 Z" fill="#ffffff" />
-  </svg>
-
-  <!-- Parlak Mavi Yukarı Ok -->
-  <svg viewBox="0 0 24 24" style="width: 22px; height: 22px; fill: none; stroke: #38bdf8; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 2;">
-    <polyline points="18 15 12 9 6 15"></polyline>
-  </svg>
-</button>
-<!-- ChatGPT Tarzı AI Asistan Modal -->
-<div id="aiChatModal" style="display: none; position: fixed; inset: 0; background: rgba(5, 10, 20, 0.75); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box;">
-  <div style="width: 100%; max-width: 580px; height: 640px; max-height: 90vh; background: #0b1324; border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);">
-    
-    <!-- Modal Üst Başlık (Header) -->
-    <div style="padding: 14px 18px; background: rgba(15, 23, 42, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: space-between;">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);">
-          🤖
-        </div>
-        <div>
-          <div style="color: #fff; font-weight: 600; font-size: 14px;">BN Marin AI Kaptan</div>
-          <div style="color: #10b981; font-size: 11px; display: flex; align-items: center; gap: 4px;">
-            <span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span> Çevrimiçi • Marin Veritabanı Aktif
-          </div>
-        </div>
-      </div>
-      <button onclick="closeAiChatModal()" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#94a3b8'">✕</button>
-    </div>
-
-    <!-- Hızlı Soru Hapları (Chips) -->
-    <div style="padding: 10px 14px; background: rgba(15, 23, 42, 0.5); border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; gap: 8px; overflow-x: auto; white-space: nowrap;">
-      <button onclick="sendQuickPrompt('Trawler tekne için hangi motoru önerirsin?')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: #38bdf8; font-size: 11px; padding: 5px 10px; border-radius: 20px; cursor: pointer;">⚓ Trawler motor seçimi</button>
-      <button onclick="sendQuickPrompt('Volvo IPS mi yoksa Şaft mı mantıklı?')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: #38bdf8; font-size: 11px; padding: 5px 10px; border-radius: 20px; cursor: pointer;">⚡ Volvo IPS vs Şaft</button>
-      <button onclick="sendQuickPrompt('Türk tersanelerinden lüks motoryat önerir misin?')" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.25); color: #38bdf8; font-size: 11px; padding: 5px 10px; border-radius: 20px; cursor: pointer;">🇹🇷 Türk Tersaneleri</button>
-    </div>
-
-    <!-- Mesajlaşma Akış Alanı -->
-    <div id="aiChatMessages" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: radial-gradient(circle at top, rgba(14, 165, 233, 0.05), transparent 70%);">
-      <!-- Karşılama Mesajı -->
-      <div style="display: flex; gap: 10px; align-items: flex-start; max-width: 85%;">
-        <div style="width: 28px; height: 28px; border-radius: 50%; background: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">🤖</div>
-        <div style="background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; border-radius: 12px; border-top-left-radius: 2px; color: #e2e8f0; font-size: 13px; line-height: 1.5;">
-          Selam kaptan! 🌊 Ben BN Marin yapay zekâ asistanıyım. Tersaneler, yat modelleri, Volvo/MAN/CAT motor seçenekleri veya seyir yakıt tüketimi hakkında bana dilediğini sorabilirsin.
-        </div>
-      </div>
-    </div>
-
-    <!-- Mesaj Gönderme Çubuğu -->
-    <div style="padding: 12px 16px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; gap: 8px;">
-      <input type="text" id="aiChatInput" placeholder="Tekne, motor veya rota hakkında bir şey sor..." onkeydown="if(event.key === 'Enter') handleAiSend()" style="flex: 1; height: 42px; background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; color: #fff; padding: 0 14px; font-size: 13px; outline: none;" />
-      <button onclick="handleAiSend()" style="height: 42px; padding: 0 16px; background: linear-gradient(135deg, #00d2ff, #0077ff); border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-        Gönder
-      </button>
-    </div>
-
-  </div>
-</div>
-<script>
-function toggleAiModal() {
-  // Modal id'sini buluyoruz (projedeki yaygın id'ler taranır)
-  const modal = document.getElementById("aiModal") || 
-                document.getElementById("aiChatModal") || 
-                document.querySelector(".ai-modal") ||
-                document.querySelector(".marine-ai-modal");
-  
-  if (modal) {
-    if (modal.style.display === "none" || !modal.style.display) {
-      modal.style.display = "flex";
-    } else {
-      modal.style.display = "none";
-    }
-  } else {
-    console.error("AI Modal kutusu sayfada bulunamadı!");
-  }
-}
-</script>
 </body>
 </html>
