@@ -1600,11 +1600,11 @@ div:has(> .header-action-btn) {
   <div class="modal-overlay" id="readmeModal" onclick="this.style.display='none'">
     <div class="modal-box large" onclick="event.stopPropagation()">
       <div class="modal-head">
-        <h3>📌 Proje & Kapsamlı Veri Kaynakçası (README)</h3>
-        <button onclick="document.getElementById('readmeModal').style.display='none'">&times;</button>
-      </div>
-      <div class="readme-content">
-        <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 12px; display: flex; align-items: center; gap: 12px;">
+        
+<h3>📌 Proje &amp; Kapsamlı Veri Kaynakçası (README)</h3>
+<button onclick="document.getElementById('readmeModal').style.display='none'">&times;</button>
+</div>
+
 <div class="readme-content">
 
   <div style="margin-bottom: 16px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 12px; display: flex; align-items: center; gap: 12px;">
@@ -1618,8 +1618,8 @@ div:has(> .header-action-btn) {
       <path d="M15 75 C 35 73, 50 82, 85 75" stroke="url(#readmeLogoGrad)" stroke-width="5" fill="none" stroke-linecap="round"/>
       <path d="M22 73 L37 24 L68 43 Z" stroke="url(#readmeLogoGrad)" stroke-width="4.5" fill="none" stroke-linejoin="round"/>
       <path d="M32 73 L60 47 L73 47 Z" stroke="url(#readmeLogoGrad)" stroke-width="3.5" fill="none" stroke-linejoin="round"/>
-      <polygon points="32,73 60,47 73,47" fill="url(#readmeLogoGrad)" opacity="0.25" />
-      <path d="M70 41 L73 35 L80 32 L73 29 L70 23 L67 29 L60 32 L67 35 Z" fill="#ffffff" />
+      <polygon points="32,73 60,47 73,47" fill="url(#readmeLogoGrad)" opacity="0.25"/>
+      <path d="M70 41 L73 35 L80 32 L73 29 L70 23 L67 29 L60 32 L67 35 Z" fill="#ffffff"/>
     </svg>
 
     <div>
@@ -1633,85 +1633,71 @@ div:has(> .header-action-btn) {
     </div>
   </div>
 
-  <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.5; margin-bottom: 14px;">
-    BN MARİN; Türkiye'deki ve dünyadaki tekne üreticilerini, tersaneleri, model serilerini ve deniz motoru markalarını bir araya getiren interaktif bir denizcilik bilgi ve karşılaştırma platformudur. Katalog verileri marka, seri ve model bazında düzenlenir; mevcut verinin kapsamına göre kullanıcıya sunulur.
+  <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-bottom: 14px;">
+    BN MARİN; Türkiye'deki ve dünyadaki tekne üreticilerini, tersaneleri, tekne modellerini ve deniz motoru markalarını bir araya getiren interaktif bir denizcilik bilgi ve karşılaştırma platformudur. Katalog kayıtları marka, seri ve model bazında düzenlenir.
   </p>
 
   <h4>1. Tekne ve Tersane Veri Tabanı</h4>
-  <p>
-    Platformda yer alan tekne ve tersane bilgileri; üretici katalogları, teknik dokümanlar, sektörel yayınlar ve çevrim içi referans kaynaklarından yararlanılarak düzenlenir.
-  </p>
+  <p>Tekne ve tersane bilgileri, üreticilerin yayımladığı kataloglar, teknik dokümanlar ve sektörel referans kaynakları esas alınarak derlenir.</p>
   <ul>
-    <li><strong>Sahibinden.com:</strong> Türkiye'deki tekne ilanları ve ikinci el piyasa bilgileri için referans kaynağı.</li>
-    <li><strong>Yatvitrini ve Denizbülten:</strong> Yerli tekne üreticileri, tersaneler ve sektörel gelişmeler için referans kaynakları.</li>
-    <li><strong>YachtWorld ve Powerboat Guide:</strong> Uluslararası tekne modelleri ve yayımlanmış teknik özellikler için referans kaynakları.</li>
-    <li><strong>Üretici web siteleri:</strong> Model, boyut ve teknik donanım bilgilerinin doğrulanmasında öncelikli kaynak.</li>
+    <li><strong>Sahibinden.com:</strong> Türkiye'deki tekne ilanları ve ikinci el piyasa bilgileri için destekleyici kaynak.</li>
+    <li><strong>Yatvitrini ve Denizbülten:</strong> Yerli üreticiler, tersaneler ve sektörel gelişmeler hakkında referans kaynaklar.</li>
+    <li><strong>YachtWorld ve Powerboat Guide:</strong> Uluslararası tekne modelleri ve yayımlanmış teknik bilgiler için kaynaklar.</li>
+    <li><strong>Üretici web siteleri:</strong> Model adları, boyutlar ve teknik donanım bilgilerinin doğrulanmasında öncelikli kaynaklar.</li>
   </ul>
 
   <h4>2. Motor ve Güç Ünitesi Teknik Kaynakçası</h4>
-  <p>
-    Deniz motorları ve sevk sistemleriyle ilgili marka ve ürün bilgileri, üreticilerin yayımladığı kataloglar ve teknik dokümanlar esas alınarak değerlendirilir.
-  </p>
+  <p>Deniz motorları ve sevk sistemlerine ilişkin bilgiler, üreticilerin yayımladığı ürün katalogları ve teknik dokümanlar üzerinden değerlendirilir.</p>
   <ul>
-    <li><strong>Volvo Penta Marine:</strong> D serisi motorlar, IPS sevk sistemleri ve ilgili marin çözümleri.</li>
+    <li><strong>Volvo Penta Marine:</strong> D serisi motorlar, IPS sevk sistemleri ve marin çözümler.</li>
     <li><strong>MAN Engines:</strong> Marin dizel motorları ve güç sistemleri.</li>
     <li><strong>Caterpillar Marine (CAT):</strong> Marin motorları ve teknik ürün dokümanları.</li>
-    <li><strong>Scania ve Cummins Marine:</strong> Marin motor serileri ve üretici teknik bilgileri.</li>
-    <li><strong>Mercury ve Yamaha Marine:</strong> Dıştan takma motorlar, marin güç sistemleri ve ürün dokümanları.</li>
+    <li><strong>Scania ve Cummins Marine:</strong> Marin motor serileri ve teknik bilgiler.</li>
+    <li><strong>Mercury ve Yamaha Marine:</strong> Dıştan takma motorlar ve marin güç sistemleri.</li>
   </ul>
 
   <h4>3. Akıllı Tekne Sihirbazı (Matchmaker) ve Karşılaştırma</h4>
-  <p>
-    Kullanıcının kullanım amacı, tercih ettiği tekne boyutu ve motor özellikleri gibi kriterlere göre katalogdaki uygun modelleri değerlendirmeyi amaçlar. Uygun kayıtlar arasından öne çıkan modeller sıralanabilir ve desteklenen teknik veriler üzerinden karşılaştırılabilir.
-  </p>
+  <p>Kullanıcının kullanım amacı, tercih ettiği tekne boyutu ve motor özellikleri gibi kriterlere göre katalogdaki uygun modellerin değerlendirilmesini sağlar.</p>
   <ul>
     <li>Tekne markası, seri ve model karşılaştırması.</li>
     <li>LOA (tam boy), genişlik ve mevcutsa diğer boyutsal özelliklerin karşılaştırılması.</li>
     <li>Motor ve güç sistemi bilgilerinin karşılaştırılması.</li>
-    <li>Eksik veya doğrulanmamış teknik verilerin kesin bilgi olarak sunulmaması.</li>
+    <li>Mevcut teknik verilere göre model sıralaması ve karşılaştırma.</li>
+    <li>Eksik veya doğrulanmamış bilgilerin kesin veri olarak sunulmaması.</li>
   </ul>
 
   <h4>4. Seyir ve Yakıt Tüketim Hesaplayıcı (Trip Fuel Calculator)</h4>
-  <p>
-    Kullanıcının girdiği mesafe, seyir hızı, motor seçimi ve yakıt fiyatı gibi bilgiler üzerinden tahmini seyir süresi ve yakıt maliyeti hesaplanır.
-  </p>
-  <p>
-    <strong>Önemli bilgilendirme:</strong> Hesaplama sonuçları tahminidir; gerçek tüketim değeri değildir. Tekne gövdesi, deplasman, yük, deniz ve hava koşulları, motorun çalışma devri ve bakım durumu gibi etkenler gerçek tüketimi değiştirebilir. Üretici tarafından doğrulanmış motor tüketim eğrisi bulunmadığında sonuçlar kesin fabrika verisi olarak değerlendirilmemelidir.
-  </p>
+  <p>Kullanıcının girdiği mesafe, seyir hızı, motor seçimi ve yakıt fiyatı gibi bilgiler üzerinden tahmini seyir süresi ve yakıt maliyeti hesaplanır.</p>
+  <p><strong>Önemli bilgilendirme:</strong> Hesaplama sonuçları tahminidir; gerçek tüketim veya üretici tarafından doğrulanmış fabrika verisi değildir. Teknenin gövde yapısı, deplasmanı, yükü, deniz ve hava koşulları, motor devri ve bakım durumu gerçek tüketimi değiştirebilir.</p>
 
   <h4>5. Telemetri ve Akıllı IoT Sensör Mimarisi</h4>
-  <p>
-    Tekne boyutuna ve kullanım amacına göre değerlendirilebilecek telemetri, izleme ve güvenlik donanımı örnekleri sunulur. Aşağıdaki gruplar öneri niteliğindedir; her tekne üzerinde bu donanımların bulunduğu anlamına gelmez.
-  </p>
+  <p>Tekne boyutu ve kullanım amacına göre değerlendirilebilecek izleme, güvenlik ve sensör teknolojilerine ilişkin örnekler sunulur.</p>
   <ul>
     <li><strong>Küçük ve Açık Tekneler (&lt; 35 ft):</strong> Sintine suyu alarmı, akü voltaj takibi ve temel uzaktan izleme çözümleri.</li>
-    <li><strong>Motoryat ve Flybridge (35–55 ft):</strong> Kamera sistemleri, makine dairesi duman alarmı, elektrik beslemesi ve uzaktan izleme çözümleri.</li>
-    <li><strong>Mega Yat ve Trawler (&gt; 55 ft):</strong> NMEA 2000 veri altyapısı, yakıt ve su tankı sensörleri, gelişmiş izleme ve güvenlik sistemleri.</li>
+    <li><strong>Motoryat ve Flybridge (35–55 ft):</strong> Kamera sistemleri, makine dairesi alarmı ve uzaktan izleme çözümleri.</li>
+    <li><strong>Mega Yat ve Trawler (&gt; 55 ft):</strong> NMEA 2000 veri altyapısı, yakıt ve su tankı sensörleri ve gelişmiş izleme sistemleri.</li>
   </ul>
+  <p>Bu donanımlar örnek ve öneri niteliğindedir; her tekne üzerinde standart olarak bulunduğu anlamına gelmez.</p>
 
-  <h4>6. Doğal Dil İşleme ve Yapay Zekâ Asistanı (AI Finder)</h4>
-  <p>
-    Kullanıcılar doğal dilde sorular sorarak katalogda bulunan marka, seri ve modeller hakkında bilgi alabilir. Örneğin:
-  </p>
+  <h4>6. Yapay Zekâ Asistanı (AI Finder)</h4>
+  <p>Kullanıcılar doğal dilde sorular sorarak katalogda bulunan marka, seri ve modeller hakkında bilgi alabilir.</p>
   <ul>
     <li><em>"Volvo Penta motor kullanan tekneleri göster."</em></li>
     <li><em>"Katalogdaki İtalyan tekne markalarını listele."</em></li>
     <li><em>"Yerli sac trawler modellerini bul."</em></li>
   </ul>
-  <p>
-    Yapay zekâ asistanı, kendisine gönderilen güncel katalog verilerini dikkate alarak yanıt oluşturur. Katalogda bulunmayan modelleri BN MARİN ürünü olarak göstermez.
-  </p>
+  <p>Yapay zekâ asistanı, kendisine aktarılan katalog verilerini dikkate alarak yanıt oluşturur. Katalogda bulunmayan modelleri BN MARİN ürünü olarak önermez.</p>
 
-  <h4>6.1. Yapay Zekâ Altyapısı ve Güvenlik</h4>
+  <h4>7. Yapay Zekâ Altyapısı ve Güvenlik</h4>
   <ul>
     <li><strong>Google Gemini API:</strong> Doğal dilde soru-cevap ve katalog verilerini yorumlama altyapısı.</li>
-    <li><strong>Cloudflare Workers:</strong> Web sitesi ile yapay zekâ servisi arasındaki güvenli sunucu katmanı.</li>
-    <li><strong>API anahtarı güvenliği:</strong> API anahtarı tarayıcı tarafında değil, Cloudflare Worker ortam değişkeninde tutulur.</li>
-    <li><strong>Dinamik katalog aktarımı:</strong> Web sitesindeki katalog kayıtları, uygun isteklerde yapay zekâ asistanına aktarılır.</li>
-    <li><strong>Sohbet geçmişi:</strong> Daha tutarlı yanıtlar için sınırlı sayıda önceki mesaj bağlam olarak kullanılabilir.</li>
+    <li><strong>Cloudflare Workers:</strong> Web sitesi ile yapay zekâ servisi arasındaki sunucu katmanı.</li>
+    <li><strong>API anahtarı güvenliği:</strong> API anahtarı tarayıcı kodunda değil, Cloudflare Worker ortamında saklanır.</li>
+    <li><strong>Dinamik katalog aktarımı:</strong> Uygun isteklerde web sitesindeki katalog verileri yapay zekâ asistanına aktarılır.</li>
+    <li><strong>Sohbet geçmişi:</strong> Daha tutarlı yanıtlar oluşturmak için sınırlı sayıda önceki mesaj bağlam olarak kullanılabilir.</li>
   </ul>
 
-  <h4>6.2. Veri Doğruluğu ve Kullanım İlkeleri</h4>
+  <h4>8. Veri Doğruluğu ve Güncelleme Politikası</h4>
   <ul>
     <li>Katalogda bulunmayan marka, seri ve modeller katalog ürünü olarak önerilmez.</li>
     <li>Bir modelin katalogda listelenmesi, stokta bulunduğu anlamına gelmez.</li>
@@ -1720,19 +1706,16 @@ div:has(> .header-action-btn) {
     <li>Kesin teknik değerlendirmelerde üreticinin güncel dokümanları esas alınmalıdır.</li>
   </ul>
 
-  <h4>7. Kaynak ve Güncelleme Politikası</h4>
-  <p>
-    Platformdaki marka, model ve teknik bilgiler zaman içinde güncellenebilir. Üretici katalogları ve resmî teknik dokümanlar öncelikli referans kabul edilir. Diğer sektörel ve çevrim içi kaynaklar destekleyici bilgi amacıyla kullanılır. Kaynağı veya doğruluğu teyit edilemeyen bilgiler kesin teknik veri olarak değerlendirilmez.
-  </p>
-
   <p style="color: #94a3b8; font-size: 0.78rem; border-top: 1px solid rgba(56, 189, 248, 0.2); padding-top: 12px; margin-top: 18px;">
     BN MARİN – Tekne, tersane, motor ve denizcilik teknolojileri için dijital bilgi ve karşılaştırma platformu.
   </p>
 
 </div>
 </div>
+</div>
 
-  <!-- AKILLI ASİSTAN MODAL -->
+<!-- AKILLI ASİSTAN MODAL -->
+
   <div class="modal-overlay" id="assistantModal" onclick="this.style.display='none'" style="z-index: 1600;">
     <div class="modal-box large" onclick="event.stopPropagation()" style="border-color: #a855f7; box-shadow: 0 0 35px rgba(168, 85, 247, 0.4);">
       <div class="modal-head" style="border-bottom-color: rgba(168, 85, 247, 0.3);">
