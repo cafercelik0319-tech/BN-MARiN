@@ -2756,15 +2756,38 @@ const filtered = brands.filter(b => {
       filtered.forEach(b => {
         let seriesHtml = "";
         b.series.forEach(s => {
-          const modelsHtml = s.models.map(m => {
-            const matchesEngine = isEngineMatch(b.name, m, currentEngineFilter);
-            let stateClass = "";
-            if (currentEngineFilter !== 'ALL') {
-              stateClass = matchesEngine ? "highlighted" : "dimmed";
-            }
-            return `<button class="model-btn ${stateClass}" onclick="openModal('${b.name}', '${s.name}', '${m}')">${m}</button>`;
-          }).join("");
+          const modelsHtml = s.models
+    .filter(m => {
+        if (currentEngineFilter && currentEngineFilter !== 'ALL') {
+            return isEngineMatch(b.name, m, currentEngineFilter);
+        }
 
+        if (q) {
+            const modelName = typeof m === "object"
+                ? (m.name || m.model || "")
+                : String(m || "");
+
+            return normalizeTr(modelName).includes(q) ||
+                   isEngineMatch(b.name, m, q);
+        }
+
+        return true;
+    })
+    .map(m => {
+        const matchesEngine = isEngineMatch(b.name, m, currentEngineFilter);
+        let stateClass = "";
+
+        if (currentEngineFilter !== 'ALL') {
+            stateClass = matchesEngine ? "highlighted" : "dimmed";
+        }
+
+        const modelName = typeof m === "object"
+            ? (m.name || m.model || "")
+            : String(m || "");
+
+        return `<button class="model-btn ${stateClass}" onclick="openModal('${b.name}', '${s.name}', '${modelName}')">${modelName}</button>`;
+    }).join("");
+          if (!modelsHtml) return;
           seriesHtml += `
             <div class="series-block">
               <div class="series-title">${s.name}</div>
