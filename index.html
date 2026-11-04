@@ -1139,6 +1139,79 @@ div:has(> .header-action-btn) {
   min-height: 40px !important;
   height: 40px !important;
 }
+/* Mobil Uyumlu Modal & Telemetri Grid Kuralları */
+@media (max-width: 768px) {
+  /* Modalların mobilde kenarlara yapışmasını ve taşmasını engeller */
+  .modal-box, 
+  .modal-box.large,
+  #customWizardModal > div,
+  #iotCockpitModal > div {
+    width: 95% !important;
+    max-width: 95% !important;
+    padding: 14px !important;
+    margin: 10px auto !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* 4'lü Telemetri kutularını mobilde 2x2 grid veya tek sütun yapar */
+  #iotCockpitModal .grid,
+  #iotCockpitModal div[style*="grid-template-columns"],
+  #iotCockpitModal div[style*="display: flex"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  /* Telemetri kartlarının iç padding ve yazı boyutlarını dengeler */
+  #iotCockpitModal div[style*="background: rgba(15, 23, 42"] {
+    padding: 10px 8px !important;
+  }
+
+  #iotCockpitModal span, 
+  #iotCockpitModal div {
+    word-break: break-word;
+  }
+}
+
+/* Çok küçük telefonlar (480px altı) için tek sütun */
+@media (max-width: 480px) {
+  #iotCockpitModal .grid,
+  #iotCockpitModal div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+@media (max-width: 600px) {
+  #iotCockpitModal .modal-box,
+  #iotCockpitModal div[style*="border: 1px solid #10b981"] {
+    width: 95% !important;
+    max-width: 95% !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 4'lü telemetri alanını saran kapsayıcıyı 2 sütunlu gride çevir */
+  #iotCockpitModal div[style*="display: flex; justify-content: space-between"],
+  #iotCockpitModal div[style*="display:flex"][style*="gap"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Her bir telemetri kartının genişliğini gride uyarla */
+  #iotCockpitModal div[style*="background: rgba(15, 23, 42"] {
+    width: 100% !important;
+    min-width: unset !important;
+    padding: 10px 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Yazı ve voltaj değerlerini mobilde taşmayacak boyuta çek */
+  #iotCockpitModal div[style*="font-size: 22px"],
+  #iotCockpitModal div[style*="font-size: 20px"] {
+    font-size: 17px !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -1578,6 +1651,11 @@ div:has(> .header-action-btn) {
           <li><strong>Mercury &amp; Yamaha Marine:</strong> Verado ve Offshore servis kılavuzları.</li>
         </ul>
 
+        <h4>3. Akıllı Tekne Sihirbazı (Matchmaker) & Kapsamlı Karşılaştırma</h4>
+        <p>Kullanım amacı, hedef boyutu ve motor mimarisine göre çalışan ağırlıklı puanlama algoritmasıdır. İlk 3 modeli sıralar; 1-2, 2-3 ve 1-3 modelleri arasındaki LOA, sürat (knot), makine ve seyir dengesi farklarını anlık teknik analizle kıyaslar.</p>
+
+        <h4>4. Seyir & Yakıt Tüketim Hesaplayıcı (Trip Fuel Calculator)</h4>
+        <p>Gövde deplasman yapısı, seyir hızı ve motor üreticilerinin fabrika devir eğrileri baz alınarak saatlik ortalama tüketim (L/h) ve rota bazlı sarfiyat projeksiyonunu hesaplar.</p>
         <h4>3. Telemetri &amp; Akıllı IoT Sensör Mimarisi</h4>
         <p>Her modelin teknik föyünde boyuta (LOA/Feet) ve elektrik-makine gereksinimlerine göre önerilen açık telemetri protokolleri ve donanım eşleştirmeleri listelenir:</p>
         <ul>
@@ -1646,13 +1724,13 @@ div:has(> .header-action-btn) {
       <label style="display:block; font-size:11px; color:#94a3b8; margin-bottom:4px; font-weight:600;">⛽ Akaryakıt Litre Fiyatı (₺)</label>
       <div style="display: flex; gap: 8px;">
         <!-- Motorin / Benzin Seçimi -->
-        <select onchange="document.getElementById('calcCustomFuelPrice').value = this.value; window.calculateTripCost();" style="height: 36px; background: rgba(15, 23, 42, 0.9); border: 1px solid #334155; border-radius: 8px; color: #f8fafc; padding: 0 8px; font-size: 12px; outline: none; cursor: pointer;">
-          <option value="56.50">Motorin (Dizel)</option>
-          <option value="54.20">Benzin</option>
+        <select id="calcFuelTypeSelect" disabled title="Yakıt türü seçilen motor tipine göre otomatik belirlenir" style="height: 36px; background: rgba(15, 23, 42, 0.9); border: 1px solid #334155; border-radius: 8px; color: #f8fafc; padding: 0 8px; font-size: 12px; outline: none; opacity: 0.9;">
+          <option value="motorin" selected>Motorin (Dizel)</option>
+          <option value="benzin">Benzin</option>
         </select>
         
         <!-- Tek ve Canlı Fiyat Kutusu -->
-        <input type="number" id="calcCustomFuelPrice" step="0.1" value="56.50" oninput="window.calculateTripCost()" placeholder="Litre fiyatı" style="flex: 1; height: 36px; background: rgba(15, 23, 42, 0.9); border: 1px solid #0284c7; border-radius: 8px; color: #38bdf8; font-weight: 700; padding: 0 10px; font-size: 13px; outline: none; box-sizing: border-box;">
+        <input type="number" id="calcCustomFuelPrice" step="0.1" value="97.80" oninput="window.calculateTripCost()" placeholder="Litre fiyatı" style="flex: 1; height: 36px; background: rgba(15, 23, 42, 0.9); border: 1px solid #0284c7; border-radius: 8px; color: #38bdf8; font-weight: 700; padding: 0 10px; font-size: 13px; outline: none; box-sizing: border-box;">
       </div>
       <small style="font-size: 10px; color: #64748b; margin-top: 3px; display: block;">İster seç, ister güncel pompa fiyatını kendin yaz.</small>
     </div>
@@ -1681,14 +1759,32 @@ div:has(> .header-action-btn) {
         <!-- 3. Motor & Güç Sınıfı -->
         <div>
           <label style="font-size: 11px; font-weight: 700; color: #94a3b8; display: block; margin-bottom: 5px;">⚡ Motor Tipi / Güç Grubu:</label>
-          <select id="calcEngineSelect" onchange="calculateTripCost()" style="width: 100%; background: #0f1c38; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none;">
-            <option value="outboard_small">Dıştan Takma Küçük (115-150 HP Benzin) ~ 30 L/saat</option>
-            <option value="outboard_twin">Çift Dıştan Takma Spor (2x 300 HP Benzin) ~ 90 L/saat</option>
-            <option value="diesel_cruiser" selected>Orta Boy Motoryat (Çift Volvo IPS 650) ~ 110 L/saat</option>
-            <option value="diesel_flybridge">Büyük Flybridge (Çift MAN V8 1200 HP) ~ 240 L/saat</option>
-            <option value="diesel_trawler">Ekonomik Deplasman Trawler (Scania/Cummins) ~ 40 L/saat</option>
-            <option value="megayacht">Mega Yat (Çift MTU / MAN V12 2000 HP) ~ 550 L/saat</option>
+          <select id="calcEngineSelect" onchange="onCalcEngineChange()" style="width: 100%; background: #0f1c38; border: 1px solid rgba(56,189,248,0.3); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; outline: none;">
+            <optgroup label="Volvo Penta – Dizel">
+              <option value="volvo_d8_ips600" data-fuel="motorin">D8-IPS600 (450 HP)</option>
+              <option value="volvo_d8_ips650" data-fuel="motorin" selected>D8-IPS650 (509 HP)</option>
+              <option value="volvo_d8_ips700" data-fuel="motorin">D8-IPS700 (550 HP)</option>
+              <option value="volvo_d8_ips800" data-fuel="motorin">D8-IPS800 (600 HP)</option>
+            </optgroup>
+            <optgroup label="MAN – Dizel">
+              <option value="man_v8_1000" data-fuel="motorin">MAN V8-1000 (1.000 HP)</option>
+              <option value="man_v8_1120" data-fuel="motorin">MAN V8-1120 (1.120 HP)</option>
+              <option value="man_v8_1200" data-fuel="motorin">MAN V8-1200 (1.200 HP)</option>
+              <option value="man_v8_1300" data-fuel="motorin">MAN V8-1300 (1.300 HP)</option>
+            </optgroup>
+            <optgroup label="MTU – Dizel">
+              <option value="mtu_12v2000_m92" data-fuel="motorin">MTU 12V 2000 M92 (1.635 bhp)</option>
+              <option value="mtu_16v2000_m92" data-fuel="motorin">MTU 16V 2000 M92 (2.185 bhp)</option>
+            </optgroup>
+            <optgroup label="Yamaha – Benzin">
+              <option value="yamaha_f150" data-fuel="benzin">Yamaha F150</option>
+              <option value="yamaha_f300" data-fuel="benzin">Yamaha F300</option>
+            </optgroup>
+            <optgroup label="Mercury – Benzin">
+              <option value="mercury_verado_300" data-fuel="benzin">Mercury Verado 300</option>
+            </optgroup>
           </select>
+          <small id="calcEngineReference" style="display:block; margin-top:5px; color:#94a3b8; font-size:10px; line-height:1.45;">Seçilen motor için yaklaşık tüketim otomatik kullanılır. Gerçek değer tekne ve seyir koşullarına göre değişebilir.</small>
         </div>
 
         <!-- 4. Seyir Hızı (Knot) -->
@@ -2421,20 +2517,6 @@ function isEngineMatch(brandName, modelItem, filter) {
 
   return eng.includes(f) || rawModel.includes(f);
 }
-    function filterByCountry(country, btnElement) {
-      btnElement.parentElement.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
-      btnElement.classList.add("active");
-      currentCountryFilter = country;
-      checkFilterResetState();
-      render();
-    }
-
-   function filterByEngine(engineType, btnElement) {
-  currentEngineFilter = engineType;
-  if (typeof checkFilterResetState === 'function') checkFilterResetState();
-  if (typeof render === 'function') render();
-}
-
     function checkFilterResetState() {
   const btn = document.getElementById('clearAllFiltersBtn') || (typeof clearAllFiltersBtn !== 'undefined' ? clearAllFiltersBtn : null);
   if (!btn || !btn.style) return;
@@ -2887,15 +2969,6 @@ const filtered = brands.filter(b => {
       EuroTry: 55.67
     };
 
-    const fuelConfigs = {
-      outboard_small:   { rate: 30,  fuelType: "Benzin" },
-      outboard_twin:    { rate: 90,  fuelType: "Benzin" },
-      diesel_cruiser:   { rate: 110, fuelType: "Marin Dizel" },
-      diesel_flybridge: { rate: 240, fuelType: "Marin Dizel" },
-      diesel_trawler:   { rate: 40,  fuelType: "Marin Dizel" },
-      megayacht:        { rate: 550, fuelType: "Marin Dizel" }
-    };
-
     async function fetchLiveFuelRates() {
       const statusEl = document.getElementById("fuelLiveStatus");
       const dotEl = document.getElementById("fuelLiveDot");
@@ -2916,6 +2989,7 @@ const filtered = brands.filter(b => {
           const data = await res.json();
           if (data && data.rates && data.rates.TRY) {
             livePrices.eurTry = parseFloat(data.rates.TRY.toFixed(2));
+            if (window.livePrices) window.livePrices.eurTry = livePrices.eurTry;
           }
         }
         if (statusEl) statusEl.innerText = `Canlı Piyasa & TCMB Kuru Aktif (1 € = ${livePrices.eurTry} ₺)`;
@@ -2962,12 +3036,19 @@ const filtered = brands.filter(b => {
     };
 
     window.fuelConfigs = {
-      outboard_small:   { rate: 30,  fuelType: "Benzin" },
-      outboard_twin:    { rate: 90,  fuelType: "Benzin" },
-      diesel_cruiser:   { rate: 110, fuelType: "Marin Dizel" },
-      diesel_flybridge: { rate: 240, fuelType: "Marin Dizel" },
-      diesel_trawler:   { rate: 40,  fuelType: "Marin Dizel" },
-      megayacht:        { rate: 550, fuelType: "Marin Dizel" }
+      volvo_d8_ips600: { fuelType: "Marin Dizel", rate: 70, reference: "Yaklaşık seyir tüketimi: 70 L/saat. Tahmini değerdir; tekne ve devir koşullarına göre değişir." },
+      volvo_d8_ips650: { fuelType: "Marin Dizel", rate: 80, reference: "Yaklaşık seyir tüketimi: 80 L/saat. Tahmini değerdir; tekne ve devir koşullarına göre değişir." },
+      volvo_d8_ips700: { fuelType: "Marin Dizel", rate: 90, reference: "Yaklaşık seyir tüketimi: 90 L/saat. Tahmini değerdir; tekne ve devir koşullarına göre değişir." },
+      volvo_d8_ips800: { fuelType: "Marin Dizel", rate: 100, reference: "Yaklaşık seyir tüketimi: 100 L/saat. Tahmini değerdir; tekne ve devir koşullarına göre değişir." },
+      man_v8_1000: { fuelType: "Marin Dizel", rate: 125, reference: "Yaklaşık seyir tüketimi: 125 L/saat. Tam-yük verisi değil, hesaplama tahminidir." },
+      man_v8_1120: { fuelType: "Marin Dizel", rate: 135, reference: "Yaklaşık seyir tüketimi: 135 L/saat. Tam-yük verisi değil, hesaplama tahminidir." },
+      man_v8_1200: { fuelType: "Marin Dizel", rate: 145, reference: "Yaklaşık seyir tüketimi: 145 L/saat. Tam-yük verisi değil, hesaplama tahminidir." },
+      man_v8_1300: { fuelType: "Marin Dizel", rate: 155, reference: "Yaklaşık seyir tüketimi: 155 L/saat. Tam-yük verisi değil, hesaplama tahminidir." },
+      mtu_12v2000_m92: { fuelType: "Marin Dizel", rate: 190, reference: "Yaklaşık seyir tüketimi: 190 L/saat. Tahmini değerdir; çalışma koşullarına göre değişir." },
+      mtu_16v2000_m92: { fuelType: "Marin Dizel", rate: 250, reference: "Yaklaşık seyir tüketimi: 250 L/saat. Tahmini değerdir; çalışma koşullarına göre değişir." },
+      yamaha_f150: { fuelType: "Benzin", rate: 25, reference: "Yaklaşık seyir tüketimi: 25 L/saat. Tahmini değerdir; tekne ve devre göre değişir." },
+      yamaha_f300: { fuelType: "Benzin", rate: 50, reference: "Yaklaşık seyir tüketimi: 50 L/saat. Tahmini değerdir; tekne ve devre göre değişir." },
+      mercury_verado_300: { fuelType: "Benzin", rate: 50, reference: "Yaklaşık seyir tüketimi: 50 L/saat. Tahmini değerdir; tekne ve devre göre değişir." }
     };
 
     window.openFuelCalculatorModal = function() {
@@ -2986,87 +3067,75 @@ const filtered = brands.filter(b => {
       }
       window.calculateTripCost();
     };
-    const userFuelPrice = parseFloat(document.getElementById("calcCustomFuelPrice")?.value) || 56.5;
+    window.onCalcEngineChange = function() {
+      const engineSelect = document.getElementById("calcEngineSelect");
+      const fuelTypeSelect = document.getElementById("calcFuelTypeSelect");
+      const priceInput = document.getElementById("calcCustomFuelPrice");
+      const referenceEl = document.getElementById("calcEngineReference");
+      if (!engineSelect) return;
+      const config = window.fuelConfigs[engineSelect.value];
+      if (!config) return;
+      const nextFuelType = config.fuelType === "Benzin" ? "benzin" : "motorin";
+      const previousFuelType = fuelTypeSelect ? fuelTypeSelect.value : nextFuelType;
+      if (fuelTypeSelect) fuelTypeSelect.value = nextFuelType;
+      if (referenceEl) referenceEl.textContent = config.reference;
+      if (priceInput && previousFuelType !== nextFuelType) {
+        const nextPrice = nextFuelType === "benzin" ? window.livePrices.benzin : window.livePrices.motorin;
+        if (Number.isFinite(Number(nextPrice)) && Number(nextPrice) > 0) priceInput.value = Number(nextPrice).toFixed(2);
+      }
+      window.calculateTripCost();
+    };
+
     window.calculateTripCost = function() {
       const distInput = document.getElementById("calcDistanceInput");
       const speedInput = document.getElementById("calcSpeedInput");
       const engineSelect = document.getElementById("calcEngineSelect");
-      const userFuelPrice = parseFloat(document.getElementById("calcCustomFuelPrice")?.value) || 56.5;
-
+      const customPriceInput = document.getElementById("calcCustomFuelPrice");
       if (!distInput || !speedInput || !engineSelect) return;
-
-      const distance = parseFloat(distInput.value) || 0;
-      const speed = parseFloat(speedInput.value) || 1;
-      const engineKey = engineSelect.value;
-      const config = window.fuelConfigs[engineKey] || { rate: 100, fuelType: "Marin Dizel" };
-
-      // 1. Süre Hesabı
-  const totalHours = speed > 0 ? (distance / speed) : 0;
-  const hours = Math.floor(totalHours);
-  const minutes = Math.round((totalHours - hours) * 60);
-
-  // 2. Deniz Mühendisliği Gerçek Seyir Dinamiği
-  let hourlyLiters = 0;
-
-  if (engineKey === "diesel_trawler") {
-    // Trawler (Deplasman Gövde): 9 knot ekonomik gövde süratidir
-    const baseTrawlerSpeed = 9;
-    hourlyLiters = config.rate * Math.pow(speed / baseTrawlerSpeed, 1.8);
-  } else {
-    // Kayan / Planyacı Gövdeler (Dıştan Takma, Cruiser, Flybridge, Mega Yat)
-    if (speed <= 9) {
-      // Düşük Hız / Deplasman Seyri (Rölanti ve liman çıkışı)
-      hourlyLiters = (config.rate * 0.25) * (speed / 9);
-    } else if (speed <= 16) {
-      // Kambur Aşaması (Burun havada, direnç ve zorlanma yüksek)
-      hourlyLiters = (config.rate * 0.65) * Math.pow(speed / 14, 1.4);
-    } else {
-      // 17 knot ve üzeri (Planya Seyri, 22 knot nominal seyir baz alınır)
-      hourlyLiters = config.rate * Math.pow(speed / 22, 1.35);
-    }
-  }
-
-  // Toplam Tüketim (Litre)
-  const totalLitres = Math.max(5, Math.round(totalHours * hourlyLiters));
-
-      // 3. Fiyat Hesabı (80.60 ₺ veya 97.80 ₺)
-    const customPriceInput = document.getElementById("calcCustomFuelPrice");
-    const defaultPrice = (config.fuelType === "Benzin") ? window.livePrices.benzin : window.livePrices.motorin;
-    const unitPrice = customPriceInput && customPriceInput.value ? parseFloat(customPriceInput.value) : defaultPrice;
-
-    const costTL = Math.round(totalLitres * unitPrice);
-    const costEUR = Math.round(costTL / window.livePrices.eurTry);
-      // 4. Arayüzü Güncelle
+      const distance = Math.max(0, parseFloat(distInput.value) || 0);
+      const speed = Math.max(0, parseFloat(speedInput.value) || 0);
+      const config = window.fuelConfigs[engineSelect.value];
+      if (!config) return;
+      const totalHours = speed > 0 ? distance / speed : 0;
+      const hours = Math.floor(totalHours);
+      const minutes = Math.round((totalHours - hours) * 60);
       const timeEl = document.getElementById("resTripTime");
       const fuelEl = document.getElementById("resTotalFuel");
       const fuelTypeBadge = document.getElementById("resFuelTypeBadge");
       const costTlEl = document.getElementById("resCostTL");
       const costEurEl = document.getElementById("resCostEUR");
       const unitRateInfo = document.getElementById("lblUnitRateInfo");
-
       if (timeEl) timeEl.innerText = `${hours}s ${minutes}dk`;
+      const isPetrol = config.fuelType === "Benzin";
+      const defaultPrice = isPetrol ? window.livePrices.benzin : window.livePrices.motorin;
+      const enteredPrice = customPriceInput ? parseFloat(customPriceInput.value) : NaN;
+      const unitPrice = Number.isFinite(enteredPrice) && enteredPrice > 0 ? enteredPrice : defaultPrice;
+      if (fuelTypeBadge) fuelTypeBadge.innerText = isPetrol ? "⛽ Kurşunsuz Benzin" : "🛢️ Marin Dizel (Motorin)";
+      if (!config.rate || speed <= 0 || distance <= 0) {
+        if (fuelEl) fuelEl.innerText = "—";
+        if (costTlEl) costTlEl.innerText = "—";
+        if (costEurEl) costEurEl.innerText = "—";
+        if (unitRateInfo) unitRateInfo.innerText = "Tüketim tahmini hesaplanamadı.";
+        return;
+      }
+      const totalLitres = Math.round(totalHours * config.rate);
+      const eurTry = Number(window.livePrices.eurTry) || 1;
+      const costTL = Math.round(totalLitres * unitPrice);
+      const costEUR = Math.round(costTL / eurTry);
       if (fuelEl) fuelEl.innerText = `${totalLitres.toLocaleString('tr-TR')} Litre`;
       if (costTlEl) costTlEl.innerText = `~ ${costTL.toLocaleString('tr-TR')} ₺`;
       if (costEurEl) costEurEl.innerText = `~ ${costEUR.toLocaleString('tr-TR')} €`;
-
-      if (unitRateInfo) {
-        unitRateInfo.innerText = `(${unitPrice.toFixed(2)} ₺/Litre)`;
-      }
-
+      if (unitRateInfo) unitRateInfo.innerText = `Yaklaşık ${config.rate} L/saat · ${unitPrice.toFixed(2)} ₺/L · tek motor varsayımı`;
       if (fuelTypeBadge) {
-        if (config.fuelType === "Benzin") {
-          fuelTypeBadge.innerText = `⛽ Kurşunsuz Benzin (${unitPrice.toFixed(2)} ₺/L)`;
-          fuelTypeBadge.style.background = "rgba(249, 115, 22, 0.2)";
-          fuelTypeBadge.style.color = "#fb923c";
-          fuelTypeBadge.style.borderColor = "rgba(249, 115, 22, 0.4)";
-        } else {
-          fuelTypeBadge.innerText = `🛢️ Marin Dizel (${unitPrice.toFixed(2)} ₺/L)`;
-          fuelTypeBadge.style.background = "rgba(56, 189, 248, 0.2)";
-          fuelTypeBadge.style.color = "#38bdf8";
-          fuelTypeBadge.style.borderColor = "rgba(56, 189, 248, 0.4)";
-        }
+        fuelTypeBadge.innerText = `${isPetrol ? "⛽ Kurşunsuz Benzin" : "🛢️ Marin Dizel"} (${unitPrice.toFixed(2)} ₺/L)`;
+        fuelTypeBadge.style.background = isPetrol ? "rgba(249, 115, 22, 0.2)" : "rgba(56, 189, 248, 0.2)";
+        fuelTypeBadge.style.color = isPetrol ? "#fb923c" : "#38bdf8";
+        fuelTypeBadge.style.borderColor = isPetrol ? "rgba(249, 115, 22, 0.4)" : "rgba(56, 189, 248, 0.4)";
       }
     };
+
+    // İlk açılışta motor modeline göre yakıt türünü eşitle.
+    window.onCalcEngineChange();
 
      // Motor Marka ve Seri Hiyerarşi Veritabanı (Arama anahtarı ile eşleştirilmiş)
 const engineHierarchyCatalog = {
@@ -3341,18 +3410,6 @@ window.openWizardModal = function() {
   const m = document.getElementById('wizardModal');
   if (m) m.style.display = 'flex';
 };
-// Navbardaki "Asistan (AI Finder)" butonuna tıklandığında açılması için
-function openAiChatModal() {
-  const modal = document.getElementById("aiChatModal");
-  if (modal) {
-    modal.style.display = "flex";
-    setTimeout(() => {
-      const input = document.getElementById("aiChatInput");
-      if (input) input.focus();
-    }, 100);
-  }
-}
-
 function closeAiChatModal() {
   const modal = document.getElementById("aiChatModal");
   if (modal) modal.style.display = "none";
@@ -3371,100 +3428,91 @@ function sendQuickPrompt(text) {
     handleAiSend();
   }
 }
-// Güvenlik: Gemini API anahtarı tarayıcıya konulmamalıdır.
-// /api/marine-ai uç noktasını sunucuda oluşturup Gemini isteğini oradan iletin.
-// Sunucu, Gemini'nin generateContent yanıt biçimiyle uyumlu JSON döndürmelidir.
-  async function generateMarineAiReply(userText) {
-  window.marineAiHistory = window.marineAiHistory || [];
 
- const promptSystem = `Sen BN MARİN'in profesyonel denizcilik danışmanısın.
-- Düzgün, ciddi, doğal ve anlaşılır Türkçe kullan.
-- Yazım ve noktalama hatalarını kontrol et.
-- Gereksiz selamlaşma, şaka ve abartılı denizcilik ifadeleri kullanma.
-- Önceki konuşmayı dikkate al; takip sorularını bağlamından koparma.
-- Tekne ve motorların teknik özelliklerini uydurma.
-- Doğrulanmış veriler yoksa bunu açıkça söyle; tahmini sayıları gerçekmiş gibi sunma.
-- Kullanıcı detay isterse önceki sorusunu dikkate alarak ayrıntı ver.
-- Kullanıcı tekne veya motor listelemek isterse uygun eylem etiketini yanıtın sonuna ekle:
-  Volvo motorlar: [ACTION:FILTER_VOLVO]
-  MAN motorlar: [ACTION:FILTER_MAN]
-  Scania motorlar: [ACTION:FILTER_SCANIA]
-  CAT motorlar: [ACTION:FILTER_CAT]
-  İtalyan tekneler: [ACTION:FILTER_ITALY]
-  Türk tekneler: [ACTION:FILTER_TURKEY]
-  Sıfırlama: [ACTION:RESET]`;
-
+async function generateMarineAiReply(userText) {
   const url = "https://bn-marin-gemini.cafercelik0319.workers.dev/";
+  const maxAttempts = 2;
   let reply = "";
-  const maxAttempts = 1;
-  let attempts = 0;
 
-  while (attempts < maxAttempts && !reply) {
-    attempts++;
+  for (let attempts = 1; attempts <= maxAttempts; attempts++) {
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: `${promptSystem}\n\nKullanıcı: ${userText}`,
-           history: window.marineAiHistory || []
+          message: userText,
+          history: window.marineAiHistory || []
         })
       });
 
       const data = await response.json();
 
+      console.log("Worker HTTP durumu:", response.status);
+      console.log("Worker yanıtı:", data);
+
       if (response.ok && typeof data.text === "string" && data.text.trim()) {
         reply = data.text.trim();
-      } else if (data.error) {
-        console.warn(`Deneme ${attempts} başarısız:`, data.error);
-        if (attempts < maxAttempts) {
-          await new Promise((res) => setTimeout(res, 1200));
-        }
+        break;
       }
+
+      console.warn("AI yanıt hatası:", data.error || "Geçerli yanıt alınamadı.");
+
     } catch (err) {
-      console.warn(`Ağ hatası (${attempts}):`, err.message);
-      if (attempts < maxAttempts) {
-        await new Promise((res) => setTimeout(res, 1200));
-      }
+      console.warn("AI bağlantı hatası:", err.message);
+    }
+
+    if (attempts < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 1200));
     }
   }
 
   if (!reply) {
-    reply = "Açık denizde telsiz anlık parazit yaptı kaptan, sunucu yoğun. Tekrar bir üfle bakalım!";
+    return "Şu anda yanıt alınamıyor. Lütfen birkaç saniye sonra tekrar deneyin.";
   }
 
-  // Kullanıcı mesajı veya yanıt üzerinden filtreleri tetikleme
-  const lowerUser = (userText || "").toLowerCase();
+  // Filtreleme işlemleri
+  const actions = [
+    ["[ACTION:FILTER_VOLVO]", "engineFilter", "VOLVO PENTA"],
+    ["[ACTION:FILTER_MAN]", "engineFilter", "MAN"],
+    ["[ACTION:FILTER_SCANIA]", "engineFilter", "SCANIA"],
+    ["[ACTION:FILTER_CAT]", "engineFilter", "CATERPILLAR"],
+    ["[ACTION:FILTER_ITALY]", "countryFilter", "İTALYA"],
+    ["[ACTION:FILTER_TURKEY]", "countryFilter", "TÜRKİYE"]
+  ];
 
-  if (reply.includes("[ACTION:FILTER_VOLVO]") || lowerUser.includes("volvo")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('volvo', 'Volvo (Tümü)', 'logolar/volvo.png');
-    reply = reply.replace("[ACTION:FILTER_VOLVO]", "");
-  } else if (reply.includes("[ACTION:FILTER_MAN]")) {
-    if (typeof selectEngineOption === "function") {
-        selectEngineOption('man', 'MAN (Tümü)', 'logolar/man.png');
+  for (const [tag, filterId, value] of actions) {
+    if (reply.includes(tag)) {
+      const filter = document.getElementById(filterId);
+
+      if (filter) {
+        filter.value = value;
+
+        if (typeof render === "function") {
+          render();
+        }
+      }
+
+      break;
     }
-    reply = reply.replace("[ACTION:FILTER_MAN]", "").trim();
-  } else if (reply.includes("[ACTION:FILTER_SCANIA]") || lowerUser.includes("scania")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('scania', 'Scania (Tümü)', 'logolar/scania.png');
-    reply = reply.replace("[ACTION:FILTER_SCANIA]", "");
-  } else if (reply.includes("[ACTION:FILTER_CAT]") || lowerUser.includes("cat") || lowerUser.includes("caterpillar")) {
-    if (typeof selectEngineOption === "function") selectEngineOption('cat', 'CAT (Tümü)', 'logolar/cat.png');
-    reply = reply.replace("[ACTION:FILTER_CAT]", "");
-  } else if (reply.includes("[ACTION:FILTER_ITALY]") || lowerUser.includes("italya") || lowerUser.includes("italyan")) {
-    const cf = document.getElementById("countryFilter");
-    if (cf) { cf.value = "İTALYA"; if (typeof render === "function") render(); }
-    reply = reply.replace("[ACTION:FILTER_ITALY]", "");
-  } else if (reply.includes("[ACTION:FILTER_TURKEY]") || lowerUser.includes("türkiye") || lowerUser.includes("türk")) {
-    const cf = document.getElementById("countryFilter");
-    if (cf) { cf.value = "TÜRKİYE"; if (typeof render === "function") render(); }
-    reply = reply.replace("[ACTION:FILTER_TURKEY]", "");
-  } else if (reply.includes("[ACTION:RESET]") || lowerUser.includes("sıfırla") || lowerUser.includes("temizle")) {
-    if (typeof resetAllFilters === "function") resetAllFilters();
-    reply = reply.replace("[ACTION:RESET]", "");
   }
+
+  if (reply.includes("[ACTION:RESET]")) {
+    if (typeof resetAllFilters === "function") {
+      resetAllFilters();
+    }
+  }
+
+  // Eylem etiketlerini yanıttan temizle
   reply = reply.replace(/\[ACTION:[A-Z_]+\]/g, "").trim();
 
-   window.marineAiHistory = window.marineAiHistory || [];
+  if (!reply) {
+    reply = "İstediğin filtre uygulandı.";
+  }
+
+
+  // Konuşma geçmişini kaydet
+  window.marineAiHistory = window.marineAiHistory || [];
+
   window.marineAiHistory.push(
     { role: "user", text: userText },
     { role: "model", text: reply }
@@ -3476,6 +3524,7 @@ function sendQuickPrompt(text) {
 
   return reply;
 }
+
 
 async function handleAiSend() {
   const input = document.getElementById("aiChatInput");
@@ -3510,10 +3559,17 @@ async function handleAiSend() {
   msgContainer.scrollTop = msgContainer.scrollHeight;
 
   // Gemini'den yanıtı bekle
-  const reply = await generateMarineAiReply(userText);
+let reply = "";
 
+try {
+  reply = await generateMarineAiReply(userText);
+} catch (error) {
+  console.error("AI yanıt hatası:", error);
+  reply = "Bağlantıda geçici bir sorun oluştu. Lütfen tekrar deneyin.";
+} finally {
   const indicator = document.getElementById("aiTypingIndicator");
   if (indicator) indicator.remove();
+}
 
   // Asistan yanıtı
   const botDiv = document.createElement("div");
@@ -3587,71 +3643,142 @@ async function handleAiSend() {
   }, 1200);
 
   // 3. BOY ARALIĞINA KESİN UYAN SİHİRBAZ MOTORU
-  window.runSimpleWizard = function() {
-    var box = document.getElementById('simpleResult');
-    if (!box) return;
+window.runSimpleWizard = function() {
+  var box = document.getElementById('simpleResult');
+  if (!box) return;
 
-    // Hedef Boy Aralığı seçim kutusunu yakala
-    var lenSelect = document.getElementById('customWizLength');
-    if (!lenSelect) {
-      // Eğer id atanmamışsa modal içindeki 2. select kutusunu bul
-      var allSelects = document.querySelectorAll('#customWizardModal select');
-      if (allSelects.length >= 2) lenSelect = allSelects[1];
-    }
+  var modal = document.getElementById('customWizardModal');
+  var allSelects = modal ? modal.querySelectorAll('select') : [];
+  
+  var purposeSelect = allSelects[0];
+  var lenSelect = document.getElementById('customWizLength') || allSelects[1];
+  var hullSelect = allSelects[2];
 
-    var selectedText = lenSelect ? lenSelect.options[lenSelect.selectedIndex].text : '';
-    var selectedVal = lenSelect ? lenSelect.value : '';
+  var purpose = purposeSelect ? purposeSelect.selectedIndex : 0; // 0: Aile, 1: Spor, 2: Uzun Yol (Trawler)
+  var len = lenSelect ? lenSelect.value : 'mid'; // small, mid, large
+  var hull = hullSelect ? hullSelect.selectedIndex : 0; // 0: Şaft/Dizel, 1: Dıştan Takma Benzin, 2: Deplasman
 
-    // Boy kategorileri ve modelleri
-    var smallBoats = [
-      { name: "Anka 8.50 Cruiser", len: "8.50 Metre", spec: "Çift 200 HP Mercury • Seri Sürüş & Koy Gezisi" },
-      { name: "Alfastreet 28 Cabin", len: "8.60 Metre • Dıştan Takma Benzinli", spec: "Kompakt Spor Hatlar • Hızlı Seyir" },
-      { name: "Antares 8", len: "8.06 Metre", spec: "250 HP Dıştan Takma • Balık & Hafta Sonu Konforu" },
-      { name: "Antares 9 Weekender", len: "9.12 Metre", spec: "Çift Kamara • Aile Gezisi" }
-    ];
+  // Kapsamlı Aday Havuzu
+  var candidatePool = [
+    // 10m Altı (Küçük)
+    { brand: "Anka Tekne", series: "Fiber Cruiser", model: "Anka 8.50", displayName: "Anka 8.50 Cruiser", len: "8.50m", lenCat: "small", purCat: 1, hullCat: 1, engine: "Çift 200 HP Mercury", speed: "36 Knot", spec: "Dıştan Takma Benzin • Hızlı Gezi & Hafta Sonu" },
+    { brand: "Alfastreet Marine", series: "Hydraulic Hardtop", model: "28 Cabin", displayName: "Alfastreet 28 Cabin", len: "8.60m", lenCat: "small", purCat: 1, hullCat: 1, engine: "250 HP Dıştan Takma", speed: "32 Knot", spec: "Kompakt Spor Hatlar • Düşük Bakım Maliyeti" },
+    { brand: "Antares (Bénéteau)", series: "Weekender", model: "Antares 9", displayName: "Antares 9 Weekender", len: "9.12m", lenCat: "small", purCat: 0, hullCat: 1, engine: "Çift 200 HP Suzuki/Mercury", speed: "28 Knot", spec: "Çift Kamara • Ailece Konaklama ve Mavi Tur" },
+    { brand: "Antares (Bénéteau)", series: "Weekender", model: "Antares 8", displayName: "Antares 8", len: "8.06m", lenCat: "small", purCat: 0, hullCat: 1, engine: "250 HP Tek Dıştan Takma", speed: "26 Knot", spec: "Kompakt Aile Gezisi • Kolay Yanaşma" },
 
-    var midBoats = [
-      { name: "Absolute 52 Navetta", len: "15.80 Metre", spec: "Çift Volvo IPS 650 • 3 Lüks Kamara • Geniş Aile Alanı" },
-      { name: "Alen 45 Hardtop", len: "13.70 Metre", spec: "Çift Yanmar 440 HP • 38 Knot Sürat & Agresif Hatlar" },
-      { name: "Absolute 45 Navetta", len: "13.80 Metre", spec: "Volvo IPS 600 • 32 Knot • Dengeli Tüketim" },
-      { name: "Antares 11 Fly", len: "11.10 Metre", spec: "Çift 300 HP • Hafta Sonu Gezisi & Geniş Yaşam Alanı" }
-    ];
+    // 10 - 16m (Orta Boy)
+    { brand: "Absolute Yachts", series: "Navetta & Fly", model: "52 Navetta", displayName: "Absolute 52 Navetta", len: "15.80m", lenCat: "mid", purCat: 0, hullCat: 0, engine: "Çift Volvo IPS 650", speed: "30 Knot", spec: "3 Lüks Kamara • Geniş Salon & Aile Konforu" },
+    { brand: "Alen Yacht", series: "Alen Serisi", model: "Alen 45", displayName: "Alen 45 Hardtop", len: "13.70m", lenCat: "mid", purCat: 1, hullCat: 0, engine: "Çift Yanmar 440 HP", speed: "38 Knot", spec: "Sportif Gövde • Yüksek Hız & Agresif Tasarım" },
+    { brand: "Absolute Yachts", series: "Navetta & Fly", model: "45 Navetta", displayName: "Absolute 45 Navetta", len: "13.80m", lenCat: "mid", purCat: 0, hullCat: 0, engine: "Çift Volvo IPS 600", speed: "32 Knot", spec: "Ekonomik Seyir • Optimum Hacim & Çift Kamara" },
+    { brand: "Antares (Bénéteau)", series: "Weekender", model: "Antares 11", displayName: "Antares 11 Fly", len: "11.10m", lenCat: "mid", purCat: 0, hullCat: 1, engine: "Çift 300 HP Dıştan Takma", speed: "34 Knot", spec: "Dıştan Takmalı Büyük Aile Cruiserı" },
+    { brand: "Hardanger Trawler", series: "Sac Trawler", model: "Hardanger 15M", displayName: "Hardanger 15M Sac Trawler", len: "15.00m", lenCat: "mid", purCat: 2, hullCat: 2, engine: "Scania DI09 Ağır Hizmet", speed: "11 Knot", spec: "Deplasman Sac Gövde • Düşük Yakıt & Uzun Seyir" },
 
-    var largeBoats = [
-      { name: "Absolute 58 Navetta", len: "17.40 Metre", spec: "3 Kamara + Mürettebat • Lüks Mavi Yolculuk" },
-      { name: "Alen 68 Super Sport", len: "20.70 Metre", spec: "Çift MAN 1200 HP • 42 Knot Maksimum Sürat" },
-      { name: "Ada Yatçılık 24M Trawler", len: "24.00 Metre", spec: "Geniş Flybridge • Ağır Deniz Mukavemeti" },
-      { name: "Amer 94 Superyacht", len: "28.60 Metre", spec: "4x Volvo IPS • Özel Tasarım Lüks Seyir" },
-      { name: "Ada 30M Okyanus Trawlerı", len: "30.00 Metre", spec: "Çelik / Sac Gövde • Sınırsız Açık Deniz Menzili" }
-    ];
+    // 16m Üzeri (Büyük Boy)
+    { brand: "Absolute Yachts", series: "Navetta & Fly", model: "58 Navetta", displayName: "Absolute 58 Navetta", len: "17.40m", lenCat: "large", purCat: 0, hullCat: 0, engine: "Çift Volvo IPS 800", speed: "29 Knot", spec: "3 Kamara + Personel • Üst Düzey Aile Lüksü" },
+    { brand: "Alen Yacht", series: "Alen Serisi", model: "Alen 68", displayName: "Alen 68 Super Sport", len: "20.70m", lenCat: "large", purCat: 1, hullCat: 0, engine: "Çift MAN V8 1200 HP", speed: "42 Knot", spec: "Açık Deniz Hız Şampiyonu • Yüksek Beygir" },
+    { brand: "Ada Yatçılık", series: "Ahşap & Sac Trawler", model: "Ada 24M", displayName: "Ada Yatçılık 24M Trawler", len: "24.00m", lenCat: "large", purCat: 2, hullCat: 2, engine: "Scania DI13 092M", speed: "12 Knot", spec: "Geniş Yaşam Alanı • Ağır Deniz Mukavemeti" },
+    { brand: "Ada Yatçılık", series: "Ahşap & Sac Trawler", model: "Ada 30M", displayName: "Ada 30M Okyanus Trawlerı", len: "30.00m", lenCat: "large", purCat: 2, hullCat: 2, engine: "Scania DI16 V8", speed: "13 Knot", spec: "Kıtalararası Menzil • Sac Gövde Okyanus Sınıfı" }
+  ];
 
-    // Hangi aralık seçildiyse kesinlikle o havuzu al
-    var targetPool = midBoats; // Varsayılan orta boy
+  // Her aday tekne için puan hesaplama algoritması (100 üzerinden)
+  candidatePool.forEach(function(boat) {
+    var score = 70; // Taban puan
 
-    if (selectedVal === 'small' || selectedText.indexOf('10 Metre Altı') !== -1 || selectedText.indexOf('< 10') !== -1) {
-      targetPool = smallBoats;
-    } else if (selectedVal === 'large' || selectedText.indexOf('16 Metre ve Üzeri') !== -1 || selectedText.indexOf('16m+') !== -1) {
-      targetPool = largeBoats;
-    } else {
-      // 10 - 16 Metre seçildiyse sadece ve sadece midBoats
-      targetPool = midBoats;
-    }
+    // Boy Aralığı Birebir Uyumu (+15 puan)
+    if (boat.lenCat === len) score += 15;
+    else score -= 20; // Yanlış boy kategorisindeyse puanı kır
 
-    var pick = targetPool[Math.floor(Math.random() * targetPool.length)];
+    // Kullanım Amacı Uyumu (+10 puan)
+    if (boat.purCat === purpose) score += 10;
+    else score += 2;
 
-    box.style.display = 'block';
-    box.innerHTML = 
-      '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">' +
-        '<span style="font-size: 13px; color: #c084fc; font-weight: 700;">🎯 Birebir Kriter Eşleşmesi</span>' +
-        '<span style="background: rgba(168, 85, 247, 0.25); border: 1px solid #a855f7; color: #c084fc; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 12px;">%' + Math.floor(94 + Math.random() * 5) + ' Uygunluk</span>' +
-      '</div>' +
-      '<div style="color: #f8fafc; font-size: 16px; font-weight: 800;">' +
-        'Önerilen Model: <span style="color: #38bdf8;">' + pick.name + '</span>' +
-      '</div>' +
-      '<div style="color: #34d399; font-size: 12px; margin-top: 5px; font-weight: 600;">' +
-        '⚙️ Tam Boy: ' + pick.len + ' • ' + pick.spec +
-      '</div>';
-  };
+    // Gövde & Motor Uyumu (+5 puan)
+    if (boat.hullCat === hull) score += 5;
+    else score += 1;
+
+    boat.matchScore = Math.min(99, Math.max(65, score));
+  });
+
+  // Puana göre büyükten küçüğe sırala ve ilk 3'ü al
+  candidatePool.sort(function(a, b) {
+    return b.matchScore - a.matchScore;
+  });
+
+  var top3 = candidatePool.slice(0, 3);
+  var first = top3[0];
+  var second = top3[1];
+  var third = top3[2];
+
+  // 1., 2. ve 3. tekne arasındaki tam üçlü teknik fark analizi
+  var diffAnalysis = "";
+  if (first && second && third) {
+    diffAnalysis = `
+      <div style="font-weight: 800; color: #38bdf8; margin-bottom: 6px;">🔍 Kapsamlı Karşılaştırma & Seçim Analizi:</div>
+      <div style="margin-bottom: 5px;">
+        • <strong>1. vs 2. (${first.displayName} / ${second.displayName}):</strong> 
+        ${first.displayName}, ${first.len} boy ve ${first.engine} makine ile en yüksek kriter uyumuna (%${first.matchScore}) sahiptir. ${second.displayName} (${second.len}, ${second.speed}) modeline kıyasla kriterlerinize daha odaklı gövde ve tüketim dengesi sunar.
+      </div>
+      <div style="margin-bottom: 5px;">
+        • <strong>2. vs 3. (${second.displayName} / ${third.displayName}):</strong> 
+        ${second.displayName} (%${second.matchScore}) konfor ve geniş yaşam alanı sunarken; ${third.displayName} (%${third.matchScore}) ${third.engine} gücüyle daha agresif sürat (${third.speed}) ve sportif seyir arayanlar için güçlü bir alternatiftir.
+      </div>
+        <div>
+        • <strong>1. vs 3. (${first.displayName} / ${third.displayName}):</strong> 
+        ${first.displayName}, <strong>${first.len}</strong> boyu ve <strong>${first.engine}</strong> dahili makineleriyle ağır hava mukavemeti, açık deniz konforu ve uzun menzilli mavi tur hedefler. 3. sıradaki ${third.displayName} ise <strong>${third.len}</strong> ile çok daha kompakt kalıp <strong>${third.engine}</strong> (dıştan takma) sayesinde <strong>${third.speed}</strong> gibi yüksek bir sürat ve sığ koylara yanaşma avantajı sunsa da, seyir dengesi ve yaşam hacminde zirvedeki modelin oldukça gerisindedir.
+      </div>
+    `;
+  }
+
+  // 3 Model Kartını Oluştur
+  var cardsHtml = top3.map(function(item, idx) {
+    var bName = item.brand.replace(/'/g, "\\'");
+    var sName = item.series.replace(/'/g, "\\'");
+    var mName = item.model.replace(/'/g, "\\'");
+
+    var rankIcons = ["🥇 1. Sıra", "🥈 2. Sıra", "🥉 3. Sıra"];
+    var badgeBg = idx === 0 ? "rgba(16, 185, 129, 0.25)" : (idx === 1 ? "rgba(56, 189, 248, 0.25)" : "rgba(168, 85, 247, 0.25)");
+    var badgeColor = idx === 0 ? "#34d399" : (idx === 1 ? "#38bdf8" : "#c084fc");
+    var borderColor = idx === 0 ? "rgba(16, 185, 129, 0.5)" : "rgba(56, 189, 248, 0.3)";
+
+    return `
+      <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid ${borderColor}; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <span style="font-size: 11px; font-weight: 800; color: ${badgeColor};">${rankIcons[idx]}</span>
+          <span style="background: ${badgeBg}; border: 1px solid ${badgeColor}; color: ${badgeColor}; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 99px;">
+            %${item.matchScore} Uygunluk
+          </span>
+        </div>
+        <div style="font-size: 14.5px; font-weight: 800; color: #fff;">
+          <span onclick="window.closeMyCustomModal('customWizardModal'); openModal('${bName}', '${sName}', '${mName}');" 
+                style="color: #38bdf8; text-decoration: underline; text-underline-offset: 3px; cursor: pointer;" 
+                title="Detay föyünü açmak için tıkla">
+            ${item.displayName} ↗
+          </span>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; margin-top: 3px;">
+          📏 ${item.len} • ⚡ ${item.engine} • 🚀 ${item.speed}
+        </div>
+        <div style="font-size: 10px; color: #cbd5e1; margin-top: 2px;">
+          ${item.spec}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div style="margin-bottom: 8px; color: #c084fc; font-size: 12px; font-weight: 700;">
+      🎯 Kriterlerinize Göre En İyi 3 Eşleşme (Uygunluk Sırasıyla):
+    </div>
+    ${cardsHtml}
+    <div style="background: rgba(8, 20, 36, 0.7); border-left: 3px solid #38bdf8; padding: 8px 10px; border-radius: 4px; font-size: 10.5px; color: #cbd5e1; line-height: 1.4; margin-top: 6px;">
+      ${diffAnalysis}
+    </div>
+    <div style="color: #64748b; font-size: 9.5px; margin-top: 5px; text-align: right; font-style: italic;">
+      Tekne adına tıklayarak doğrudan NMEA/telemetri ve motor föyüne gidebilirsiniz.
+    </div>
+  `;
+};
 // Menüyü Aç/Kapat
 function toggleEngineMenu() {
   const menu = document.getElementById("engineDropdownList");
@@ -3730,7 +3857,7 @@ document.addEventListener("click", (e) => {
 
 <!-- A) IoT Kokpit Modalı -->
 <div id="customTelemetryModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2147483647; justify-content: center; align-items: center; padding: 20px;">
-  <div onclick="event.stopPropagation()" style="background: #09121d; border: 1px solid #10b981; border-radius: 14px; max-width: 820px; width: 100%; padding: 24px; box-shadow: 0 0 30px rgba(16,185,129,0.25); position: relative;">
+  <div onclick="event.stopPropagation()" style="background: #09121d; border: 1px solid #10b981; border-radius: 14px; max-width: 820px; width: 95%; max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 0 40px rgba(16, 185, 129, 0.2);">
     
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
       <div>
@@ -3742,7 +3869,7 @@ document.addEventListener("click", (e) => {
       <button type="button" onclick="window.closeMyCustomModal('customTelemetryModal')" style="background: transparent; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
     </div>
 
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px;">
       
       <!-- 1. Servis Aküsü (Açılır / Kapanır) -->
       <div id="batteryCard" onclick="window.toggleBatteryState()" style="background: rgba(15, 28, 54, 0.9); border: 1.5px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 14px 10px; text-align: center; cursor: pointer; user-select: none; transition: all 0.3s ease; position: relative;">
@@ -3790,7 +3917,7 @@ document.addEventListener("click", (e) => {
 
 <!-- 2. TEKNE SİHİRBAZI MODALI (KUSURSUZ VE KAPALI) -->
 <div id="customWizardModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2147483647; justify-content: center; align-items: center; padding: 20px;">
-  <div onclick="event.stopPropagation()" style="background: #0f172a; border: 1px solid #a855f7; border-radius: 14px; max-width: 600px; width: 100%; padding: 22px; box-shadow: 0 0 40px rgba(168, 85, 247, 0.25);">
+  <div onclick="event.stopPropagation()" style="background: #0f172a; border: 1px solid #a855f7; border-radius: 14px; max-width: 600px; width: 100%; padding: 22px; box-shadow: 0 0 40px rgba(168, 85, 247, 0.25); max-height: 85vh; overflow-y: auto;">
     
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 16px;">
       <h3 style="margin: 0; color: #f8fafc; font-size: 17px; font-weight: 700;">🧭 Akıllı Tekne Seçim Sihirbazı (Matchmaker)</h3>
