@@ -1,0 +1,463 @@
+
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tekne yakıt tüketimi nasıl hesaplanır? Knot, deniz mili, litre/saat, motor sayısı ve seyir maliyeti hakkında kapsamlı rehber.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://bnmarin.com.tr/tekne-yakit-tuketimi-rehberi.html">
+<title>Tekne Yakıt Tüketimi Nasıl Hesaplanır? | BN MARİN</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Tekne Yakıt Tüketimi Nasıl Hesaplanır?",
+  "description": "Teknelerde yakıt tüketimi, knot, deniz mili, litre/saat ve seyir maliyeti hesaplama rehberi.",
+  "author": {
+    "@type": "Organization",
+    "name": "BN MARİN"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BN MARİN",
+    "url": "https://bnmarin.com.tr/"
+  },
+  "mainEntityOfPage": "https://bnmarin.com.tr/tekne-yakit-tuketimi-rehberi.html"
+}
+</script>
+
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#060e1f;
+  --panel:#0b1830;
+  --cyan:#00d2ff;
+  --blue:#38bdf8;
+  --text:#e8f2ff;
+  --muted:#a9b8cc;
+  --line:rgba(56,189,248,.22)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#10294a 0%,#060e1f 58%);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans',Arial,sans-serif;
+  line-height:1.8
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{color:#fff;text-decoration:underline}
+.wrap{width:min(920px,calc(100% - 32px));margin:auto;padding:30px 0 55px}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  padding:14px 0 26px;
+  border-bottom:1px solid var(--line)
+}
+.brand{
+  font-family:Georgia,serif;
+  font-size:25px;
+  letter-spacing:2px;
+  font-weight:bold;
+  color:#fff
+}
+.brand span{color:var(--cyan)}
+.top a.back{font-size:13px}
+.panel{
+  margin-top:28px;
+  padding:clamp(22px,5vw,42px);
+  background:rgba(11,24,48,.9);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 18px 55px rgba(0,0,0,.25)
+}
+h1{
+  margin:0 0 12px;
+  font-size:clamp(27px,5vw,38px);
+  line-height:1.25;
+  color:#fff
+}
+h2{margin:34px 0 10px;font-size:21px;color:#fff}
+h3{margin:22px 0 8px;font-size:16px;color:#fff}
+p,li{font-size:14px;color:#c5d3e5}
+ul,ol{padding-left:23px}
+.date{color:#8da6c1;font-size:12px;margin-bottom:25px}
+.lead{font-size:16px;color:#d5e8fa}
+.toc,.info,.formula,.simulator{
+  margin:24px 0;
+  padding:19px 21px;
+  background:#0d1b2b;
+  border:1px solid var(--line);
+  border-radius:11px
+}
+.toc h2{margin:0 0 12px;font-size:17px}
+.toc ul{margin:0}
+.toc li{margin:5px 0}
+.formula{
+  border-left:3px solid var(--cyan);
+  color:#e6f8ff
+}
+.formula strong{color:var(--cyan)}
+.info{
+  border-left:3px solid #38bdf8;
+  background:rgba(56,189,248,.07)
+}
+.simulator{
+  text-align:center;
+  padding:25px;
+  background:linear-gradient(135deg,#0d243c,#102d49)
+}
+.simulator h2{margin:0 0 10px}
+.simulator p{margin-bottom:18px}
+.btn{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:8px;
+  background:var(--cyan);
+  color:#041321;
+  font-weight:800;
+  font-size:13px
+}
+.btn:hover{background:#fff;color:#041321;text-decoration:none}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:18px 0;
+  font-size:13px
+}
+th,td{
+  padding:12px;
+  text-align:left;
+  border:1px solid var(--line);
+  color:#c5d3e5
+}
+th{color:#fff;background:rgba(0,210,255,.08)}
+.note{
+  margin:24px 0;
+  padding:16px;
+  border-left:3px solid var(--cyan);
+  background:rgba(0,210,255,.07);
+  border-radius:7px;
+  font-size:13px;
+  color:#cfeaff
+}
+.related{
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  font-size:13px
+}
+.foot{text-align:center;padding:22px 0;color:#8195ad;font-size:11px}
+@media(max-width:560px){
+  .top{align-items:flex-start;flex-direction:column}
+  .panel{padding:22px 18px}
+  table{font-size:12px}
+  th,td{padding:9px}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header class="top">
+  <a class="brand" href="index.html">BN <span>MARİN</span></a>
+  <a class="back" href="index.html">← Ana sayfaya dön</a>
+</header>
+
+<main class="panel">
+
+<h1>Tekne Yakıt Tüketimi Nasıl Hesaplanır?</h1>
+<div class="date">Denizcilik ve teknik bilgi rehberi · Son güncelleme: 24 Kasım 2026</div>
+
+<p class="lead">
+Bir teknenin yakıt tüketimini bilmek, seyir planlaması ve yolculuk bütçesi açısından önemlidir. Ancak tüketim yalnızca motor gücüne bağlı değildir. Teknenin gövde yapısı, seyir hızı, motor sayısı, yük durumu ve deniz koşulları da yakıt ihtiyacını önemli ölçüde etkiler.
+</p>
+
+<p>
+Bu rehberde deniz mili, knot, litre/saat ve toplam yakıt maliyeti arasındaki ilişkiyi adım adım açıklıyoruz. Ayrıca hesaplamalarda hangi noktaların tahmin, hangilerinin ölçülmüş veri olduğunu ayırt etmeye yardımcı oluyoruz.
+</p>
+
+<nav class="toc">
+<h2>Bu rehberde</h2>
+<ul>
+<li><a href="#birimler">Deniz mili ve knot nedir?</a></li>
+<li><a href="#hesaplama">Yakıt tüketimi nasıl hesaplanır?</a></li>
+<li><a href="#motor">Motor sayısı tüketimi nasıl etkiler?</a></li>
+<li><a href="#govde">Tekne gövdesinin etkisi</a></li>
+<li><a href="#ornek">Örnek seyir maliyeti hesabı</a></li>
+<li><a href="#etkenler">Yakıt tüketimini değiştiren faktörler</a></li>
+<li><a href="#menzil">Yakıt menzili ve güvenlik payı</a></li>
+<li><a href="#sonuc">Sonuç ve öneriler</a></li>
+</ul>
+</nav>
+
+<section id="birimler">
+<h2>1. Deniz mili ve knot nedir?</h2>
+
+<p>
+Denizcilikte mesafe ve hız ölçümleri kara taşımacılığından farklı birimlerle ifade edilir. Bu iki temel birimi doğru anlamak, yakıt hesabının ilk adımıdır.
+</p>
+
+<h3>Deniz mili (NM)</h3>
+<p>
+Deniz mili, denizcilikte kullanılan mesafe birimidir. Bir deniz mili tam olarak 1.852 metreye karşılık gelir. Harita ve rota mesafeleri çoğunlukla deniz mili üzerinden hesaplanır.
+</p>
+
+<h3>Knot (kt)</h3>
+<p>
+Knot, bir saatte kat edilen deniz mili sayısını ifade eden hız birimidir. Örneğin 10 knot hızla seyreden bir tekne, teorik olarak bir saatte 10 deniz mili yol alır.
+</p>
+
+<div class="formula">
+<strong>Temel ilişki:</strong><br>
+Seyir süresi (saat) = Mesafe (deniz mili) ÷ Hız (knot)
+</div>
+
+<p>
+Örneğin 60 deniz millik bir rota, sabit 12 knot hızla yaklaşık 5 saat sürer. Gerçek seyir süresi ise hava, akıntı, manevra ve rota değişikliklerine göre uzayabilir.
+</p>
+</section>
+
+<section id="hesaplama">
+<h2>2. Tekne yakıt tüketimi nasıl hesaplanır?</h2>
+
+<p>
+Motor yakıt tüketimi genellikle litre/saat (L/h) cinsinden ifade edilir. Bu değer, motorun belirli çalışma koşullarında bir saatte tükettiği yakıt miktarını gösterir.
+</p>
+
+<div class="formula">
+<strong>Toplam yakıt ihtiyacı:</strong><br>
+Saatlik tüketim (L/h) × Seyir süresi (saat) = Toplam yakıt (L)
+</div>
+
+<p>
+Örnek olarak saatte 40 litre tükettiği varsayılan bir motor, 3 saat çalışırsa yaklaşık 120 litre yakıt kullanır. Buradaki 40 L/h değeri yalnızca hesaplama örneğidir; belirli bir motor modelinin doğrulanmış tüketim verisi değildir.
+</p>
+
+<h3>Mesafeye göre hesaplama</h3>
+<p>
+Mesafe ve hız biliniyorsa önce seyir süresi bulunur. Ardından saatlik tüketimle çarpılarak toplam yakıt ihtiyacı hesaplanabilir.
+</p>
+
+<div class="formula">
+<strong>Toplam yakıt:</strong><br>
+(Seyir mesafesi ÷ Ortalama hız) × Saatlik yakıt tüketimi
+</div>
+
+<p>
+Bu hesaplama sabit hız ve sabit tüketim varsayımına dayanır. Gerçek yolculukta motor yükü ve deniz koşulları değişebileceğinden sonuç yaklaşık değer verir.
+</p>
+</section>
+
+<section id="motor">
+<h2>3. Motor sayısı yakıt tüketimini nasıl etkiler?</h2>
+
+<p>
+Teknelerde tek motorlu ve çift motorlu sistemler kullanılabilir. İki motorlu bir teknede toplam yakıt tüketimi, iki motorun ayrı ayrı tüketimlerinin toplamıdır.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Sistem</th>
+<th>Örnek motor tüketimi</th>
+<th>Toplam saatlik tüketim</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tek motor</td>
+<td>40 L/h</td>
+<td>40 L/h</td>
+</tr>
+<tr>
+<td>Çift motor</td>
+<td>Her biri 40 L/h</td>
+<td>80 L/h</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+Tablodaki rakamlar yalnızca matematiksel örnektir. Çift motorlu teknelerde her iki motorun aynı yükte çalıştığı varsayılmıştır. Gerçek tüketim; motor modeli, devir, yük ve teknenin seyir koşullarına bağlıdır.
+</p>
+
+<div class="info">
+Çift motor kullanılması her koşulda tüketimin tam iki katına çıkacağı anlamına gelmez. Motorların çalışma yükü ve teknenin seyir karakteri sonucu değiştirebilir.
+</div>
+</section>
+
+<section id="govde">
+<h2>4. Tekne gövdesinin yakıt tüketimine etkisi</h2>
+
+<p>
+Teknenin gövde tasarımı, su direnci ve gerekli motor gücü üzerinde doğrudan etkilidir. Bu nedenle aynı motor gücüne sahip iki farklı tekne aynı yakıt tüketimini göstermeyebilir.
+</p>
+
+<h3>Deplasman gövdeli tekneler</h3>
+<p>
+Bu tekneler suyu yararak ilerler ve genellikle daha düşük seyir hızlarında kullanılır. Uzun mesafeli ve ekonomik seyir amacıyla tasarlanan modeller bu grupta bulunabilir.
+</p>
+
+<h3>Yarı deplasman gövdeli tekneler</h3>
+<p>
+Deplasman ve planing karakteristikleri arasında yer alırlar. Tasarım ve yük durumuna göre farklı hız aralıklarında çalışabilirler.
+</p>
+
+<h3>Planing gövdeli tekneler</h3>
+<p>
+Belirli hızlara ulaşıldığında gövdenin önemli ölçüde su yüzeyine yükselerek ilerlemesi hedeflenir. Yüksek hızlarda gereken güç artabilir ve yakıt tüketimi belirgin şekilde yükselebilir.
+</p>
+
+<p>
+Bu sınıflandırmalar genel tasarım özelliklerini anlatır. Bir teknenin gerçek tüketimini yalnızca gövde türüne bakarak belirlemek mümkün değildir.
+</p>
+</section>
+
+<section id="ornek">
+<h2>5. Örnek seyir maliyeti hesabı</h2>
+
+<p>
+Aşağıdaki örnekte Bodrum–Göcek arasında 85 deniz millik varsayımsal bir rota ele alınmıştır. Amaç, hesaplama yöntemini göstermektir.
+</p>
+
+<table>
+<tbody>
+<tr>
+<th>Rota mesafesi</th>
+<td>85 deniz mili</td>
+</tr>
+<tr>
+<th>Ortalama hız</th>
+<td>10 knot</td>
+</tr>
+<tr>
+<th>Varsayımsal saatlik tüketim</th>
+<td>40 litre/saat</td>
+</tr>
+<tr>
+<th>Varsayımsal yakıt birim fiyatı</th>
+<td>50 TL/litre</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Adım 1: Seyir süresi</h3>
+<p>85 deniz mili ÷ 10 knot = 8,5 saat</p>
+
+<h3>Adım 2: Toplam yakıt</h3>
+<p>8,5 saat × 40 litre = 340 litre</p>
+
+<h3>Adım 3: Yakıt maliyeti</h3>
+<p>340 litre × 50 TL = 17.000 TL</p>
+
+<div class="formula">
+<strong>Örnek sonuç:</strong><br>
+340 litre yakıt ve 17.000 TL tahmini yakıt maliyeti.
+</div>
+
+<p>
+Bu hesaplamada bir motor ve sabit tüketim varsayılmıştır. Yakıt fiyatı ve saatlik tüketim örnek amaçlıdır; güncel piyasa fiyatı veya belirli bir teknenin gerçek performansı olarak değerlendirilmemelidir.
+</p>
+</section>
+
+<section id="etkenler">
+<h2>6. Yakıt tüketimini değiştiren faktörler</h2>
+
+<p>
+Aynı tekne ve motor, farklı seyir koşullarında farklı miktarda yakıt tüketebilir. Hesaplama yaparken aşağıdaki etkenler dikkate alınmalıdır.
+</p>
+
+<ul>
+<li><strong>Seyir hızı:</strong> Hız arttıkça gereken motor gücü ve tüketim değişir. Özellikle planing teknelerde yüksek hızın yakıt maliyeti önemli ölçüde artabilir.</li>
+<li><strong>Tekne ağırlığı:</strong> Yolcu, yakıt, su ve ekipman yükü teknenin toplam ağırlığını etkiler.</li>
+<li><strong>Deniz ve hava koşulları:</strong> Dalga, rüzgâr ve akıntı seyir direncini ve motor yükünü değiştirebilir.</li>
+<li><strong>Motor bakımı:</strong> Uygun bakım yapılmaması, motor performansını ve verimliliğini olumsuz etkileyebilir.</li>
+<li><strong>Pervane seçimi:</strong> Tekne ve motora uygun olmayan pervane, motorun çalışma karakterini değiştirebilir.</li>
+<li><strong>Gövde temizliği:</strong> Gövde üzerinde biriken kir ve deniz canlıları sürtünmeyi artırabilir.</li>
+<li><strong>Motor çalışma devri:</strong> Farklı devirlerde motorun yakıt tüketimi de farklılaşır.</li>
+</ul>
+</section>
+
+<section id="menzil">
+<h2>7. Yakıt menzili ve güvenlik payı</h2>
+
+<p>
+Bir teknenin teorik yakıt menzili, kullanılabilir yakıt miktarının belirli seyir koşullarındaki tüketim değerine göre hesaplanmasıyla tahmin edilebilir.
+</p>
+
+<div class="formula">
+<strong>Yaklaşık seyir süresi:</strong><br>
+Kullanılabilir yakıt (L) ÷ Saatlik tüketim (L/h)
+<br><br>
+<strong>Yaklaşık menzil:</strong><br>
+Seyir süresi (saat) × Ortalama hız (knot)
+</div>
+
+<p>
+Örneğin 400 litre kullanılabilir yakıt ve saatte 40 litre tüketim varsayımıyla teorik çalışma süresi 10 saattir. Ortalama 10 knot hız varsayılırsa teorik mesafe 100 deniz mili olur.
+</p>
+
+<div class="note">
+Bu değerler güvenli seyir menzili garantisi değildir. Planlama sırasında zorunlu yakıt rezervi, hava ve deniz koşulları, alternatif limanlar, motor çalışma farklılıkları ve teknenin üretici tavsiyeleri dikkate alınmalıdır. Yola çıkmadan önce yeterli yakıt rezervi bulundurulmalıdır.
+</div>
+</section>
+
+<section id="sonuc">
+<h2>8. Yakıt tüketimini daha doğru değerlendirmek için öneriler</h2>
+
+<ol>
+<li>Teknenin ve motorun tam modelini belirleyin.</li>
+<li>Üreticinin sunduğu performans ve tüketim tablolarını inceleyin.</li>
+<li>Farklı motor devirlerindeki tüketim değerlerini birbirinden ayırın.</li>
+<li>Tekne yükünü ve seyir koşullarını hesaba katın.</li>
+<li>Hesaplanan sonuca güvenlik rezervi ekleyin.</li>
+<li>Mümkünse gerçek seyir verilerini ve yakıt ölçümlerini takip edin.</li>
+</ol>
+
+<p>
+En sağlıklı değerlendirme, üreticinin teknik verileri ile gerçek seyir ölçümlerinin birlikte incelenmesiyle yapılır. Genel formüller ön hesaplama için yararlıdır ancak kesin tüketim değeri sağlamaz.
+</p>
+</section>
+
+<div class="simulator">
+<h2>BN MARİN Yakıt ve Seyir Maliyeti Simülatörü</h2>
+<p>
+Mesafe, hız, motor ve yakıt bilgilerinizi kullanarak yaklaşık seyir süresini ve yakıt maliyetini hesaplayın.
+</p>
+<a class="btn" href="index.html#fuelCalculator">Yakıt Simülatörünü Kullan →</a>
+</div>
+
+<div class="note">
+<strong>Bilgilendirme:</strong> Bu sayfadaki hesaplamalar eğitim ve genel bilgilendirme amacı taşır. Örnek tüketim ve fiyat değerleri temsili olarak kullanılmıştır. Üretici tarafından doğrulanmış teknik verilerin veya profesyonel seyir planlamasının yerine geçmez.
+</div>
+
+<nav class="related">
+<a href="tekne-satin-alma-rehberi.html">Tekne Satın Alma Rehberi →</a>
+<a href="hakkimizda.html">Hakkımızda</a>
+<a href="iletisim.html">İletişim</a>
+<a href="index.html">Ana Sayfa</a>
+</nav>
+
+</main>
+
+<footer class="foot">
+© 2026 BN MARİN · Tekne, yat ve deniz motorları bilgi portalı
+</footer>
+
+</div>
+</body>
+</html>
