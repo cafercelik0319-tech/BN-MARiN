@@ -2867,33 +2867,151 @@ const filtered = brands.filter(b => {
     }
 
    
-function openModal(brand, series, model) {
+
+// yachts.json verisini bir kez yükle, sonraki açılışlarda önbellekten kullan.
+let bnMarinYachtSpecsCache = null;
+let bnMarinYachtSpecsPromise = null;
+
+async function loadBnMarinYachtSpecs() {
+  if (bnMarinYachtSpecsCache) return bnMarinYachtSpecsCache;
+
+  if (!bnMarinYachtSpecsPromise) {
+    bnMarinYachtSpecsPromise = fetch("./yachts.json")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("yachts.json yüklenemedi: " + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!Array.isArray(data)) {
+          throw new Error("yachts.json beklenen JSON formatında değil.");
+        }
+
+        bnMarinYachtSpecsCache = data;
+        return data;
+      })
+      .catch(error => {
+        bnMarinYachtSpecsPromise = null;
+        throw error;
+      });
+  }
+
+  return bnMarinYachtSpecsPromise;
+}
+
+// Marka, seri ve model isimlerini karşılaştırmaya uygun hale getir.
+function normalizeYachtSpecText(value) {
+  return String(value || "")
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ı/g, "i")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+// yachts.json içerisinden doğru tekne modelini bul.
+function findBnMarinYachtSpec(data, brand, series, model) {
+  const normalize = normalizeYachtSpecText;
+
+  const brandData = data.find(item =>
+    normalize(item.marka) === normalize(brand)
+  );
+
+  if (!brandData) return null;
+
+  const allSeries = brandData.seriler || [];
+  const wantedSeries = normalize(series);
+  const fullModel = normalize(model);
+
+  // Model isminden seri adını ayırmayı dene.
+  let shortModel = fullModel;
+
+  if (wantedSeries && fullModel.startsWith(wantedSeries + " ")) {
+    shortModel = fullModel.slice(wantedSeries.length).trim();
+  }
+
+  const modelCandidates = [...new Set([fullModel, shortModel])];
+
+  function findInSeries(seriesData) {
+    if (!seriesData) return null;
+
+    return (seriesData.modeller || []).find(item =>
+      modelCandidates.includes(normalize(item.ad))
+    ) || null;
+  }
+
+  // Önce marka ve seri eşleşmesine bak.
+  const matchingSeries = allSeries.find(item =>
+    normalize(item.seri_adi) === wantedSeries
+  );
+
+  const seriesResult = findInSeries(matchingSeries);
+  if (seriesResult) return seriesResult;
+
+  // Seri adı farklıysa yalnızca tek bir model eşleşmesi varsa kullan.
+  const otherMatches = [];
+
+  allSeries.forEach(item => {
+    const match = findInSeries(item);
+    if (match) otherMatches.push(match);
+  });
+
+  return otherMatches.length === 1 ? otherMatches[0] : null;
+}
+
+async function openModal(brand, series, model) {
+  const unknownText = "Katalogda veri bulunmuyor";
+
   document.getElementById("mTitle").innerText = `${brand} ${model}`;
   document.getElementById("mSubtitle").innerText = `${series}`;
 
-  // Üretici tarafından doğrulanmış teknik veri yoksa
-  // tahmini değer gösterme.
-  const unknownText = "Üretici verisi henüz eklenmedi";
-
+  // Veri yüklenene kadar boş alanlarda tahmin gösterme.
   document.getElementById("m_loa").innerText = unknownText;
   document.getElementById("m_beam").innerText = unknownText;
   document.getElementById("m_draft").innerText = unknownText;
   document.getElementById("m_speed").innerText = unknownText;
   document.getElementById("m_cabins").innerText = unknownText;
 
-  // Mevcut motor eşleştirme sistemini koru.
-  const selectedEngine = getModelEngine(brand, model);
-  activeSelectedEngine = selectedEngine;
+  activeSelectedEngine = "";
 
   const engineEl = document.getElementById("m_engine");
-  engineEl.innerHTML = `⚙️ ${selectedEngine} (Teknik Föy İçin Tıkla)`;
+  engineEl.innerText = "⚙️ Motor bilgisi yükleniyor...";
 
-  // Telemetri önerileri için doğrulanmış tekne boyu gerekir.
-  // Boy bilgisi bulunmadığından tahmini boy kullanma.
   const telemetryBox = document.getElementById("telemetrySpecsBox");
   if (telemetryBox) telemetryBox.style.display = "none";
 
+  // Modalı bekletmeden aç.
   document.getElementById("specsModal").style.display = "flex";
+
+  try {
+    const yachtData = await loadBnMarinYachtSpecs();
+    const spec = findBnMarinYachtSpec(yachtData, brand, series, model);
+
+    if (!spec) {
+      engineEl.innerText = "⚙️ " + unknownText;
+      console.warn("Teknik veri eşleşmesi bulunamadı:", brand, series, model);
+      return;
+    }
+
+    document.getElementById("m_loa").innerText = spec.boy || unknownText;
+    document.getElementById("m_beam").innerText = spec.en || unknownText;
+    document.getElementById("m_draft").innerText = unknownText;
+    document.getElementById("m_speed").innerText = spec.hiz || unknownText;
+    document.getElementById("m_cabins").innerText = unknownText;
+
+    activeSelectedEngine = spec.motor || "";
+
+    engineEl.innerText = spec.motor
+      ? `⚙️ ${spec.motor} (Teknik Föy İçin Tıkla)`
+      : "⚙️ " + unknownText;
+
+  } catch (error) {
+    engineEl.innerText = "⚙️ Teknik veriler şu anda yüklenemedi.";
+    console.error("BN MARİN teknik veri hatası:", error);
+  }
 }
 
 
