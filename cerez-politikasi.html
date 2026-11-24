@@ -1,320 +1,250 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow">
-  <meta name="description" content="BN MARİN Çerez Politikası. Web sitesinde kullanılan çerezler ve tarayıcı depolama teknolojileri hakkında bilgi.">
-  <title>Çerez Politikası | BN MARİN</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="BN MARİN Çerez Politikası. Web sitesinde kullanılan çerezler ve tarayıcı depolama teknolojileri hakkında bilgi.">
+<meta name="robots" content="index,follow">
+<title>Çerez Politikası | BN MARİN</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #07111f;
-      color: #dce8f2;
-      line-height: 1.8;
-      padding: 30px 18px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    header {
-      text-align: center;
-      padding: 25px 0 35px;
-      border-bottom: 1px solid rgba(0, 220, 255, 0.18);
-      margin-bottom: 30px;
-    }
-
-    .logo {
-      color: #00d9ff;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-decoration: none;
-    }
-
-    .subtitle {
-      color: #8fa9bd;
-      font-size: 13px;
-      margin-top: 8px;
-      letter-spacing: 1px;
-    }
-
-    .content {
-      background: #0d1b2b;
-      border: 1px solid rgba(0, 217, 255, 0.15);
-      border-radius: 16px;
-      padding: 35px;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
-    }
-
-    h1 {
-      color: #00d9ff;
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .updated {
-      color: #8199ad;
-      font-size: 13px;
-      margin-bottom: 28px;
-    }
-
-    h2 {
-      color: #42dfff;
-      font-size: 18px;
-      margin: 27px 0 10px;
-    }
-
-    p {
-      color: #c1d0dd;
-      font-size: 14px;
-      margin-bottom: 13px;
-    }
-
-    ul {
-      padding-left: 22px;
-      margin: 10px 0 16px;
-      color: #c1d0dd;
-      font-size: 14px;
-    }
-
-    li {
-      margin-bottom: 7px;
-    }
-
-    a {
-      color: #00d9ff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .notice {
-      background: rgba(0, 217, 255, 0.06);
-      border-left: 3px solid #00d9ff;
-      padding: 15px 18px;
-      border-radius: 5px;
-      margin: 20px 0;
-      color: #c1d0dd;
-      font-size: 13px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 28px 10px 10px;
-      color: #71899d;
-      font-size: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 15px;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 15px 10px;
-      }
-
-      .content {
-        padding: 22px 18px;
-      }
-
-      h1 {
-        font-size: 23px;
-      }
-
-      h2 {
-        font-size: 16px;
-      }
-    }
-  </style>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#060e1f;
+  --panel:#0b1830;
+  --cyan:#00d2ff;
+  --blue:#38bdf8;
+  --muted:#a9b8cc;
+  --text:#e8f2ff;
+  --line:rgba(56,189,248,.22)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#10294a 0%,#060e1f 58%);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans',Arial,sans-serif;
+  line-height:1.75
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline;color:#fff}
+.wrap{width:min(920px,calc(100% - 32px));margin:0 auto;padding:30px 0 56px}
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:14px 0 26px;
+  border-bottom:1px solid var(--line)
+}
+.brand{
+  font-family:Georgia,serif;
+  font-size:25px;
+  letter-spacing:2px;
+  font-weight:bold;
+  color:#fff
+}
+.brand span{color:var(--cyan)}
+.top a.back{font-size:13px}
+.panel{
+  margin-top:28px;
+  padding:clamp(22px,5vw,42px);
+  background:rgba(11,24,48,.88);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 18px 55px rgba(0,0,0,.25)
+}
+h1{margin:0 0 8px;font-size:clamp(27px,5vw,38px);line-height:1.2;color:#fff}
+h2{margin:30px 0 8px;font-size:19px;color:#fff}
+p,li{color:#c5d3e5;font-size:14px}
+ul{padding-left:22px}
+li{margin-bottom:7px}
+.date{color:#8da6c1;font-size:12px;margin-bottom:26px}
+.note{
+  margin:22px 0;
+  padding:15px 17px;
+  border-left:3px solid var(--cyan);
+  background:rgba(0,210,255,.07);
+  border-radius:7px;
+  color:#cfeaff;
+  font-size:13px
+}
+.links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:13px
+}
+.foot{padding:22px 0;text-align:center;color:#8195ad;font-size:11px}
+@media(max-width:560px){
+  .top{align-items:flex-start;flex-direction:column}
+  .panel{padding:22px 18px}
+}
+</style>
 </head>
 
 <body>
-  <div class="container">
+<div class="wrap">
 
-    <header>
-      <a href="index.html" class="logo">BN MARİN</a>
-      <div class="subtitle">TEKNE & DENİZCİLİK VERİ PORTALI</div>
-    </header>
+<header class="top">
+  <a class="brand" href="index.html">BN <span>MARİN</span></a>
+  <a class="back" href="index.html">← Ana sayfaya dön</a>
+</header>
 
-    <main class="content">
+<main class="panel">
 
-      <h1>Çerez Politikası</h1>
-      <div class="updated">Son güncelleme: 24 Kasım 2026</div>
+<h1>Çerez Politikası</h1>
+<div class="date">Son güncelleme: 24 Kasım 2026</div>
 
-      <p>
-        Bu Çerez Politikası, <strong>bnmarin.com.tr</strong> internet
-        sitesinde kullanılan çerezler ve benzeri tarayıcı teknolojileri
-        hakkında ziyaretçileri bilgilendirmek amacıyla hazırlanmıştır.
-      </p>
+<p>
+Bu Çerez Politikası, <strong>bnmarin.com.tr</strong> internet
+sitesinde kullanılan çerezler ve benzeri tarayıcı teknolojileri
+hakkında ziyaretçileri bilgilendirmek amacıyla hazırlanmıştır.
+</p>
 
-      <h2>1. Çerez Nedir?</h2>
+<h2>1. Çerez Nedir?</h2>
 
-      <p>
-        Çerezler, ziyaret ettiğiniz internet siteleri tarafından
-        tarayıcınız aracılığıyla cihazınıza kaydedilebilen küçük
-        metin dosyalarıdır. Bu dosyalar, sitelerin düzgün çalışmasına,
-        tercihlerin hatırlanmasına ve kullanıcı deneyiminin
-        geliştirilmesine yardımcı olabilir.
-      </p>
+<p>
+Çerezler, ziyaret ettiğiniz internet siteleri tarafından
+tarayıcınız aracılığıyla cihazınıza kaydedilebilen küçük
+metin dosyalarıdır. Bu dosyalar, sitelerin düzgün çalışmasına,
+tercihlerin hatırlanmasına ve kullanıcı deneyiminin
+geliştirilmesine yardımcı olabilir.
+</p>
 
-      <h2>2. Çerezlerden Farklı Teknolojiler</h2>
+<h2>2. Çerezlerden Farklı Teknolojiler</h2>
 
-      <p>
-        Web sitelerinde çerezlerin yanı sıra localStorage gibi
-        tarayıcı depolama teknolojileri de kullanılabilir.
-        Bunlar teknik olarak çerez değildir ancak tarayıcıda
-        bilgi saklama işlevi görür.
-      </p>
+<p>
+Web sitelerinde çerezlerin yanı sıra localStorage gibi
+tarayıcı depolama teknolojileri de kullanılabilir.
+Bunlar teknik olarak çerez değildir ancak tarayıcıda
+bilgi saklama işlevi görür.
+</p>
 
-      <p>
-        BN MARİN yapay zekâ asistanının konuşma geçmişi,
-        tarayıcının yerel depolama alanında
-        <strong>marineAiHistory</strong> anahtarı altında
-        saklanabilir.
-      </p>
+<p>
+BN MARİN yapay zekâ asistanının konuşma geçmişi,
+tarayıcının yerel depolama alanında
+<strong>marineAiHistory</strong> anahtarı altında
+saklanabilir.
+</p>
 
-      <h2>3. Kullanım Amaçları</h2>
+<h2>3. Kullanım Amaçları</h2>
 
-      <p>
-        Sitede kullanılan veya hizmet sağlayıcılar aracılığıyla
-        oluşabilecek çerez ve benzeri teknolojiler aşağıdaki
-        amaçlara hizmet edebilir:
-      </p>
+<p>
+Sitede kullanılan veya hizmet sağlayıcılar aracılığıyla
+oluşabilecek çerez ve benzeri teknolojiler aşağıdaki
+amaçlara hizmet edebilir:
+</p>
 
-      <ul>
-        <li>Web sitesinin temel işlevlerini çalıştırmak,</li>
-        <li>Güvenlik ve teknik sürekliliği sağlamak,</li>
-        <li>Yapay zekâ asistanının konuşma geçmişini tarayıcıda saklamak,</li>
-        <li>Harici hizmetlerin gerekli teknik işlemlerini yürütmek.</li>
-      </ul>
+<ul>
+  <li>Web sitesinin temel işlevlerini çalıştırmak,</li>
+  <li>Güvenlik ve teknik sürekliliği sağlamak,</li>
+  <li>Yapay zekâ asistanının konuşma geçmişini tarayıcıda saklamak,</li>
+  <li>Harici hizmetlerin gerekli teknik işlemlerini yürütmek.</li>
+</ul>
 
-      <h2>4. Üçüncü Taraf Hizmetler</h2>
+<h2>4. Üçüncü Taraf Hizmetler</h2>
 
-      <p>
-        BN MARİN, sunduğu hizmetleri çalıştırmak için üçüncü taraf
-        altyapılardan yararlanabilir. Bunlar arasında:
-      </p>
+<p>
+BN MARİN, sunduğu hizmetleri çalıştırmak için üçüncü taraf
+altyapılardan yararlanabilir. Bunlar arasında:
+</p>
 
-      <ul>
-        <li>Cloudflare: Web sitesi altyapısı ve güvenlik hizmetleri,</li>
-        <li>Google Fonts: Yazı tipi hizmeti,</li>
-        <li>Google Gemini: Yapay zekâ yanıt hizmeti,</li>
-        <li>Harici veri servisleri: Güncel döviz ve benzeri veriler.</li>
-      </ul>
+<ul>
+  <li>Cloudflare: Web sitesi altyapısı ve güvenlik hizmetleri,</li>
+  <li>Google Fonts: Yazı tipi hizmeti,</li>
+  <li>Google Gemini: Yapay zekâ yanıt hizmeti,</li>
+  <li>Harici veri servisleri: Güncel döviz ve benzeri veriler.</li>
+</ul>
 
-      <p>
-        Bu hizmetlerin kendi teknik uygulamaları kapsamında
-        tarayıcı veya bağlantı bilgileri işlenebilir.
-        Üçüncü taraf hizmetlerin kendi gizlilik ve çerez
-        politikaları da geçerlidir.
-      </p>
+<p>
+Bu hizmetlerin kendi teknik uygulamaları kapsamında
+tarayıcı veya bağlantı bilgileri işlenebilir.
+Üçüncü taraf hizmetlerin kendi gizlilik ve çerez
+politikaları da geçerlidir.
+</p>
 
-      <h2>5. Reklam ve Analitik Çerezleri</h2>
+<h2>5. Reklam ve Analitik Çerezleri</h2>
 
-      <p>
-        Reklam ve analiz hizmetleri kullanıma alınırsa bu hizmetlerin
-        çerez veya benzeri teknolojiler kullanması söz konusu olabilir.
-        Böyle bir durumda ilgili hizmetlerin kapsamı, kullanım amaçları
-        ve gerekli kullanıcı tercihleri hakkında bu politika
-        güncellenecektir.
-      </p>
+<p>
+Reklam ve analiz hizmetleri kullanıma alınırsa bu hizmetlerin
+çerez veya benzeri teknolojiler kullanması söz konusu olabilir.
+Böyle bir durumda ilgili hizmetlerin kapsamı, kullanım amaçları
+ve gerekli kullanıcı tercihleri hakkında bu politika
+güncellenecektir.
+</p>
 
-      <p>
-        Google AdSense veya benzeri bir reklam hizmetinin gelecekte
-        etkinleştirilmesi hâlinde, ilgili reklam ve kişiselleştirme
-        tercihleri yürürlükteki kurallara uygun şekilde ele alınacaktır.
-      </p>
+<p>
+Google AdSense veya benzeri bir reklam hizmetinin gelecekte
+etkinleştirilmesi hâlinde, ilgili reklam ve kişiselleştirme
+tercihleri yürürlükteki kurallara uygun şekilde ele alınacaktır.
+</p>
 
-      <h2>6. Çerezleri Nasıl Yönetebilirsiniz?</h2>
+<h2>6. Çerezleri Nasıl Yönetebilirsiniz?</h2>
 
-      <p>
-        Çerezleri tarayıcınızın ayarlarından görüntüleyebilir,
-        silebilir veya engelleyebilirsiniz. Tarayıcıya göre
-        ayarların konumu değişebilir.
-      </p>
+<p>
+Çerezleri tarayıcınızın ayarlarından görüntüleyebilir,
+silebilir veya engelleyebilirsiniz. Tarayıcıya göre
+ayarların konumu değişebilir.
+</p>
 
-      <p>
-        Çerezleri veya site verilerini silmeniz durumunda,
-        bazı site özellikleri yeniden ayar gerektirebilir.
-        Örneğin yapay zekâ asistanının tarayıcıda saklanan
-        konuşma geçmişi silinebilir.
-      </p>
+<p>
+Çerezleri veya site verilerini silmeniz durumunda,
+bazı site özellikleri yeniden ayar gerektirebilir.
+Örneğin yapay zekâ asistanının tarayıcıda saklanan
+konuşma geçmişi silinebilir.
+</p>
 
-      <h2>7. Politika Değişiklikleri</h2>
+<h2>7. Politika Değişiklikleri</h2>
 
-      <p>
-        Web sitesine yeni özellikler, analiz araçları veya
-        üçüncü taraf hizmetler eklendikçe bu politika
-        güncellenebilir. Güncel metin bu sayfada yayımlanır.
-      </p>
+<p>
+Web sitesine yeni özellikler, analiz araçları veya
+üçüncü taraf hizmetler eklendikçe bu politika
+güncellenebilir. Güncel metin bu sayfada yayımlanır.
+</p>
 
-      <h2>8. Gizlilik ve İletişim</h2>
+<h2>8. Gizlilik ve İletişim</h2>
 
-      <p>
-        Kişisel verilerin işlenmesi hakkında ayrıntılı bilgi için
-        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
-        sayfamızı inceleyebilirsiniz.
-      </p>
+<p>
+Kişisel verilerin işlenmesi hakkında ayrıntılı bilgi için
+<a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+sayfamızı inceleyebilirsiniz.
+</p>
 
-      <p>
-        Çerez politikasıyla ilgili sorularınız için
-        <a href="iletisim.html">İletişim</a> sayfasını ziyaret edebilirsiniz.
-      </p>
+<p>
+Çerez politikasıyla ilgili sorularınız için
+<a href="iletisim.html">İletişim</a> sayfasını ziyaret edebilirsiniz.
+</p>
 
-      <div class="notice">
-        Bu metin, mevcut site özellikleri hakkında genel bilgilendirme
-        amacı taşır. Sitede kullanılan tüm çerez ve üçüncü taraf
-        teknolojilerin kesin listesi, canlı sistem ve hizmet
-        sağlayıcı ayarları üzerinden ayrıca doğrulanmalıdır.
-      </div>
-
-    </main>
-
-    <footer>
-      <nav class="footer-links">
-        <a href="index.html">Ana Sayfa</a>
-        <a href="hakkimizda.html">Hakkımızda</a>
-        <a href="iletisim.html">İletişim</a>
-        <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
-      </nav>
-
-      © 2026 BN MARİN — Tüm hakları saklıdır.
-    </footer>
-
-  </div>
-  
-<div style="text-align:center; margin:30px 0 20px;">
-  <a href="index.html"
-     style="display:inline-block; padding:11px 22px;
-     border:1px solid #00D2FF; border-radius:8px;
-     color:#00D2FF; text-decoration:none;
-     font-weight:600;">
-    ← Ana Sayfaya Dön
-  </a>
+<div class="note">
+Bu metin, mevcut site özellikleri hakkında genel bilgilendirme
+amacı taşır. Sitede kullanılan tüm çerez ve üçüncü taraf
+teknolojilerin kesin listesi, canlı sistem ve hizmet
+sağlayıcı ayarları üzerinden ayrıca doğrulanmalıdır.
 </div>
 
+<nav class="links">
+  <a href="hakkimizda.html">Hakkımızda</a>
+  <a href="iletisim.html">İletişim</a>
+  <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+  <a href="cerez-politikasi.html">Çerez Politikası</a>
+  <a href="index.html">Ana Sayfa</a>
+</nav>
+
+</main>
+
+<footer class="foot">
+© 2026 BN MARİN · Tekne, yat ve deniz motorları bilgi portalı
+</footer>
+
+</div>
 </body>
 </html>
