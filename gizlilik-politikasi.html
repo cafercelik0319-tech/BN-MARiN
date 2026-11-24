@@ -1,352 +1,291 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow">
-  <meta name="description" content="BN MARİN Gizlilik Politikası. Kişisel verilerin, teknik bilgilerin ve yapay zekâ asistanı kullanımının nasıl ele alındığı hakkında bilgi.">
-  <title>Gizlilik Politikası | BN MARİN</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="BN MARİN Gizlilik Politikası. Kişisel verilerin, teknik bilgilerin ve yapay zekâ asistanı kullanımının nasıl ele alındığı hakkında bilgi.">
+<meta name="robots" content="index,follow">
+<title>Gizlilik Politikası | BN MARİN</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #07111f;
-      color: #dce8f2;
-      line-height: 1.8;
-      padding: 30px 18px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    header {
-      text-align: center;
-      padding: 25px 0 35px;
-      border-bottom: 1px solid rgba(0, 220, 255, 0.18);
-      margin-bottom: 30px;
-    }
-
-    .logo {
-      color: #00d9ff;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-decoration: none;
-    }
-
-    .subtitle {
-      color: #8fa9bd;
-      font-size: 13px;
-      margin-top: 8px;
-      letter-spacing: 1px;
-    }
-
-    .content {
-      background: #0d1b2b;
-      border: 1px solid rgba(0, 217, 255, 0.15);
-      border-radius: 16px;
-      padding: 35px;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
-    }
-
-    h1 {
-      color: #00d9ff;
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .updated {
-      color: #8199ad;
-      font-size: 13px;
-      margin-bottom: 28px;
-    }
-
-    h2 {
-      color: #42dfff;
-      font-size: 18px;
-      margin: 27px 0 10px;
-    }
-
-    p {
-      color: #c1d0dd;
-      font-size: 14px;
-      margin-bottom: 13px;
-    }
-
-    ul {
-      padding-left: 22px;
-      margin: 10px 0 16px;
-      color: #c1d0dd;
-      font-size: 14px;
-    }
-
-    li {
-      margin-bottom: 7px;
-    }
-
-    a {
-      color: #00d9ff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .notice {
-      background: rgba(0, 217, 255, 0.06);
-      border-left: 3px solid #00d9ff;
-      padding: 15px 18px;
-      border-radius: 5px;
-      margin: 20px 0;
-      color: #c1d0dd;
-      font-size: 13px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 28px 10px 10px;
-      color: #71899d;
-      font-size: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 15px;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 15px 10px;
-      }
-
-      .content {
-        padding: 22px 18px;
-      }
-
-      h1 {
-        font-size: 23px;
-      }
-
-      h2 {
-        font-size: 16px;
-      }
-    }
-  </style>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#060e1f;
+  --panel:#0b1830;
+  --cyan:#00d2ff;
+  --blue:#38bdf8;
+  --muted:#a9b8cc;
+  --text:#e8f2ff;
+  --line:rgba(56,189,248,.22)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(ellipse at top,#10294a 0%,#060e1f 58%);
+  color:var(--text);
+  font-family:'Plus Jakarta Sans',Arial,sans-serif;
+  line-height:1.75
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline;color:#fff}
+.wrap{width:min(920px,calc(100% - 32px));margin:0 auto;padding:30px 0 56px}
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:14px 0 26px;
+  border-bottom:1px solid var(--line)
+}
+.brand{
+  font-family:Georgia,serif;
+  font-size:25px;
+  letter-spacing:2px;
+  font-weight:bold;
+  color:#fff
+}
+.brand span{color:var(--cyan)}
+.top a.back{font-size:13px}
+.panel{
+  margin-top:28px;
+  padding:clamp(22px,5vw,42px);
+  background:rgba(11,24,48,.88);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 18px 55px rgba(0,0,0,.25)
+}
+h1{margin:0 0 8px;font-size:clamp(27px,5vw,38px);line-height:1.2;color:#fff}
+h2{margin:30px 0 8px;font-size:19px;color:#fff}
+p,li{color:#c5d3e5;font-size:14px}
+ul{padding-left:22px}
+li{margin-bottom:7px}
+.date{color:#8da6c1;font-size:12px;margin-bottom:26px}
+.note{
+  margin:22px 0;
+  padding:15px 17px;
+  border-left:3px solid var(--cyan);
+  background:rgba(0,210,255,.07);
+  border-radius:7px;
+  color:#cfeaff;
+  font-size:13px
+}
+.links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:28px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  font-size:13px
+}
+.foot{padding:22px 0;text-align:center;color:#8195ad;font-size:11px}
+@media(max-width:560px){
+  .top{align-items:flex-start;flex-direction:column}
+  .panel{padding:22px 18px}
+}
+</style>
 </head>
 
 <body>
-    </div>
-  <div style="text-align:center; margin:30px 0 20px;">
-  <a href="index.html"
-     style="display:inline-block; padding:11px 22px;
-     border:1px solid #00D2FF; border-radius:8px;
-     color:#00D2FF; text-decoration:none;
-     font-weight:600;">
-    ← Ana Sayfaya Dön
-  </a>
+<div class="wrap">
+
+<header class="top">
+  <a class="brand" href="index.html">BN <span>MARİN</span></a>
+  <a class="back" href="index.html">← Ana sayfaya dön</a>
+</header>
+
+<main class="panel">
+
+<h1>Gizlilik Politikası</h1>
+<div class="date">Son güncelleme: 24 Kasım 2026</div>
+
+<p>
+BN MARİN olarak ziyaretçilerimizin gizliliğine önem veriyoruz.
+Bu politika, <strong>bnmarin.com.tr</strong> internet sitesini
+ziyaret ettiğinizde oluşabilecek bilgilerin hangi amaçlarla
+işlenebileceğini ve nasıl kullanıldığını açıklamak amacıyla hazırlanmıştır.
+</p>
+
+<h2>1. Toplanabilecek Bilgiler</h2>
+
+<p>
+Web sitemizin çalışması, güvenliğinin sağlanması ve teknik sorunların
+tespit edilmesi amacıyla aşağıdaki teknik bilgiler hizmet sağlayıcılar
+tarafından işlenebilir:
+</p>
+
+<ul>
+  <li>IP adresi ve bağlantı bilgileri,</li>
+  <li>Ziyaret tarihi ve saati,</li>
+  <li>Tarayıcı ve cihaz türü,</li>
+  <li>Ziyaret edilen sayfalar,</li>
+  <li>Teknik hata ve sunucu erişim kayıtları.</li>
+</ul>
+
+<p>
+Bu bilgiler sitenin güvenli ve düzgün çalışmasını sağlamak,
+performans sorunlarını incelemek ve kötüye kullanımı önlemek
+amacıyla kullanılabilir.
+</p>
+
+<h2>2. Yapay Zekâ Asistanı</h2>
+
+<p>
+BN MARİN internet sitesinde bulunan yapay zekâ asistanı,
+kullanıcıların gönderdiği mesajlara yanıt oluşturmak amacıyla
+Cloudflare Workers altyapısı ve Google Gemini hizmetinden yararlanır.
+</p>
+
+<p>
+Asistana gönderdiğiniz mesajlar, yanıt oluşturulabilmesi için
+ilgili hizmet sağlayıcıya iletilebilir. Bu hizmetlerin kendi
+gizlilik ve veri işleme koşulları da geçerlidir.
+</p>
+
+<p>
+Asistan konuşma geçmişi, tarayıcınızın yerel depolama alanında
+<strong>marineAiHistory</strong> anahtarı altında saklanabilir.
+Bu kayıtlar tarayıcı verilerinin temizlenmesiyle silinebilir.
+</p>
+
+<div class="note">
+Yapay zekâ asistanına şifre, kimlik numarası, banka veya kredi kartı
+bilgisi ve özel nitelikli kişisel veriler gibi hassas bilgileri
+göndermemenizi öneririz.
 </div>
-  <div class="container">
-    <main class="content">
 
-      <h1>Gizlilik Politikası</h1>
-      <div class="updated">Son güncelleme: 24 Kasım 2026</div>
+<h2>3. Çerezler ve Yerel Depolama</h2>
 
-      <p>
-        BN MARİN olarak ziyaretçilerimizin gizliliğine önem veriyoruz.
-        Bu politika, <strong>bnmarin.com.tr</strong> internet sitesini
-        ziyaret ettiğinizde oluşabilecek bilgilerin hangi amaçlarla
-        işlenebileceğini ve nasıl kullanıldığını açıklamak amacıyla hazırlanmıştır.
-      </p>
+<p>
+Web sitemizde kullanılan teknolojiler, işlevlerin çalışmasını
+sağlamak amacıyla tarayıcıda bilgi saklayabilir. Çerezler ve
+yerel depolama teknolojileri birbirinden farklıdır.
+</p>
 
-      <h2>1. Toplanabilecek Bilgiler</h2>
+<p>
+Yapay zekâ asistanının konuşma geçmişi için tarayıcının
+yerel depolama özelliğinden yararlanılabilir.
+</p>
 
-      <p>
-        Web sitemizin çalışması, güvenliğinin sağlanması ve teknik sorunların
-        tespit edilmesi amacıyla aşağıdaki teknik bilgiler hizmet sağlayıcılar
-        tarafından işlenebilir:
-      </p>
+<p>
+Çerez kullanımı ve tarayıcı ayarları hakkında ayrıntılı bilgi için
+<a href="cerez-politikasi.html">Çerez Politikası</a> sayfamızı
+inceleyebilirsiniz.
+</p>
 
-      <ul>
-        <li>IP adresi ve bağlantı bilgileri,</li>
-        <li>Ziyaret tarihi ve saati,</li>
-        <li>Tarayıcı ve cihaz türü,</li>
-        <li>Ziyaret edilen sayfalar,</li>
-        <li>Teknik hata ve sunucu erişim kayıtları.</li>
-      </ul>
+<h2>4. Üçüncü Taraf Hizmetler</h2>
 
-      <p>
-        Bu bilgiler sitenin güvenli ve düzgün çalışmasını sağlamak,
-        performans sorunlarını incelemek ve kötüye kullanımı önlemek
-        amacıyla kullanılabilir.
-      </p>
+<p>
+Sitemizin çalışması ve sunduğu özelliklerin sağlanması için
+üçüncü taraf hizmetlerden yararlanılabilir. Bunlar arasında:
+</p>
 
-      <h2>2. Yapay Zekâ Asistanı</h2>
+<ul>
+  <li>Cloudflare: Web sitesi altyapısı ve güvenlik hizmetleri,</li>
+  <li>Google Gemini: Yapay zekâ destekli yanıt hizmeti,</li>
+  <li>Google Fonts: Yazı tipi hizmeti,</li>
+  <li>Harici veri servisleri: Döviz ve benzeri güncel verilerin sağlanması.</li>
+</ul>
 
-      <p>
-        BN MARİN internet sitesinde bulunan yapay zekâ asistanı,
-        kullanıcıların gönderdiği mesajlara yanıt oluşturmak amacıyla
-        Cloudflare Workers altyapısı ve Google Gemini hizmetinden yararlanır.
-      </p>
+<p>
+Bu hizmetler kendi altyapıları kapsamında teknik verileri
+işleyebilir. Üçüncü taraf hizmetlerin veri işleme uygulamaları
+kendi gizlilik politikalarına tabidir.
+</p>
 
-      <p>
-        Asistana gönderdiğiniz mesajlar, yanıt oluşturulabilmesi için
-        ilgili hizmet sağlayıcıya iletilebilir. Bu hizmetlerin kendi
-        gizlilik ve veri işleme koşulları da geçerlidir.
-      </p>
+<h2>5. Bilgilerin Kullanım Amaçları</h2>
 
-      <p>
-        Asistan konuşma geçmişi, tarayıcınızın yerel depolama alanında
-        <strong>marineAiHistory</strong> anahtarı altında saklanabilir.
-        Bu kayıtlar tarayıcı verilerinin temizlenmesiyle silinebilir.
-      </p>
+<p>İşlenebilecek bilgiler aşağıdaki amaçlarla kullanılabilir:</p>
 
-      <div class="notice">
-        Yapay zekâ asistanına şifre, kimlik numarası, banka veya kredi kartı
-        bilgisi ve özel nitelikli kişisel veriler gibi hassas bilgileri
-        göndermemenizi öneririz.
-      </div>
+<ul>
+  <li>Web sitesinin çalışmasını sağlamak,</li>
+  <li>Bilgi güvenliğini ve sistem bütünlüğünü korumak,</li>
+  <li>Teknik sorunları tespit etmek ve gidermek,</li>
+  <li>Yapay zekâ asistanının yanıt oluşturmasını sağlamak,</li>
+  <li>Kullanıcı deneyimini ve hizmet kalitesini geliştirmek.</li>
+</ul>
 
-      <h2>3. Çerezler ve Yerel Depolama</h2>
+<h2>6. Veri Güvenliği ve Saklama</h2>
 
-      <p>
-        Web sitemizde kullanılan teknolojiler, işlevlerin çalışmasını
-        sağlamak amacıyla tarayıcıda bilgi saklayabilir. Çerezler ve
-        yerel depolama teknolojileri birbirinden farklıdır.
-      </p>
+<p>
+Bilgilerin güvenliğini sağlamak için uygun teknik ve idari
+önlemler alınmasına önem veriyoruz. Bununla birlikte internet
+üzerinden gerçekleştirilen veri aktarımının tamamen risksiz
+olduğu garanti edilemez.
+</p>
 
-      <p>
-        Yapay zekâ asistanının konuşma geçmişi için tarayıcının
-        yerel depolama özelliğinden yararlanılabilir.
-      </p>
+<p>
+Bilgilerin saklanma süresi, ilgili hizmetin amacı ve hizmet
+sağlayıcıların saklama uygulamalarına göre değişebilir.
+BN MARİN, kendi kontrolündeki bilgileri gerekli amaçlarla
+sınırlı tutmayı hedefler.
+</p>
 
-      <p>
-        Çerez kullanımı ve tarayıcı ayarları hakkında ayrıntılı bilgi için
-        <a href="cerez-politikasi.html">Çerez Politikası</a> sayfamızı
-        inceleyebilirsiniz.
-      </p>
+<h2>7. Kullanıcıların Hakları</h2>
 
-      <h2>4. Üçüncü Taraf Hizmetler</h2>
+<p>
+Yürürlükteki kişisel verilerin korunması mevzuatı kapsamında,
+uygulanabilir olduğu ölçüde kişisel verileriniz hakkında bilgi
+talep etme, işlenme amacını öğrenme, düzeltme veya silinmesini
+isteme gibi haklara sahip olabilirsiniz.
+</p>
 
-      <p>
-        Sitemizin çalışması ve sunduğu özelliklerin sağlanması için
-        üçüncü taraf hizmetlerden yararlanılabilir. Bunlar arasında:
-      </p>
+<p>
+Bu kapsamdaki talepleriniz için
+<a href="iletisim.html">İletişim</a> sayfamızı kullanabilirsiniz.
+</p>
 
-      <ul>
-        <li>Cloudflare: Web sitesi altyapısı ve güvenlik hizmetleri,</li>
-        <li>Google Gemini: Yapay zekâ destekli yanıt hizmeti,</li>
-        <li>Google Fonts: Yazı tipi hizmeti,</li>
-        <li>Harici veri servisleri: Döviz ve benzeri güncel verilerin sağlanması.</li>
-      </ul>
+<h2>8. Çocukların Gizliliği</h2>
 
-      <p>
-        Bu hizmetler kendi altyapıları kapsamında teknik verileri
-        işleyebilir. Üçüncü taraf hizmetlerin veri işleme uygulamaları
-        kendi gizlilik politikalarına tabidir.
-      </p>
+<p>
+Web sitemiz özellikle çocuklara yönelik hazırlanmış bir hizmet
+değildir. Çocukların kişisel bilgilerini bilerek toplamayı
+amaçlamıyoruz.
+</p>
 
-      <h2>5. Bilgilerin Kullanım Amaçları</h2>
+<h2>9. Politika Değişiklikleri</h2>
 
-      <p>İşlenebilecek bilgiler aşağıdaki amaçlarla kullanılabilir:</p>
+<p>
+Web sitemizdeki özellikler, kullanılan teknolojiler veya
+yürürlükteki mevzuat değiştikçe bu gizlilik politikası
+güncellenebilir. Güncel metin bu sayfada yayımlanır.
+</p>
 
-      <ul>
-        <li>Web sitesinin çalışmasını sağlamak,</li>
-        <li>Bilgi güvenliğini ve sistem bütünlüğünü korumak,</li>
-        <li>Teknik sorunları tespit etmek ve gidermek,</li>
-        <li>Yapay zekâ asistanının yanıt oluşturmasını sağlamak,</li>
-        <li>Kullanıcı deneyimini ve hizmet kalitesini geliştirmek.</li>
-      </ul>
+<h2>10. İletişim</h2>
 
-      <h2>6. Veri Güvenliği ve Saklama</h2>
+<p>
+Gizlilik politikası ve kişisel verilerin işlenmesiyle ilgili
+sorularınız için BN MARİN
+<a href="iletisim.html">İletişim</a> sayfasını ziyaret edebilirsiniz.
+</p>
 
-      <p>
-        Bilgilerin güvenliğini sağlamak için uygun teknik ve idari
-        önlemler alınmasına önem veriyoruz. Bununla birlikte internet
-        üzerinden gerçekleştirilen veri aktarımının tamamen risksiz
-        olduğu garanti edilemez.
-      </p>
+<div class="note">
+Bu metin genel bilgilendirme amacıyla hazırlanmıştır.
+Tek başına hukuki danışmanlık veya KVKK kapsamında eksiksiz
+aydınlatma metni niteliği taşımaz. Gerçek veri sorumlusunun
+kimliği, iletişim bilgileri, işleme amaçları ve hukuki
+sebepleri fiilî uygulamaya göre ayrıca belirtilmelidir.
+</div>
 
-      <p>
-        Bilgilerin saklanma süresi, ilgili hizmetin amacı ve hizmet
-        sağlayıcıların saklama uygulamalarına göre değişebilir.
-        BN MARİN, kendi kontrolündeki bilgileri gerekli amaçlarla
-        sınırlı tutmayı hedefler.
-      </p>
+<nav class="links">
+  <a href="hakkimizda.html">Hakkımızda</a>
+  <a href="iletisim.html">İletişim</a>
+  <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+  <a href="cerez-politikasi.html">Çerez Politikası</a>
+  <a href="index.html">Ana Sayfa</a>
+</nav>
 
-      <h2>7. Kullanıcıların Hakları</h2>
+</main>
 
-      <p>
-        Yürürlükteki kişisel verilerin korunması mevzuatı kapsamında,
-        uygulanabilir olduğu ölçüde kişisel verileriniz hakkında bilgi
-        talep etme, işlenme amacını öğrenme, düzeltme veya silinmesini
-        isteme gibi haklara sahip olabilirsiniz.
-      </p>
+<footer class="foot">
+© 2026 BN MARİN · Tekne, yat ve deniz motorları bilgi portalı
+</footer>
 
-      <p>
-        Bu kapsamdaki talepleriniz için
-        <a href="iletisim.html">İletişim</a> sayfamızı kullanabilirsiniz.
-      </p>
-
-      <h2>8. Çocukların Gizliliği</h2>
-
-      <p>
-        Web sitemiz özellikle çocuklara yönelik hazırlanmış bir hizmet
-        değildir. Çocukların kişisel bilgilerini bilerek toplamayı
-        amaçlamıyoruz.
-      </p>
-
-      <h2>9. Politika Değişiklikleri</h2>
-
-      <p>
-        Web sitemizdeki özellikler, kullanılan teknolojiler veya
-        yürürlükteki mevzuat değiştikçe bu gizlilik politikası
-        güncellenebilir. Güncel metin bu sayfada yayımlanır.
-      </p>
-
-      <h2>10. İletişim</h2>
-
-      <p>
-        Gizlilik politikası ve kişisel verilerin işlenmesiyle ilgili
-        sorularınız için BN MARİN
-        <a href="iletisim.html">İletişim</a> sayfasını ziyaret edebilirsiniz.
-      </p>
-
-      <div class="notice">
-        Bu metin genel bilgilendirme amacıyla hazırlanmıştır.
-        Tek başına hukuki danışmanlık veya KVKK kapsamında eksiksiz
-        aydınlatma metni niteliği taşımaz. Gerçek veri sorumlusunun
-        kimliği, iletişim bilgileri, işleme amaçları ve hukuki
-        sebepleri fiilî uygulamaya göre ayrıca belirtilmelidir.
-      </div>
-
-    </main>
-
-    <footer>
-      <nav class="footer-links">
-        <a href="index.html">Ana Sayfa</a>
-        <a href="hakkimizda.html">Hakkımızda</a>
-        <a href="iletisim.html">İletişim</a>
-        <a href="cerez-politikasi.html">Çerez Politikası</a>
-      </nav>
-
-      © 2026 BN MARİN — Tüm hakları saklıdır.
-    </footer>
-
+</div>
 </body>
 </html>
