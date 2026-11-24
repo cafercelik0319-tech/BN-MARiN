@@ -1431,6 +1431,13 @@ body.site-menu-open {
     height: 42px;
   }
 }
+    /* Menü butonunu logo hizasına taşı */
+.menu-toggle {
+  position: absolute !important;
+  left: 12px !important;
+  bottom: 75px !important;
+  top: auto !important;
+}
 
   
 // BN MARİN Menü Açma / Kapama
@@ -1560,7 +1567,7 @@ toggle.addEventListener("click", function () {
         </div>
      
           <div style="display: flex; align-items: center; gap: 8px;">
-  <!-- ÜST SAĞ MENÜ BUTONLARI (BİREBİR EŞİT ÖLÇÜLERDE) -->
+  <!-- ÜST SAĞ  BUTONLARI (BİREBİR EŞİT ÖLÇÜLERDE) -->
 <div style="display: flex; align-items: center; gap: 8px;">
   <!-- 1. IoT Kokpit -->
   <button 
@@ -4839,7 +4846,7 @@ window.runSimpleWizard = function() {
     </div>
   `;
 };
-// Menüyü Aç/Kapat
+// yü Aç/Kapat
 function toggleEngineMenu() {
   const menu = document.getElementById("engineDropdownList");
   if (menu) {
@@ -4861,7 +4868,7 @@ function selectEngineOption(engineKey, displayText, logoUrl) {
     }
   }
 
-  // 3. Menüyü kapat
+  // 3. yü kapat
   const menuList = document.getElementById("engineDropdownList");
   if (menuList) menuList.style.display = "none";
 
@@ -4889,7 +4896,7 @@ function resetAllFilters() {
     selectedEngineText.innerHTML = "⚡ Makine: Tümü";
   }
 
-  // 5. Açık makine menüsü varsa kapat
+  // 5. Açık makine sü varsa kapat
   const engineDropdownList = document.getElementById("engineDropdownList");
   if (engineDropdownList) {
     engineDropdownList.style.display = "none";
@@ -4901,7 +4908,7 @@ function resetAllFilters() {
   }
 }
 
-// Menü dışına tıklandığında menüyü kapat
+//  dışına tıklandığında yü kapat
 document.addEventListener("click", (e) => {
   const trigger = document.getElementById("engineDropdownTrigger");
   const list = document.getElementById("engineDropdownList");
@@ -5155,12 +5162,12 @@ function toggleAiModal() {
 <nav id="siteMenuPanel" aria-hidden="true">
   <button id="siteMenuClose"
           type="button"
-          aria-label="Menüyü kapat"
+          aria-label="yü kapat"
           onclick="toggleSiteMenu(false)">
     ×
   </button>
 
-  <div class="site-menu-heading">BN MARİN MENÜ</div>
+  <div class="site-menu-heading">BN MARİN </div>
 
   <a class="site-menu-link" href="index.html" onclick="toggleSiteMenu(false)">Ana Sayfa</a>
   <a class="site-menu-link" href="tekne-satin-alma-rehberi.html" onclick="toggleSiteMenu(false)">Tekne Satın Alma Rehberi</a>
@@ -5189,9 +5196,9 @@ document.addEventListener("keydown", function(event) {
 });
 </script>
   
-<!-- BN MARİN Yan Menü -->
+<!-- BN MARİN Yan  -->
 <button id="menuToggle" class="menu-toggle"
-        aria-label="Menüyü aç" aria-expanded="false">
+        aria-label="yü aç" aria-expanded="false">
   <span></span>
   <span></span>
   <span></span>
@@ -5199,7 +5206,7 @@ document.addEventListener("keydown", function(event) {
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
-<nav id="sideMenu" class="side-menu" aria-label="Ana menü">
+<nav id="sideMenu" class="side-menu" aria-label="Ana ">
   <div class="side-menu-header">
     <strong>BN <span>MARİN</span></strong>
     <button id="menuClose" class="menu-close" aria-label="Menüyü kapat">×</button>
