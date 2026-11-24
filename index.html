@@ -542,7 +542,7 @@
       overflow-y: auto;
       overflow-x: hidden;
       width: 100%;
-      padding: 16px 20px 28px;
+      padding: 6px 20px 28px;
       max-width: 1600px;
       margin: 0 auto;
     }
@@ -564,7 +564,7 @@
       color: var(--neon-cyan);
       font-weight: 700;
       letter-spacing: 0.5px;
-      margin-bottom: 14px;
+      margin-bottom: 8px;
     }
 
     .brands-grid {
@@ -840,7 +840,7 @@
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
-      margin-bottom: 14px; 
+      margin-bottom: 8px; 
       border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
       padding-bottom: 10px; 
     }
@@ -1004,7 +1004,7 @@
     right: 0 !important;
     left: auto !important;
     max-height: 320px !important;
-    top: 46px !important;
+    top: 38px !important;
     box-sizing: border-box !important;
   }
 }
@@ -1615,17 +1615,17 @@ toggle.addEventListener("click", function () {
         </div>
       </div>
 <!-- ARAMA VE FİLTRE SATIRI (TAM VE SABİT YAPI) -->
-    <div class="controls-row" style="display: flex; gap: 12px; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto 24px auto; box-sizing: border-box; padding: 0 16px;">
+    <div class="controls-row" style="display: flex; gap: 12px; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto 4px auto; box-sizing: border-box; padding: 0 16px;">
       
       <!-- 1. Arama Çubuğu -->
       <div style="position: relative; flex: 1;">
-        <input type="text" id="searchInput" oninput="render(this.value)" placeholder="Tersane, model, ülke veya güç ünitesi ara..." style="width: 100%; height: 42px; padding: 0 15px 0 38px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 8px; color: #fff; font-size: 13px; outline: none; box-sizing: border-box;" />
-        <span style="position: absolute; left: 14px; top: 12px; color: #64748b; font-size: 14px;">🔍</span>
+        <input type="text" id="searchInput" oninput="render(this.value)" placeholder="Tersane, model, ülke veya güç ünitesi ara..." style="width: 100%; height: 34px; padding: 0 12px 0 34px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 8px; color: #fff; font-size: 12.5px; outline: none; box-sizing: border-box;" />
+        <span style="position: absolute; left: 12px; top: 8px; color: #64748b; font-size: 13px;">🔍</span>
       </div>
 
       <!-- 2. Ülke Filtresi -->
       <div style="min-width: 140px;">
-        <select id="countryFilter" onchange="render()" style="width: 100%; height: 42px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; color: #fff; padding: 0 10px; font-size: 13px; cursor: pointer; outline: none; box-sizing: border-box;">
+        <select id="countryFilter" onchange="render()" style="width: 100%; height: 34px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; color: #fff; padding: 0 10px; font-size: 12.5px; cursor: pointer; outline: none; box-sizing: border-box;">
           <option value="">🌍 Ülke: Tümü</option>
           <option value="TÜRKİYE">Türkiye</option>
           <option value="İTALYA">İtalya</option>
@@ -1642,7 +1642,7 @@ toggle.addEventListener("click", function () {
 
       <!-- 3. Sarı Makine Dropdown (Kapsayıcı) -->
       <div style="position: relative; min-width: 180px;">
-        <div id="engineDropdownTrigger" onclick="toggleEngineMenu()" style="height: 42px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 8px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fbbf24; font-size: 13px; user-select: none; box-sizing: border-box;">
+        <div id="engineDropdownTrigger" onclick="toggleEngineMenu()" style="height: 34px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(245, 158, 11, 0.5); border-radius: 8px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fbbf24; font-size: 12.5px; user-select: none; box-sizing: border-box;">
           <span id="selectedEngineText" style="display: flex; align-items: center; gap: 8px;">
             ⚡ Makine: Tümü
           </span>
@@ -1650,7 +1650,7 @@ toggle.addEventListener("click", function () {
         </div>
 
         <!-- Açılır Liste (display: none ve absolute ile gizli/sabit kutu) -->
-        <div id="engineDropdownList" style="display: none; position: absolute; top: 48px; right: 0; width: 310px; max-height: 440px; overflow-y: auto; background: #0b1324; border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.85);">
+        <div id="engineDropdownList" style="display: none; position: absolute; top: 38px; right: 0; width: 310px; max-height: 440px; overflow-y: auto; background: #0b1324; border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; z-index: 10000; box-shadow: 0 10px 25px rgba(0,0,0,0.85);">
           
           <div onclick="selectEngineOption('ALL', ' Makine: Tümü', '')" style="display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.08); color: #fff; font-weight: 500;">
             <span style="font-size: 14px;">⚡</span>
@@ -1796,7 +1796,7 @@ toggle.addEventListener("click", function () {
       </div>
 
       <!-- 4. Filtreleri Sıfırla Butonu -->
-      <button id="resetFiltersBtn" onclick="resetAllFilters()" style="height: 42px; padding: 0 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #f87171; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.25)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'">
+      <button id="resetFiltersBtn" onclick="resetAllFilters()" style="height: 34px; padding: 0 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; color: #f87171; font-size: 12.5px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; transition: 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.25)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'">
         <span>✕</span>
         <span>Filtreleri Sıfırla</span>
       </button>
@@ -1957,7 +1957,7 @@ toggle.addEventListener("click", function () {
     </div>
   </div>
 
-  <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-bottom: 14px;">
+  <p style="color: #cbd5e1; font-size: 0.85rem; line-height: 1.6; margin-bottom: 8px;">
     BN MARİN; Türkiye'deki ve dünyadaki tekne üreticilerini, tersaneleri, tekne modellerini ve deniz motoru markalarını bir araya getiren interaktif bir denizcilik bilgi ve karşılaştırma platformudur. Katalog kayıtları marka, seri ve model bazında düzenlenir.
   </p>
 
