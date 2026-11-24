@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Tekne satın almadan önce bilmeniz gerekenler: gövde tipleri, motor seçimi, yakıt tüketimi, bakım maliyetleri ve satın alma kontrol listesi.">
+  <meta name="keywords" content="tekne satın alma rehberi, tekne motoru seçimi, tekne yakıt tüketimi, tekne bakım maliyeti, tekne gövde tipleri">
+  <title>Tekne Satın Alma Rehberi: Bilmeniz Gerekenler | BN MARİN</title>
+
+  <link rel="canonical" href="https://bnmarin.com.tr/tekne-satin-alma-rehberi.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #07111f;
+      color: #dce8f2;
+      line-height: 1.85;
+      padding: 20px 15px;
+    }
+
+    a { color: #00d9ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container { max-width: 1000px; margin: auto; }
+
+    header {
+      text-align: center;
+      padding: 25px 0 30px;
+      border-bottom: 1px solid rgba(0,217,255,.2);
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #00d9ff;
+    }
+
+    .subtitle {
+      color: #8fa9bd;
+      font-size: 12px;
+      letter-spacing: 2px;
+      margin-top: 5px;
+    }
+
+    .article {
+      background: #0d1b2b;
+      border: 1px solid rgba(0,217,255,.15);
+      border-radius: 16px;
+      padding: 38px;
+      box-shadow: 0 15px 45px rgba(0,0,0,.2);
+    }
+
+    .category {
+      color: #00d9ff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: clamp(25px, 5vw, 36px);
+      line-height: 1.35;
+      margin-bottom: 15px;
+    }
+
+    .intro {
+      color: #a9c0d2;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    .meta {
+      color: #8199ad;
+      font-size: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      color: #42dfff;
+      font-size: 22px;
+      margin: 35px 0 13px;
+      line-height: 1.5;
+    }
+
+    h3 {
+      color: #dff8ff;
+      font-size: 17px;
+      margin: 22px 0 8px;
+    }
+
+    p {
+      color: #c1d0dd;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    ul, ol {
+      padding-left: 24px;
+      color: #c1d0dd;
+      font-size: 14px;
+      margin: 10px 0 18px;
+    }
+
+    li { margin-bottom: 9px; }
+
+    .toc, .info, .formula {
+      background: rgba(0,217,255,.055);
+      border: 1px solid rgba(0,217,255,.15);
+      border-radius: 10px;
+      padding: 20px 23px;
+      margin: 22px 0;
+    }
+
+    .toc h2 {
+      font-size: 17px;
+      margin: 0 0 12px;
+    }
+
+    .toc ol { margin-bottom: 0; }
+
+    .formula {
+      color: #e2faff;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .info {
+      border-left: 3px solid #00d9ff;
+      font-size: 13px;
+      color: #b9cedd;
+    }
+
+    .table-wrap { overflow-x: auto; margin: 18px 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 500px;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.1);
+      text-align: left;
+    }
+
+    th {
+      background: rgba(0,217,255,.1);
+      color: #42dfff;
+    }
+
+    td { color: #c1d0dd; }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li::before {
+      content: "✓";
+      color: #00d9ff;
+      font-weight: 800;
+      margin-right: 10px;
+    }
+
+    .related {
+      background: #102438;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .related h2 { margin-top: 0; font-size: 18px; }
+
+    footer {
+      text-align: center;
+      color: #71899d;
+      font-size: 12px;
+      padding: 28px 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 17px;
+      margin-bottom: 15px;
+    }
+
+    @media(max-width: 600px) {
+      body { padding: 12px 8px; }
+      .article { padding: 23px 17px; }
+      h2 { font-size: 19px; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Tekne Satın Alma Rehberi: Bilmeniz Gerekenler",
+    "description": "Tekne satın alırken gövde tipi, motor, yakıt tüketimi, bakım ve kontrol süreçleri hakkında rehber.",
+    "inLanguage": "tr-TR",
+    "publisher": {
+      "@type": "Organization",
+      "name": "BN MARİN",
+      "url": "https://bnmarin.com.tr/"
+    },
+    "mainEntityOfPage": "https://bnmarin.com.tr/tekne-satin-alma-rehberi.html"
+  }
+  </script>
+</head>
+
+<body>
+<div class="container">
+
+  <header>
+    <a class="logo" href="index.html">BN MARİN</a>
+    <div class="subtitle">TEKNE & DENİZCİLİK VERİ PORTALI</div>
+  </header>
+
+  <main class="article">
+
+    <div class="category">Denizcilik Rehberi</div>
+
+    <h1>Tekne Satın Alma Rehberi: Doğru Tekneyi Nasıl Seçersiniz?</h1>
+
+    <p class="intro">
+      Tekne satın almak yalnızca bir model veya motor seçmekten ibaret değildir.
+      Kullanım amacı, seyir koşulları, yakıt tüketimi, bakım giderleri ve
+      güvenlik gibi birçok konu birlikte değerlendirilmelidir.
+      Bu rehberde satın alma sürecinde dikkat edilmesi gereken temel noktaları
+      adım adım ele alıyoruz.
+    </p>
+
+    <div class="meta">
+      BN MARİN Editoryal Rehberi · Son güncelleme: 24 Kasım 2026
+    </div>
+
+    <div class="toc">
+      <h2>Bu rehberde neler var?</h2>
+      <ol>
+        <li><a href="#kullanim">Kullanım amacını belirleme</a></li>
+        <li><a href="#govde">Tekne gövde tipleri</a></li>
+        <li><a href="#motor">Motor seçimi</a></li>
+        <li><a href="#yakit">Yakıt tüketimi ve seyir maliyeti</a></li>
+        <li><a href="#boyut">Tekne boyutu ve kapasite</a></li>
+        <li><a href="#bakim">Bakım ve işletme giderleri</a></li>
+        <li><a href="#kontrol">Satın alma öncesi kontroller</a></li>
+        <li><a href="#sonuc">Son değerlendirme</a></li>
+      </ol>
+    </div>
+
+    <h2 id="kullanim">1. Önce Tekneyi Hangi Amaçla Kullanacağınızı Belirleyin</h2>
+
+    <p>
+      Tekne seçiminde ilk soru, teknenin nerede ve hangi amaçla kullanılacağıdır.
+      Kısa günlük geziler için tercih edilen bir tekneyle uzun süreli kıyı seyri
+      veya açık deniz yolculukları için tasarlanan bir teknenin ihtiyaçları
+      aynı değildir.
+    </p>
+
+    <h3>Günlük gezi ve eğlence</h3>
+    <p>
+      Kısa süreli geziler, yüzme molaları ve günübirlik kullanım için
+      kokpit alanı, oturma düzeni, güneşlenme alanı ve kolay manevra
+      özellikleri önem kazanır.
+    </p>
+
+    <h3>Uzun süreli seyir</h3>
+    <p>
+      Daha uzun yolculuklarda yaşam alanı, yakıt kapasitesi, su ve enerji
+      sistemleri, depolama alanları ve deniz koşullarına uygunluk
+      değerlendirilmelidir.
+    </p>
+
+    <h3>Balıkçılık ve özel kullanım</h3>
+    <p>
+      Balıkçılık amaçlı teknelerde güverte düzeni, ekipman yerleşimi,
+      denge, hareket alanı ve kullanılacak av ekipmanlarına uygunluk
+      öne çıkar.
+    </p>
+
+    <div class="info">
+      Satın almadan önce tekneyi kaç kişiyle, hangi mevsimlerde ve
+      ortalama ne kadar süreyle kullanacağınızı belirlemek,
+      seçenekleri önemli ölçüde daraltır.
+    </div>
+
+    <h2 id="govde">2. Tekne Gövde Tiplerini Tanıyın</h2>
+
+    <p>
+      Gövde tasarımı teknenin su üzerindeki hareketini, hız karakterini,
+      deniz koşullarına verdiği tepkiyi ve yakıt ihtiyacını etkileyen
+      temel unsurlardan biridir.
+    </p>
+
+    <h3>Deplasman gövdeli tekneler</h3>
+    <p>
+      Deplasman tipi tekneler suyu yararak ilerler. Genellikle daha düşük
+      seyir hızlarına odaklanır. Uzun menzil, ekonomik seyir ve konfor
+      hedeflenen bazı trawler ve motoryat tasarımlarında bu gövde tipi
+      tercih edilir.
+    </p>
+
+    <h3>Yarı deplasman gövdeli tekneler</h3>
+    <p>
+      Yarı deplasman tasarımlar, deplasman ve planing karakterleri arasında
+      bir kullanım yaklaşımı sunar. Seyir hızı, gövde formu, ağırlık ve
+      motor gücü arasındaki denge modele göre değişir.
+    </p>
+
+    <h3>Planing gövdeli tekneler</h3>
+    <p>
+      Planing tekneler yeterli hız ve uygun güç koşullarında gövdenin
+      önemli bölümünü su yüzeyine çıkararak ilerleyebilir. Yüksek hız
+      hedefleyen gezi teknelerinde ve sürat teknelerinde yaygındır.
+      Yakıt tüketimi hız, yük ve deniz koşullarından ciddi şekilde
+      etkilenebilir.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Gövde tipi</th>
+            <th>Genel karakter</th>
+            <th>Dikkat edilmesi gereken</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Deplasman</td>
+            <td>Daha düşük hız odaklı seyir</td>
+            <td>Azami hız beklentisi</td>
+          </tr>
+          <tr>
+            <td>Yarı deplasman</td>
+            <td>Orta hız aralığına yönelik tasarım</td>
+            <td>Yük ve seyir hızına bağlı tüketim</td>
+          </tr>
+          <tr>
+            <td>Planing</td>
+            <td>Daha yüksek hız potansiyeli</td>
+            <td>Güç ihtiyacı ve yakıt gideri</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Bu sınıflandırma genel bir açıklamadır. Aynı gövde sınıfındaki iki
+      tekne; ağırlık, genişlik, su hattı, gövde geometrisi ve motor
+      donanımı nedeniyle farklı performans gösterebilir.
+    </p>
+
+    <h2 id="motor">3. Tekne İçin Doğru Motor Nasıl Seçilir?</h2>
+
+    <p>
+      Motor seçimi yapılırken yalnızca beygir gücüne bakmak yeterli değildir.
+      Teknenin üretici tarafından belirtilen motor aralığı, deplasmanı,
+      kullanım amacı ve seyir beklentisi birlikte değerlendirilmelidir.
+    </p>
+
+    <h3>İçten takma motorlar</h3>
+    <p>
+      İçten takma motorlar özellikle orta ve büyük boy teknelerde yaygın
+      olarak kullanılır. Dizel motor seçenekleri, teknenin boyutuna ve
+      tasarımına göre farklı güç seviyelerinde sunulabilir.
+    </p>
+
+    <h3>Dıştan takma motorlar</h3>
+    <p>
+      Dıştan takma motorlar küçük ve orta boy teknelerde sık tercih edilir.
+      Montaj, servis erişimi ve kullanım kolaylığı gibi avantajlar
+      sunabilir. Uygun güç seçimi teknenin üretici tavsiyelerine göre
+      yapılmalıdır.
+    </p>
+
+    <h3>Tek veya çift motor?</h3>
+    <p>
+      Çift motorlu sistemler manevra, yedeklilik ve güç dağılımı açısından
+      farklı avantajlar sağlayabilir. Buna karşılık satın alma, bakım ve
+      işletme maliyetleri de artabilir. Tek motorlu sistemler ise bazı
+      teknelerde daha sade bir mekanik yapı sunar.
+    </p>
+
+    <p>
+      Motor kararından önce üreticinin güç sınırlarını, motorun çalışma
+      saatlerini, servis geçmişini ve uygun pervane düzenini kontrol edin.
+      İkinci el teknelerde bağımsız bir deniz motoru uzmanından inceleme
+      almak faydalıdır.
+    </p>
+
+    <h2 id="yakit">4. Yakıt Tüketimi ve Seyir Maliyetini Hesaplayın</h2>
+
+    <p>
+      Tekne sahibi olmanın önemli giderlerinden biri yakıttır.
+      Yakıt tüketimi motorun güç seviyesine ek olarak tekne ağırlığı,
+      gövde tipi, seyir hızı, pervane, deniz durumu ve yük miktarına
+      bağlıdır.
+    </p>
+
+    <p>
+      Saatlik yakıt tüketimi bilinen bir motor için yaklaşık seyir
+      hesabı şu şekilde yapılabilir:
+    </p>
+
+    <div class="formula">
+      Seyir süresi (saat) = Mesafe (deniz mili) ÷ Hız (knot)
+      <br><br>
+      Tahmini yakıt (litre) = Saatlik tüketim (L/saat) × Seyir süresi
+    </div>
+
+    <h3>Örnek hesaplama</h3>
+
+    <p>
+      Bir teknenin 60 deniz mili yol alacağını ve ortalama 15 knot hızla
+      seyredeceğini varsayalım. Motorun bu koşullardaki saatlik tüketiminin
+      40 litre olduğu kabul edilirse:
+    </p>
+
+    <ul>
+      <li>Seyir süresi: 60 ÷ 15 = 4 saat</li>
+      <li>Yakıt ihtiyacı: 40 × 4 = 160 litre</li>
+    </ul>
+
+    <p>
+      Yakıtın litre fiyatı örnek olarak 50 TL kabul edilirse,
+      hesaplanan yakıt maliyeti 8.000 TL olur.
+    </p>
+
+    <div class="info">
+      Bu örnek yalnızca hesaplama yöntemini göstermek amacıyla verilmiştir.
+      40 L/saat tüketim ve 50 TL/litre fiyatı gerçek bir motorun veya
+      güncel piyasa fiyatının doğrulanmış değeri değildir.
+      Gerçek tüketim için üretici performans eğrileri ve tekneye ait
+      seyir verileri kullanılmalıdır.
+    </div>
+
+    <p>
+      Yakıt maliyetini farklı mesafe ve hızlar için karşılaştırmak
+      isterseniz BN MARİN üzerindeki
+      <a href="index.html">Yakıt ve Seyir Maliyeti Simülatörü</a>
+      bölümünü kullanabilirsiniz.
+    </p>
+
+    <h2 id="boyut">5. Tekne Boyutu ve Kapasiteyi Değerlendirin</h2>
+
+    <p>
+      Teknenin uzunluğu tek başına yeterli bir seçim ölçütü değildir.
+      Genişlik, su çekimi, deplasman, kabin yerleşimi ve taşıma kapasitesi
+      de kullanım deneyimini belirler.
+    </p>
+
+    <ul>
+      <li><strong>Tam boy (LOA):</strong> Teknenin toplam uzunluğunu ifade eder.</li>
+      <li><strong>Genişlik (Beam):</strong> Teknenin en geniş noktasındaki ölçüsüdür.</li>
+      <li><strong>Su çekimi (Draft):</strong> Teknenin su altında kalan dikey derinliğidir.</li>
+      <li><strong>Deplasman:</strong> Teknenin suya indirdiği ağırlıkla ilişkili ölçüdür.</li>
+      <li><strong>Kapasite:</strong> Teknenin tasarımına ve ilgili belgelere göre izin verilen kişi veya yük sınırlarını ifade eder.</li>
+    </ul>
+
+    <p>
+      Özellikle sığ koylarda seyir planlayan kullanıcılar için su çekimi
+      önemli olabilir. Marina bağlama alanı, çekek yeri ve teknenin
+      taşınabilirliği de boyut seçiminde dikkate alınmalıdır.
+    </p>
+
+    <h2 id="bakim">6. Satın Alma Sonrası Bakım ve İşletme Giderleri</h2>
+
+    <p>
+      Tekne satın alma bütçesi yalnızca satış bedelinden oluşmaz.
+      Yıllık işletme giderleri de satın alma kararından önce
+      değerlendirilmelidir.
+    </p>
+
+    <ul>
+      <li>Marina veya bağlama ücretleri,</li>
+      <li>Motorun periyodik bakımı ve yedek parçaları,</li>
+      <li>Gövde temizliği ve karina bakımı,</li>
+      <li>Sigorta ve gerekli belge giderleri,</li>
+      <li>Akü, elektrik ve elektronik sistemlerin bakımı,</li>
+      <li>Yakıt ve diğer seyir giderleri,</li>
+      <li>Kışlama, çekek ve karaya alma masrafları.</li>
+    </ul>
+
+    <p>
+      Bu giderlerin tutarı teknenin boyutuna, yaşına, bulunduğu marinaya,
+      motor tipine, kullanım sıklığına ve servis koşullarına göre
+      değişebilir. Satın alma öncesinde bulunduğunuz bölgeden güncel
+      fiyat teklifi almak daha sağlıklı bir bütçe oluşturmanızı sağlar.
+    </p>
+
+    <h2 id="kontrol">7. Tekne Satın Almadan Önce Kontrol Listesi</h2>
+
+    <p>
+      Özellikle ikinci el tekne alımında yalnızca dış görünüşe veya
+      deneme sürüşüne güvenilmemelidir. Teknik ve hukuki kontroller
+      birlikte yürütülmelidir.
+    </p>
+
+    <ul class="checklist">
+      <li>Teknenin mülkiyet ve kayıt belgelerini kontrol edin.</li>
+      <li>Tekne kimlik ve gövde bilgilerini belgelerle karşılaştırın.</li>
+      <li>Motor seri numarası ve çalışma saatlerini inceleyin.</li>
+      <li>Motorun bakım ve servis geçmişini isteyin.</li>
+      <li>Gövdeyi, güverteyi ve olası su alma belirtilerini inceletin.</li>
+      <li>Elektrik, yakıt, sintine ve soğutma sistemlerini kontrol ettirin.</li>
+      <li>Güvenlik ekipmanlarının durumunu ve geçerliliğini kontrol edin.</li>
+      <li>Deniz denemesi gerçekleştirin.</li>
+      <li>Bağımsız uzman veya deniz sörveyöründen ekspertiz alın.</li>
+      <li>Satış, devir, vergi ve sigorta koşullarını netleştirin.</li>
+    </ul>
+
+    <div class="info">
+      Bu kontrol listesi genel bilgilendirme amaçlıdır.
+      Teknenin türüne, bayrağına, kayıt durumuna ve kullanım yerine
+      göre ilave teknik veya hukuki kontroller gerekebilir.
+    </div>
+
+    <h2 id="sonuc">8. Doğru Tekne Seçimi İçin Son Değerlendirme</h2>
+
+    <p>
+      Doğru tekne, en büyük veya en güçlü tekne olmak zorunda değildir.
+      İhtiyaçlarınıza, bütçenize, kullanım alışkanlıklarınıza ve
+      seyir yapacağınız bölgeye uygun tekne daha doğru bir tercih
+      olabilir.
+    </p>
+
+    <p>
+      Karar vermeden önce benzer boyutlardaki modelleri karşılaştırın,
+      motor seçeneklerini inceleyin ve yalnızca satış bedelini değil
+      toplam sahip olma maliyetini değerlendirin.
+    </p>
+
+    <p>
+      Teknik veriler eksikse tahminleri kesin üretici verisi gibi
+      değerlendirmeyin. Mümkün olduğunda üretici dokümanlarına,
+      servis kayıtlarına ve bağımsız uzman incelemesine başvurun.
+    </p>
+
+    <div class="related">
+      <h2>BN MARİN ile keşfetmeye devam edin</h2>
+      <p>
+        Tekne, tersane ve motor seçeneklerini incelemek,
+        modeller arasında karşılaştırma yapmak ve seyir maliyetini
+        hesaplamak için BN MARİN araçlarından yararlanabilirsiniz.
+      </p>
+      <p><a href="index.html">→ BN MARİN tekne ve güç kataloğuna git</a></p>
+      <p><a href="hakkimizda.html">→ BN MARİN hakkında bilgi al</a></p>
+    </div>
+
+  </main>
+
+  <footer>
+    <nav class="footer-links">
+      <a href="index.html">Ana Sayfa</a>
+      <a href="hakkimizda.html">Hakkımızda</a>
+      <a href="iletisim.html">İletişim</a>
+      <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+      <a href="cerez-politikasi.html">Çerez Politikası</a>
+    </nav>
+    © 2026 BN MARİN — Tüm hakları saklıdır.
+  </footer>
+
+</div>
+</body>
+</html>
