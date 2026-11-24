@@ -1493,26 +1493,23 @@ toggle.addEventListener("click", function () {
 .menu-toggle {
   z-index: 10004 !important;
 }
-/* Mini menü butonu */
+/* Menü butonunu sol üst logo yanına sabitle */
 .menu-toggle {
-  width: 32px !important;
-  height: 32px !important;
-  left: 12px !important;
-  bottom: 8px !important;
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  flex-shrink: 0 !important;
+  width: 38px !important;
+  height: 38px !important;
   gap: 4px !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
+  z-index: 10004 !important;
 }
 
 .menu-toggle span {
-  width: 15px !important;
-  height: 1.5px !important;
-}
-    .menu-toggle {
-  position: fixed !important;
-  left: 12px !important;
-  bottom: 90px !important;
-  top: auto !important;
-  z-index: 10004 !important;
+  width: 17px !important;
+  height: 2px !important;
 }
   </style>
 </head>
@@ -1547,7 +1544,14 @@ toggle.addEventListener("click", function () {
 
     <header>
       <div class="header-top-row">
-       <div class="brand-title-group" onclick="window.location.reload()" style="display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button id="menuToggle" class="menu-toggle"
+                  aria-label="Menüyü aç" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="brand-title-group" onclick="window.location.reload()" style="display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none;">
           <!-- Vektörel Logo (Pruva & Nur Işığı) -->
           <svg width="46" height="46" viewBox="0 0 100 100" style="flex-shrink: 0;">
             <defs>
@@ -1571,6 +1575,7 @@ toggle.addEventListener("click", function () {
             </div>
             <div class="portal-subtitle" style="margin-top: 2px; font-size: 11px; color: #94A3B8;">Rotanızdaki her tersane, aradığınız her tekne.</div>
           </div>
+        </div>
         </div>
      
           <div style="display: flex; align-items: center; gap: 8px;">
@@ -5204,12 +5209,6 @@ document.addEventListener("keydown", function(event) {
 </script>
   
 <!-- BN MARİN Yan  -->
-<button id="menuToggle" class="menu-toggle"
-        aria-label="yü aç" aria-expanded="false">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
 
 <div id="menuOverlay" class="menu-overlay"></div>
 
