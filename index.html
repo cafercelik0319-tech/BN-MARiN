@@ -1456,7 +1456,13 @@ body.site-menu-open {
     document.body.style.overflow = "";
   }
 
-  toggle.addEventListener("click", openMenu);
+toggle.addEventListener("click", function () {
+  if (menu.classList.contains("active")) {
+    closeMenu();
+  } else {
+    openMenu();
+  }
+});
   close.addEventListener("click", closeMenu);
   overlay.addEventListener("click", closeMenu);
 
@@ -1469,7 +1475,18 @@ body.site-menu-open {
   });
 })();
 
-  
+/* Menü düğmesi düzeltmesi */
+.menu-toggle {
+  top: auto !important;
+  bottom: 22px !important;
+  left: 18px !important;
+}
+
+/* Menü açıkken düğme görünür ve tıklanabilir kalsın */
+.menu-toggle {
+  z-index: 10004 !important;
+}
+
   </style>
 </head>
 <body>
@@ -5124,15 +5141,6 @@ function toggleAiModal() {
   }
 }
 </script>
-  
-<button id="siteMenuButton"
-        type="button"
-        aria-label="Menüyü aç"
-        aria-expanded="false"
-        onclick="toggleSiteMenu(true)">
-  ☰
-</button>
-
 <div id="siteMenuOverlay"
      onclick="toggleSiteMenu(false)">
 </div>
