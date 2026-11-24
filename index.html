@@ -1212,6 +1212,264 @@ div:has(> .header-action-btn) {
     font-size: 17px !important;
   }
 }
+    
+/* BN MARİN - Açılır yan menü */
+#siteMenuButton {
+  position: fixed;
+  left: 18px;
+  bottom: 24px;
+  z-index: 10002;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(0, 210, 255, 0.5);
+  border-radius: 12px;
+  background: #07172f;
+  color: #00d2ff;
+  font-size: 25px;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.2);
+}
+
+#siteMenuOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+#siteMenuPanel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10001;
+  width: min(340px, 88vw);
+  height: 100vh;
+  height: 100dvh;
+  padding: 28px 22px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  background: #07172f;
+  border-left: 1px solid rgba(0, 210, 255, 0.35);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.4);
+  transform: translateX(105%);
+  visibility: hidden;
+  transition: transform 0.3s ease, visibility 0.3s;
+}
+
+body.site-menu-open #siteMenuPanel {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+body.site-menu-open #siteMenuOverlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.site-menu-open {
+  overflow: hidden;
+}
+
+.site-menu-heading {
+  color: #00d2ff;
+  font-size: 21px;
+  font-weight: 800;
+  margin: 12px 0 28px;
+}
+
+#siteMenuClose {
+  float: right;
+  border: 0;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.site-menu-link {
+  display: block;
+  padding: 15px 12px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(0, 210, 255, 0.12);
+  border-radius: 9px;
+  color: #e2e8f0;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.site-menu-link:hover {
+  color: #00d2ff;
+  background: rgba(0, 210, 255, 0.08);
+  border-color: rgba(0, 210, 255, 0.4);
+}
+
+/* BN MARİN Sağdan Açılan Menü */
+.menu-toggle {
+  position: fixed;
+  top: 22px;
+  left: 18px;
+  z-index: 10001;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  background: rgba(8, 20, 43, 0.95);
+  border: 1px solid rgba(0, 210, 255, 0.45);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.12);
+}
+
+.menu-toggle span {
+  display: block;
+  width: 21px;
+  height: 2px;
+  background: #00d2ff;
+  border-radius: 3px;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10003;
+  width: min(330px, 85vw);
+  height: 100vh;
+  padding: 25px 22px;
+  box-sizing: border-box;
+  background: #07152e;
+  border-left: 1px solid rgba(0, 210, 255, 0.3);
+  box-shadow: -10px 0 35px rgba(0, 0, 0, 0.4);
+  transform: translateX(105%);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.side-menu.active {
+  transform: translateX(0);
+}
+
+.side-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  color: #fff;
+  font-size: 21px;
+}
+
+.side-menu-header strong span {
+  color: #00d2ff;
+}
+
+.menu-close {
+  background: transparent;
+  border: 0;
+  color: #00d2ff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.side-menu > a {
+  display: block;
+  padding: 13px 10px;
+  margin: 4px 0;
+  color: #dbeafe;
+  text-decoration: none;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.side-menu > a:hover {
+  color: #00d2ff;
+  background: rgba(0, 210, 255, 0.08);
+}
+
+.menu-title {
+  margin: 20px 10px 8px;
+  color: #00d2ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.menu-divider {
+  height: 1px;
+  margin: 15px 0;
+  background: rgba(0, 210, 255, 0.16);
+}
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobil ve masaüstünde aynı menü kullanılır */
+@media (max-width: 768px) {
+  .menu-toggle {
+    top: 14px;
+    left: 12px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+  
+// BN MARİN Menü Açma / Kapama
+(function () {
+  const menu = document.getElementById("sideMenu");
+  const toggle = document.getElementById("menuToggle");
+  const close = document.getElementById("menuClose");
+  const overlay = document.getElementById("menuOverlay");
+
+  if (!menu || !toggle || !close || !overlay) return;
+
+  function openMenu() {
+    menu.classList.add("active");
+    overlay.classList.add("active");
+    toggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    menu.classList.remove("active");
+    overlay.classList.remove("active");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  toggle.addEventListener("click", openMenu);
+  close.addEventListener("click", closeMenu);
+  overlay.addEventListener("click", closeMenu);
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") closeMenu();
+  });
+
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", closeMenu);
+  });
+})();
+
+  
   </style>
 </head>
 <body>
@@ -1513,13 +1771,6 @@ div:has(> .header-action-btn) {
       <a href="iletisim.html">İletişim</a> |
       <a href="gizlilik-politikasi.html">Gizlilik</a> |
       <a href="cerez-politikasi.html">Çerez Politikası</a>
-      <br><br>
-
-      <strong>Denizcilik Rehberleri:</strong><br>
-      <a href="tekne-satin-alma-rehberi.html">Tekne Satın Alma Rehberi</a> |
-      <a href="tekne-yakit-tuketimi-rehberi.html">Tekne Yakıt Tüketimi Rehberi</a>
-
-      <br><br>
       Akıllı IoT &amp; Telemetri Destekli Kütüphane
     </p>
 
@@ -4873,5 +5124,85 @@ function toggleAiModal() {
   }
 }
 </script>
+  
+<button id="siteMenuButton"
+        type="button"
+        aria-label="Menüyü aç"
+        aria-expanded="false"
+        onclick="toggleSiteMenu(true)">
+  ☰
+</button>
+
+<div id="siteMenuOverlay"
+     onclick="toggleSiteMenu(false)">
+</div>
+
+<nav id="siteMenuPanel" aria-hidden="true">
+  <button id="siteMenuClose"
+          type="button"
+          aria-label="Menüyü kapat"
+          onclick="toggleSiteMenu(false)">
+    ×
+  </button>
+
+  <div class="site-menu-heading">BN MARİN MENÜ</div>
+
+  <a class="site-menu-link" href="index.html" onclick="toggleSiteMenu(false)">Ana Sayfa</a>
+  <a class="site-menu-link" href="tekne-satin-alma-rehberi.html" onclick="toggleSiteMenu(false)">Tekne Satın Alma Rehberi</a>
+  <a class="site-menu-link" href="tekne-yakit-tuketimi-rehberi.html" onclick="toggleSiteMenu(false)">Tekne Yakıt Tüketimi Rehberi</a>
+  <a class="site-menu-link" href="hakkimizda.html" onclick="toggleSiteMenu(false)">Hakkımızda</a>
+  <a class="site-menu-link" href="iletisim.html" onclick="toggleSiteMenu(false)">İletişim</a>
+  <a class="site-menu-link" href="gizlilik-politikasi.html" onclick="toggleSiteMenu(false)">Gizlilik Politikası</a>
+  <a class="site-menu-link" href="cerez-politikasi.html" onclick="toggleSiteMenu(false)">Çerez Politikası</a>
+</nav>
+
+<script>
+function toggleSiteMenu(open) {
+  document.body.classList.toggle("site-menu-open", open);
+
+  document.getElementById("siteMenuButton")
+    .setAttribute("aria-expanded", String(open));
+
+  document.getElementById("siteMenuPanel")
+    .setAttribute("aria-hidden", String(!open));
+}
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Escape") {
+    toggleSiteMenu(false);
+  }
+});
+</script>
+  
+<!-- BN MARİN Yan Menü -->
+<button id="menuToggle" class="menu-toggle"
+        aria-label="Menüyü aç" aria-expanded="false">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div id="menuOverlay" class="menu-overlay"></div>
+
+<nav id="sideMenu" class="side-menu" aria-label="Ana menü">
+  <div class="side-menu-header">
+    <strong>BN <span>MARİN</span></strong>
+    <button id="menuClose" class="menu-close" aria-label="Menüyü kapat">×</button>
+  </div>
+
+  <a href="index.html">Ana Sayfa</a>
+  <div class="menu-divider"></div>
+
+  <p class="menu-title">DENİZCİLİK REHBERLERİ</p>
+  <a href="tekne-satin-alma-rehberi.html">Tekne Satın Alma Rehberi</a>
+  <a href="tekne-yakit-tuketimi-rehberi.html">Tekne Yakıt Tüketimi Rehberi</a>
+
+  <div class="menu-divider"></div>
+  <p class="menu-title">KURUMSAL</p>
+  <a href="hakkimizda.html">Hakkımızda</a>
+  <a href="iletisim.html">İletişim</a>
+  <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
+  <a href="cerez-politikasi.html">Çerez Politikası</a>
+</nav>
 </body>
 </html>
