@@ -5211,6 +5211,52 @@ document.addEventListener("keydown", function(event) {
   <a href="iletisim.html">İletişim</a>
   <a href="gizlilik-politikasi.html">Gizlilik Politikası</a>
   <a href="cerez-politikasi.html">Çerez Politikası</a>
+
 </nav>
+
+<script>
+(function () {
+  const menu = document.getElementById("sideMenu");
+  const toggle = document.getElementById("menuToggle");
+  const close = document.getElementById("menuClose");
+  const overlay = document.getElementById("menuOverlay");
+
+  if (!menu || !toggle || !close || !overlay) return;
+
+  function openMenu() {
+    menu.classList.add("active");
+    overlay.classList.add("active");
+    toggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    menu.classList.remove("active");
+    overlay.classList.remove("active");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  toggle.addEventListener("click", function () {
+    if (menu.classList.contains("active")) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  close.addEventListener("click", closeMenu);
+  overlay.addEventListener("click", closeMenu);
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") closeMenu();
+  });
+
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", closeMenu);
+  });
+})();
+</script>
+
 </body>
 </html>
