@@ -2866,33 +2866,36 @@ const filtered = brands.filter(b => {
       });
     }
 
-    function openModal(brand, series, model) {
-      document.getElementById("mTitle").innerText = `${brand} ${model}`;
-      document.getElementById("mSubtitle").innerText = `${series}`;
+   
+function openModal(brand, series, model) {
+  document.getElementById("mTitle").innerText = `${brand} ${model}`;
+  document.getElementById("mSubtitle").innerText = `${series}`;
 
-      let num = parseInt(model.replace(/\D/g, "")) || 35;
-      if (num > 1000) num = Math.floor(num / 100);
+  // Üretici tarafından doğrulanmış teknik veri yoksa
+  // tahmini değer gösterme.
+  const unknownText = "Üretici verisi henüz eklenmedi";
 
-      document.getElementById("m_loa").innerText = `${(num * 0.31).toFixed(2)} m (${Math.round(num * 1.02)} ft)`;
-      document.getElementById("m_beam").innerText = `${(num * 0.09).toFixed(2)} m`;
-      document.getElementById("m_draft").innerText = `${(1.0 + (num * 0.01)).toFixed(2)} m`;
-      
-      const selectedEngine = getModelEngine(brand, model);
-      activeSelectedEngine = selectedEngine;
+  document.getElementById("m_loa").innerText = unknownText;
+  document.getElementById("m_beam").innerText = unknownText;
+  document.getElementById("m_draft").innerText = unknownText;
+  document.getElementById("m_speed").innerText = unknownText;
+  document.getElementById("m_cabins").innerText = unknownText;
 
-      const engineEl = document.getElementById("m_engine");
-      engineEl.innerHTML = `⚙️ ${selectedEngine} (Teknik Föy İçin Tıkla)`;
+  // Mevcut motor eşleştirme sistemini koru.
+  const selectedEngine = getModelEngine(brand, model);
+  activeSelectedEngine = selectedEngine;
 
-      document.getElementById("m_speed").innerText = `${28 + (num % 8)} Knots`;
-      document.getElementById("m_cabins").innerText = num > 25 ? `${Math.min(5, Math.max(1, Math.floor(num / 16)))} Kamara` : "Açık Havuzluk / Günübirlik";
+  const engineEl = document.getElementById("m_engine");
+  engineEl.innerHTML = `⚙️ ${selectedEngine} (Teknik Föy İçin Tıkla)`;
 
-      // Her yeni model açıldığında kutuyu kapalı başlat ve tekne boyuna göre ürünleri hazırla
-      const telemetryBox = document.getElementById("telemetrySpecsBox");
-      if (telemetryBox) telemetryBox.style.display = "none";
-      renderTelemetryRecommendations(Math.round(num * 1.02));
-      
-      document.getElementById("specsModal").style.display = "flex";
-    }
+  // Telemetri önerileri için doğrulanmış tekne boyu gerekir.
+  // Boy bilgisi bulunmadığından tahmini boy kullanma.
+  const telemetryBox = document.getElementById("telemetrySpecsBox");
+  if (telemetryBox) telemetryBox.style.display = "none";
+
+  document.getElementById("specsModal").style.display = "flex";
+}
+
 
     function openEngineDetailModal() {
       openSpecificEngineModal(activeSelectedEngine);
